@@ -36,14 +36,13 @@ import Storage_Contiguous_Primitives
 /// The generic-over-`some Buffer.Protocol` call site under test.
 ///
 /// Uses only the A′ protocol surface: `count` (Equatable compare to `.zero`) and
-/// `isEmpty` (default impl). Constrained to `Element == Int`; and to
-/// `Count == Index<Int>.Count` because the relaxed protocol's `count` is now an
-/// abstract `associatedtype Count: Carrier.`Protocol`<Cardinal>` — `.zero`/`==` are
-/// reachable only when `Count` is pinned to the element-domain default (which the
-/// real conformer, `Buffer.Linear<Int>`, uses). `isEmpty` needs no such pin.
+/// `isEmpty` (default impl). Constrained to `Element == Int`. M7: `count` is the
+/// concrete `Index<Element>.Count`, so `.zero`/`==` are directly available and no
+/// `Count == Index<Int>.Count` pin is needed (the pin is gone with the associated
+/// type).
 @inline(never)
 func bufferProtocolProbe<B: Buffer.`Protocol` & ~Copyable>(_ b: borrowing B) -> Int
-where B.Element == Int, B.Count == Index<Int>.Count {
+where B.Element == Int {
     if b.count == .zero { return 0 }  // `count` getter through the protocol surface
     if b.isEmpty { return 0 }  // `isEmpty` default impl (also count == .zero)
     return 1
