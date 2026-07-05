@@ -24,4 +24,4 @@ public import Store_Protocol_Primitives
 /// Placed in the `Buffer Linear Bounded Primitive` module because the twin references
 /// `Buffer.Linear.Bounded`; the same `where S: Store.`Protocol`` bound the `Store.`Protocol``
 /// conformance carries (`__ColumnDirect` refines it).
-extension Buffer.Linear: __ColumnDirect where S: Store.`Protocol`, S: ~Copyable {}
+extension Buffer.Linear: Store.Direct where S: Store.`Protocol`, S: ~Copyable {}
