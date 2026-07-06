@@ -7,8 +7,8 @@ public import Store_Protocol_Primitives
 // MARK: - Generic Linear Algorithm (storage-agnostic core)
 //
 // The single linear-buffer element algorithm, written once over any single-region
-// `Memory.Tracked.`Protocol`` conformer (`__StoreProtocol` is the hoisted name per
-// [API-IMPL-009]; the `Memory.Tracked.`Protocol`` typealias cannot be extended directly
+// `Store.`Protocol`` conformer (`__StoreProtocol` is the hoisted name per
+// [API-IMPL-009]; the `Store.`Protocol`` typealias cannot be extended directly
 // because `Storage<Element>` would need its generic parameter). Bodies touch ONLY
 // the north-star typed primitives — `subscript` / `initialize(at:to:)` /
 // `move(at:)` and the `Storage.Protocol+Move` / `+Deinitialize` derivations
@@ -28,7 +28,7 @@ public import Store_Protocol_Primitives
 // NOT the core's (R1, HANDOFF-buffer-heap-leaf-teardown.md):
 //   - teardown sync: the heap backing-class `deinit` frees `storage.initialization`,
 //     so the heap shell keeps `storage.initialization = header.initialization` after
-//     each op. The core never touches it (the setter is not on `Memory.Tracked.`Protocol``).
+//     each op. The core never touches it (the setter is not on `Store.`Protocol``).
 //   - CoW: the Copyable heap shell triggers copy-on-write through the conformer's
 //     own `initialize` / `move` CoW choke points before the core mutates.
 //
