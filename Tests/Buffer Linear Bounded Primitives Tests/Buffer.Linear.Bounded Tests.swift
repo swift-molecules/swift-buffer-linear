@@ -24,6 +24,35 @@ extension LinearBoundedTests.Unit {
         #expect(buffer.isFull == false)
     }
 
+    // Regression coverage for fable-448 F-001: `init(minimumCapacity:)` used to pin
+    // `header.capacity` to `storage.capacity` (whatever the allocator returned) rather than the
+    // caller-requested `minimumCapacity`, unlike the already-ratified `clone()` precedent in this
+    // same package. A bounded buffer's capacity IS its contract (see the README's `Bounded`
+    // example), so the ceiling must be the exact requested value, not an allocator-rounding-
+    // dependent one. These pin the exact literal value rather than deriving it back from
+    // `buffer.capacity` (as the older `isFull detection` / `append returns element when full`
+    // tests above do), which is the part that actually locks the contract.
+    @Test
+    func `capacity is pinned to the exact requested minimumCapacity`() {
+        let two = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 2)
+        #expect(two.capacity == 2)
+
+        let seven = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 7)
+        #expect(seven.capacity == 7)
+    }
+
+    @Test
+    func `README hard-ceiling example - append rejects exactly at the requested capacity`() {
+        // Mirrors README.md's Quick Start "bounded" example verbatim: minimumCapacity 2 must
+        // reject the third append, not silently accept it because the allocator rounded capacity
+        // up past 2.
+        var bounded = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 2)
+        #expect(bounded.append(1) == nil)
+        #expect(bounded.append(2) == nil)
+        let rejected = bounded.append(3)
+        #expect(rejected == 3)
+    }
+
     @Test
     func `clone preserves capacity exactly and detaches storage`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)

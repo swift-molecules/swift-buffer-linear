@@ -13,12 +13,18 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
 
     /// Creates a bounded linear buffer with at least the given capacity.
     ///
-    /// Actual capacity comes from `storage.capacity` per H6.
+    /// The header pins the CALLER-REQUESTED `minimumCapacity` as the logical capacity ceiling —
+    /// fable-448/F-001: a bounded buffer's capacity IS its contract (unlike the growable buffer,
+    /// whose capacity is elastic headroom), so it must be deterministic and independent of
+    /// whatever `storage.capacity` the allocator happens to return. This mirrors the already-
+    /// ratified `clone()` precedent (`Buffer.Linear.Bounded+clone.swift`), which pins the ORIGINAL
+    /// capacity rather than the fresh storage's; any extra physical slots the allocator provides
+    /// stay unused and untracked.
     @inlinable
     public init<E: ~Copyable>(minimumCapacity: Index<E>.Count) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         let storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: minimumCapacity)
         self.init(
-            header: Buffer.Linear.Header(capacity: storage.capacity),
+            header: Buffer.Linear.Header(capacity: minimumCapacity),
             storage: storage
         )
     }
