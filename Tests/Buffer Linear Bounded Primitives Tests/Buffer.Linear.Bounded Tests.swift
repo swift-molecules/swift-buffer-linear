@@ -8,6 +8,7 @@ import Testing
 @Suite("Buffer.Linear.Bounded")
 struct LinearBoundedTests {
     @Suite struct Unit {}
+    @Suite struct EdgeCase {}
     @Suite struct Integration {}
 }
 
@@ -154,6 +155,37 @@ extension LinearBoundedTests.Unit {
         #expect(buffer.count == 1)
         #expect(buffer.remove.last() == 42)
         #expect(buffer.isEmpty == true)
+    }
+}
+
+// MARK: - Edge Cases
+
+extension LinearBoundedTests.EdgeCase {
+
+    // Regression coverage for fable-448 F-004: see the growable-buffer counterpart in
+    // `Buffer.Linear Tests.swift` for the full rationale. `Buffer.Linear.Bounded`'s own
+    // `Store.`Protocol`` witnesses had the identical unconditional-mirror gap.
+    @Test
+    func `initialize at an off-discipline slot traps instead of silently desyncing header count`() async {
+        await #expect(processExitsWith: .failure) {
+            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+            _ = buffer.append(1)
+            // count == 1; the contiguous discipline only permits appending at slot == count (slot 1).
+            buffer.initialize(at: 3, to: 99)
+        }
+    }
+
+    @Test
+    func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
+        await #expect(processExitsWith: .failure) {
+            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+            _ = buffer.append(1)
+            _ = buffer.append(2)
+            _ = buffer.append(3)
+            // count == 3; the contiguous discipline only permits retracting the trailing slot
+            // (slot == count - 1 == 2).
+            _ = buffer.move(at: 0)
+        }
     }
 }
 

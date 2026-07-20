@@ -32,16 +32,32 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
 
     /// Initializes the uninitialized slot (uninit → init), mirroring the header cursor with
     /// the storage ledger's arithmetic.
+    ///
+    /// - Precondition: `slot == count` (fable-448/F-004: off-discipline seam use — e.g. a caller
+    ///   reaching this witness directly at a slot other than the trailing hole — would otherwise
+    ///   advance `header.count` past what was actually written, and a later `edit()` mirrors that
+    ///   wrong count into `storage.initialization`, reaching memory unsafety without a trap).
     @inlinable
     public mutating func initialize(at slot: Index<S.Element>, to element: consuming S.Element) {
+        precondition(
+            slot == header.count.map(Ordinal.init),
+            "Buffer.Linear.Bounded.initialize(at:to:): the contiguous discipline only appends at the trailing slot (slot == count)"
+        )
         storage.initialize(at: slot, to: element)
         header.count += .one
     }
 
     /// Moves the initialized element out (init → uninit), mirroring the header cursor with
     /// the ledger's arithmetic.
+    ///
+    /// - Precondition: `slot == count - 1` (fable-448/F-004: same off-discipline hazard as
+    ///   `initialize(at:to:)`, mirrored for retraction).
     @inlinable
     public mutating func move(at slot: Index<S.Element>) -> S.Element {
+        precondition(
+            header.count > .zero && slot == header.count.subtract.saturating(.one).map(Ordinal.init),
+            "Buffer.Linear.Bounded.move(at:): the contiguous discipline only retracts the trailing slot (slot == count - 1)"
+        )
         let element = storage.move(at: slot)
         header.count = header.count.subtract.saturating(.one)
         return element
