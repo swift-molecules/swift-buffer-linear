@@ -38,11 +38,20 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
         initializingWith initializer: (inout Swift.OutputSpan<E>) throws(Failure) -> Void
     ) throws(Failure) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: capacity)
-        // Whole-region OutputSpan over the fresh storage; `outputSpan` finalizes + commits the
-        // count into the ledger on both exits. On throw the local `storage` is released and its
-        // deinit oracle deinitializes the committed elements; the buffer is not constructed.
-        try initializer(&storage.outputSpan)
-        var header = Buffer.Linear.Header(capacity: storage.capacity)
+        // Windowed OutputSpan over exactly the CALLER-REQUESTED `capacity` — fable-448/F-001: the
+        // header below pins `capacity` (not `storage.capacity`) as the ceiling, so the closure must
+        // be structurally incapable of committing more than that many elements, even if a future
+        // allocator rounds `storage.capacity` up beyond what was requested. `withOutputSpan(
+        // addingCapacity:)` (the same windowed seam the growable `Buffer.Linear` uses) enforces
+        // this by construction: its span's `capacity` is exactly the budget passed in, so
+        // `header.count <= header.capacity` can never break. On throw the local `storage` is
+        // released and its deinit oracle deinitializes the committed elements; the buffer is not
+        // constructed. This mirrors the `clone()` precedent
+        // (`Buffer.Linear.Bounded+clone.swift:33-35`) of pinning the header to the REQUESTED bound.
+        try storage.withOutputSpan(addingCapacity: capacity) { output throws(Failure) in
+            try initializer(&output)
+        }
+        var header = Buffer.Linear.Header(capacity: capacity)
         header.count = storage.initialization.count
         self.init(header: header, storage: storage)
     }

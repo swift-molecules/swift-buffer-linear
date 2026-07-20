@@ -53,6 +53,30 @@ extension LinearBoundedTests.Unit {
         #expect(rejected == 3)
     }
 
+    // Regression coverage for fable-448 F-001: `init(minimumCapacity:initializingCount:with:)`
+    // used to pin `header.capacity` to `storage.capacity` (whatever the allocator returned) and
+    // hand the closure a whole-region `OutputSpan` over that physical capacity, rather than
+    // pinning the caller-requested `minimumCapacity` and windowing the span to it. Pinning the
+    // exact literal value (not deriving it back from `buffer.capacity`) is what actually locks
+    // the contract. This is green-at-pin under today's Heap allocator (`create(minimumCapacity:)`
+    // never rounds up), so it does not by itself distinguish the fixed code from the pre-fix
+    // code; the structural guarantee comes from `withOutputSpan(addingCapacity:)` windowing the
+    // closure's span to `minimumCapacity`, which makes `header.count > header.capacity`
+    // unreachable regardless of allocator rounding.
+    @Test
+    func `closure init pins capacity to the exact requested minimumCapacity`() {
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 5,
+            initializingCount: 3
+        ) { span in
+            span.append(1)
+            span.append(2)
+            span.append(3)
+        }
+        #expect(buffer.capacity == 5)
+        #expect(buffer.count == 3)
+    }
+
     @Test
     func `clone preserves capacity exactly and detaches storage`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)

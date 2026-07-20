@@ -172,10 +172,16 @@ where
 extension Buffer.Linear.Bounded where S: ~Copyable {
     /// Creates a bounded linear buffer with pre-initialized elements.
     ///
-    /// The closure receives an `OutputSpan<Element>` over `count` uninitialized
-    /// tail slots and appends its elements; the buffer's count reflects however
-    /// many the closure committed. Span-first replacement for the former
-    /// raw-`UnsafeMutablePointer` closure (de-pointer OVERRIDING PRINCIPLE).
+    /// The closure receives an `OutputSpan<Element>` over `minimumCapacity`
+    /// uninitialized tail slots and appends its elements; the buffer's count
+    /// reflects however many the closure committed. Span-first replacement for
+    /// the former raw-`UnsafeMutablePointer` closure (de-pointer OVERRIDING
+    /// PRINCIPLE).
+    ///
+    /// - Note: `count` is presently unused by this initializer (the span is
+    ///   windowed to `minimumCapacity`, not `count`); this pre-existing
+    ///   mismatch between the parameter and the implementation is out of scope
+    ///   for the fable-448/F-001 capacity-pinning fix and is tracked separately.
     ///
     /// - Parameters:
     ///   - minimumCapacity: The minimum number of slots to allocate.
@@ -188,10 +194,19 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
         with body: (inout Swift.OutputSpan<E>) -> Void
     ) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: minimumCapacity)
-        // Whole-region OutputSpan over the fresh storage; the closure appends, and `outputSpan`
-        // finalizes + commits the count into the ledger. The buffer's count reflects the commit.
-        body(&storage.outputSpan)
-        var header = Buffer.Linear.Header(capacity: storage.capacity)
+        // Windowed OutputSpan over exactly the CALLER-REQUESTED `minimumCapacity` — fable-448/F-001:
+        // the header below pins `minimumCapacity` (not `storage.capacity`) as the capacity ceiling,
+        // so the closure must be structurally incapable of committing more than that many elements,
+        // even if a future allocator rounds `storage.capacity` up beyond what was requested.
+        // `withOutputSpan(addingCapacity:)` (the same windowed seam the growable `Buffer.Linear`
+        // uses) enforces this by construction: its span's `capacity` is exactly the budget passed
+        // in, so `header.count <= header.capacity` can never break, without a separate runtime
+        // check. This mirrors the `clone()` precedent (`Buffer.Linear.Bounded+clone.swift:33-35`)
+        // of pinning the header to the REQUESTED bound rather than whatever the storage yields.
+        storage.withOutputSpan(addingCapacity: minimumCapacity) { output in
+            body(&output)
+        }
+        var header = Buffer.Linear.Header(capacity: minimumCapacity)
         header.count = storage.initialization.count
         self.init(header: header, storage: storage)
     }

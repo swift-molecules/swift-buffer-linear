@@ -31,8 +31,9 @@ extension LinearBoundedOutputSpanTests.Unit {
 
     @Test
     func `init fills the OutputSpan exactly`() throws {
-        // Note: storage.slotCapacity may exceed the requested `capacity`;
-        // the OutputSpan is sized exactly to `capacity` (matches stdlib semantics).
+        // Note: the header pins the CALLER-REQUESTED `capacity` exactly (fable-448/F-001), not
+        // whatever `storage.capacity` the allocator happens to return; the OutputSpan the closure
+        // receives is windowed to that same requested `capacity` (matches stdlib semantics).
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(capacity: 4) { span in
             span.append(10)
             span.append(20)
@@ -40,7 +41,7 @@ extension LinearBoundedOutputSpanTests.Unit {
             span.append(40)
         }
         #expect(buffer.count == 4)
-        #expect(buffer.capacity >= 4)
+        #expect(buffer.capacity == 4)
     }
 
     @Test
@@ -51,7 +52,7 @@ extension LinearBoundedOutputSpanTests.Unit {
             span.append(3)
         }
         #expect(buffer.count == 3)
-        #expect(buffer.capacity >= 8)
+        #expect(buffer.capacity == 8)
         #expect(buffer.isFull == false)
     }
 
@@ -60,7 +61,7 @@ extension LinearBoundedOutputSpanTests.Unit {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(capacity: 4) { _ in }
         #expect(buffer.isEmpty == true)
         #expect(buffer.count == .zero)
-        #expect(buffer.capacity >= 4)
+        #expect(buffer.capacity == 4)
     }
 
     @Test
@@ -68,6 +69,24 @@ extension LinearBoundedOutputSpanTests.Unit {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(capacity: 0) { _ in }
         #expect(buffer.isEmpty == true)
         #expect(buffer.count == .zero)
+    }
+
+    // Regression coverage for fable-448 F-001: `init(capacity:initializingWith:)` used to pin
+    // `header.capacity` to `storage.capacity` (whatever the allocator returned) rather than the
+    // caller-requested `capacity`. Pinning the exact literal value (not deriving it back from
+    // `buffer.capacity`) is what actually locks the contract. This is green-at-pin under today's
+    // Heap allocator (`create(minimumCapacity:)` never rounds up — see
+    // `Storage.Contiguous.swift`), so it does not by itself distinguish the fixed code from the
+    // pre-fix code; the structural guarantee comes from windowing the OutputSpan to `capacity`
+    // via `withOutputSpan(addingCapacity:)`, which makes `header.count > header.capacity`
+    // unreachable regardless of allocator rounding.
+    @Test
+    func `capacity is pinned to the exact requested capacity`() throws {
+        let four = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(capacity: 4) { _ in }
+        #expect(four.capacity == 4)
+
+        let nine = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(capacity: 9) { _ in }
+        #expect(nine.capacity == 9)
     }
 }
 
