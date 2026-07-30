@@ -58,8 +58,9 @@ extension Buffer.Linear: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyabl
         return element
     }
 
-    /// Exchanges the elements at `i` and `j` in place. The count is unchanged, so no ledger
-    /// mirroring is needed.
+    /// Exchanges the elements at `i` and `j` in place.
+    ///
+    /// The count is unchanged, so no ledger mirroring is needed.
     ///
     /// Forwards directly to the storage's own `swapAt(_:_:)` rather than through this
     /// conformer's `move(at:)` / `initialize(at:to:)` witnesses above. Those two are

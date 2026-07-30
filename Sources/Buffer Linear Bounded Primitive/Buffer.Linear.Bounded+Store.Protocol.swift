@@ -63,8 +63,9 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
         return element
     }
 
-    /// Exchanges the elements at `i` and `j` in place. The count is unchanged, so no ledger
-    /// mirroring is needed.
+    /// Exchanges the elements at `i` and `j` in place.
+    ///
+    /// The count is unchanged, so no ledger mirroring is needed.
     ///
     /// Mirrors `Buffer.Linear+Store.Protocol.swift`: forwards directly to the storage's own
     /// `swapAt(_:_:)` rather than through this conformer's trailing-slot-only `move(at:)` /
