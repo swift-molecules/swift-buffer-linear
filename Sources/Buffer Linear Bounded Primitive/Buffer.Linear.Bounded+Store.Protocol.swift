@@ -62,4 +62,16 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
         header.count = header.count.subtract.saturating(.one)
         return element
     }
+
+    /// Exchanges the elements at `i` and `j` in place. The count is unchanged, so no ledger
+    /// mirroring is needed.
+    ///
+    /// Mirrors `Buffer.Linear+Store.Protocol.swift`: forwards directly to the storage's own
+    /// `swapAt(_:_:)` rather than through this conformer's trailing-slot-only `move(at:)` /
+    /// `initialize(at:to:)` witnesses above, which would otherwise trap on every interior swap
+    /// once the seam's defaulted `swapAt(_:_:)` is inherited (swift-buffer-linear-primitives#3).
+    @inlinable
+    public mutating func swapAt(_ i: Index<S.Element>, _ j: Index<S.Element>) {
+        storage.swapAt(i, j)
+    }
 }

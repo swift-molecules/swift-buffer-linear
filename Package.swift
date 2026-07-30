@@ -151,11 +151,19 @@ let package = Package(
         // MARK: - Tests
         .testTarget(
             name: "Buffer Linear Primitives Tests",
-            dependencies: ["Buffer Linear Primitives", "Buffer Linear Primitives Test Support"]
+            dependencies: [
+                "Buffer Linear Primitives",
+                "Buffer Linear Primitives Test Support",
+                .product(name: "Store Protocol Primitives", package: "swift-storage-primitives"),
+            ]
         ),
         .testTarget(
             name: "Buffer Linear Bounded Primitives Tests",
-            dependencies: ["Buffer Linear Bounded Primitives", "Buffer Linear Primitives Test Support"]
+            dependencies: [
+                "Buffer Linear Bounded Primitives",
+                "Buffer Linear Primitives Test Support",
+                .product(name: "Store Protocol Primitives", package: "swift-storage-primitives"),
+            ]
         ),
     ],
     swiftLanguageModes: [.v6]

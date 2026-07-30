@@ -57,4 +57,21 @@ extension Buffer.Linear: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyabl
         header.count = header.count.subtract.saturating(.one)
         return element
     }
+
+    /// Exchanges the elements at `i` and `j` in place. The count is unchanged, so no ledger
+    /// mirroring is needed.
+    ///
+    /// Forwards directly to the storage's own `swapAt(_:_:)` rather than through this
+    /// conformer's `move(at:)` / `initialize(at:to:)` witnesses above. Those two are
+    /// trailing-slot-only (fable-448/F-004); the seam's defaulted `swapAt(_:_:)` (swift-storage-
+    /// primitives, `Store.Protocol.swift`) is built from exactly that pair of `move`/`initialize`
+    /// calls, so inheriting the default here would route every interior swap through the
+    /// trailing-slot precondition and trap (swift-buffer-linear-primitives#3). `storage` is the
+    /// unrestricted single-region store one tier down — it carries no such discipline — so this
+    /// witness is the lawful one for a conformer whose own `move`/`initialize` guard the ledger
+    /// rather than merely maintain it.
+    @inlinable
+    public mutating func swapAt(_ i: Index<S.Element>, _ j: Index<S.Element>) {
+        storage.swapAt(i, j)
+    }
 }
