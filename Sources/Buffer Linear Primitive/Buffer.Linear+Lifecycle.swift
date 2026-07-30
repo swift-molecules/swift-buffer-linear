@@ -164,7 +164,7 @@ extension Buffer.Linear where S: ~Copyable {
     // MARK: - Growth (internal, any growable column)
 
     @inlinable
-    mutating func _growTo<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ minimumCapacity: Index<Element>.Count)
+    package mutating func _growTo<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ minimumCapacity: Index<Element>.Count)
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         var newStorage = S.create(minimumCapacity: minimumCapacity)
         let newCapacity = newStorage.capacity

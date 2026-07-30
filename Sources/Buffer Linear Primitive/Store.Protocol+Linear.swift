@@ -46,7 +46,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ///
     /// - Precondition: `count < capacity` (the caller grows first).
     @inlinable
-    static func linearAppend(
+    package static func linearAppend(
         _ element: consuming Element,
         count: inout Index<Element>.Count,
         storage: inout Self
@@ -60,7 +60,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ///
     /// - Precondition: `count > 0`.
     @inlinable
-    static func linearRemoveFirst(
+    package static func linearRemoveFirst(
         count: inout Index<Element>.Count,
         storage: inout Self
     ) -> Element {
@@ -78,7 +78,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ///
     /// - Precondition: `index < count`.
     @inlinable
-    static func linearRemove(
+    package static func linearRemove(
         at index: Index<Element>,
         count: inout Index<Element>.Count,
         storage: inout Self
@@ -98,7 +98,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ///
     /// The logical count is unchanged.
     @inlinable
-    static func linearReplace(
+    package static func linearReplace(
         at index: Index<Element>,
         with newElement: consuming Element,
         storage: inout Self
@@ -112,7 +112,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ///
     /// - Precondition: `count > 0`.
     @inlinable
-    static func linearConsumeBack(
+    package static func linearConsumeBack(
         count: inout Index<Element>.Count,
         storage: inout Self
     ) -> Element {
@@ -126,7 +126,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ///
     /// The logical count is unchanged.
     @inlinable
-    static func linearSwap(
+    package static func linearSwap(
         at i: Index<Element>,
         with j: Index<Element>,
         storage: inout Self
@@ -136,7 +136,7 @@ extension __StoreProtocol where Self: ~Copyable {
 
     /// Deinitializes all live elements `[0, count)` and resets `count` to zero.
     @inlinable
-    static func linearDeinitializeAll(
+    package static func linearDeinitializeAll(
         count: inout Index<Element>.Count,
         storage: inout Self
     ) {
@@ -151,7 +151,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ///
     /// No-op if `newCount >= count`.
     @inlinable
-    static func linearTruncate(
+    package static func linearTruncate(
         to newCount: Index<Element>.Count,
         count: inout Index<Element>.Count,
         storage: inout Self
