@@ -212,8 +212,8 @@ extension LinearGrowableTests.EdgeCase {
             buffer.append(2)
             buffer.append(3)
             // count == 3; the contiguous discipline only permits retracting the trailing slot
-            // (slot == count - 1 == 2). Slot 0 is a live, initialized element — physically valid to
-            // read — so only the discipline check being regressed here should trap.
+            // (slot == count.subtract.saturating(.one) == 2). Slot 0 is a live, initialized element —
+            // physically valid to read — so only the discipline check being regressed here should trap.
             _ = buffer.move(at: 0)
         }
     }

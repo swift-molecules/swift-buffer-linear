@@ -50,13 +50,13 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
     /// Moves the initialized element out (init → uninit), mirroring the header cursor with
     /// the ledger's arithmetic.
     ///
-    /// - Precondition: `slot == count - 1` (fable-448/F-004: same off-discipline hazard as
-    ///   `initialize(at:to:)`, mirrored for retraction).
+    /// - Precondition: `slot == count.subtract.saturating(.one)` (fable-448/F-004: same
+    ///   off-discipline hazard as `initialize(at:to:)`, mirrored for retraction).
     @inlinable
     public mutating func move(at slot: Index<S.Element>) -> S.Element {
         precondition(
             header.count > .zero && slot == header.count.subtract.saturating(.one).map(Ordinal.init),
-            "Buffer.Linear.Bounded.move(at:): the contiguous discipline only retracts the trailing slot (slot == count - 1)"
+            "Buffer.Linear.Bounded.move(at:): the contiguous discipline only retracts the trailing slot (slot == count.subtract.saturating(.one))"
         )
         let element = storage.move(at: slot)
         header.count = header.count.subtract.saturating(.one)

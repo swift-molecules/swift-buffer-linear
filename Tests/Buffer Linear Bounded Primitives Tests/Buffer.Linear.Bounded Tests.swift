@@ -236,7 +236,7 @@ extension LinearBoundedTests.EdgeCase {
             _ = buffer.append(2)
             _ = buffer.append(3)
             // count == 3; the contiguous discipline only permits retracting the trailing slot
-            // (slot == count - 1 == 2).
+            // (slot == count.subtract.saturating(.one) == 2).
             _ = buffer.move(at: 0)
         }
     }
