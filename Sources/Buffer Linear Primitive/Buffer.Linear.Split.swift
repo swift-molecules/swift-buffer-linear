@@ -25,5 +25,13 @@ extension Buffer.Linear where S: ~Copyable {
 }
 
 /// Sendable conformance for independently owned buffer parts.
-extension Buffer.Linear.Split: @unsafe @unchecked Sendable
+///
+/// ## Safety Invariant
+///
+/// Category B — ownership transfer. A split is `~Copyable`, and both stored buffers own disjoint
+/// storage whose `Store.`Protocol`` conformers are required to be `Sendable`. Moving the split
+/// transfers both sole owners together, leaving no independently usable storage alias in the
+/// source isolation domain. `@unchecked` removes the compiler's data-race prevention; it does not
+/// make shared access safe.
+extension Buffer.Linear.Split: @unchecked Sendable
 where S: Store.`Protocol` & ~Copyable & Sendable {}
