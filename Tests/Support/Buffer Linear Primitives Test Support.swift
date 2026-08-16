@@ -11,7 +11,8 @@ extension Buffer.Linear where S: ~Copyable {
     // (minimumCapacity:)+append pattern, factored — the replacement for the dropped
     // `ExpressibleByArrayLiteral` conformance (ASK-2).
     @inlinable
-    public init<E>(_ elements: [E], minimumCapacity: UInt = 0) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    public init<E>(_ elements: [E], minimumCapacity: UInt = 0)
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         let cap: Index<E>.Count = .init(Cardinal(Swift.max(UInt(elements.count), minimumCapacity)))
         var buffer = Self(minimumCapacity: cap)
         for element in elements {

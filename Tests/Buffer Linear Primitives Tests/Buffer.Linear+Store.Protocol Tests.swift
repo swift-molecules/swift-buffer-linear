@@ -35,7 +35,9 @@ extension LinearStoreProtocolTests.Regression {
     // conformer's own trailing-slot-only `move(at:)` / `initialize(at:to:)`.
     @Test
     func `swapAt exchanges two interior elements through the generic Store Protocol seam`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         buffer.append(10)
         buffer.append(20)
         buffer.append(30)
@@ -50,7 +52,9 @@ extension LinearStoreProtocolTests.Regression {
 
     @Test
     func `swapAt with equal indices is a no-op`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         buffer.append(10)
         buffer.append(20)
 
@@ -62,7 +66,9 @@ extension LinearStoreProtocolTests.Regression {
 
     @Test
     func `swapAt at the trailing slot still works through the seam`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         buffer.append(10)
         buffer.append(20)
         buffer.append(30)

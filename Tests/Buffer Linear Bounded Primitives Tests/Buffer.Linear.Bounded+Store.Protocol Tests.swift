@@ -31,7 +31,9 @@ extension LinearBoundedStoreProtocolTests.Regression {
     // trailing-slot-only `move(at:)` / `initialize(at:to:)`, and trapped on interior exchanges.
     @Test
     func `swapAt exchanges two interior elements through the generic Store Protocol seam`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(10)
         _ = buffer.append(20)
         _ = buffer.append(30)
@@ -46,7 +48,9 @@ extension LinearBoundedStoreProtocolTests.Regression {
 
     @Test
     func `swapAt with equal indices is a no-op`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(10)
         _ = buffer.append(20)
 

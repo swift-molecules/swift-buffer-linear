@@ -37,7 +37,9 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
         capacity: Index<E>.Count,
         initializingWith initializer: (inout Swift.OutputSpan<E>) throws(Failure) -> Void
     ) throws(Failure) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: capacity)
+        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+            minimumCapacity: capacity
+        )
         // Windowed OutputSpan over exactly the CALLER-REQUESTED `capacity` — fable-448/F-001: the
         // header below pins `capacity` (not `storage.capacity`) as the ceiling, so the closure must
         // be structurally incapable of committing more than that many elements, even if a future

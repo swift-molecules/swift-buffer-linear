@@ -53,4 +53,5 @@ extension Buffer where S: Store.`Protocol`, S: ~Copyable {
 /// ## Non-Goals
 ///
 /// - Not a shared concurrent buffer; external synchronization required.
-extension Buffer.Linear: @unsafe @unchecked Sendable where S: Store.`Protocol` & ~Copyable & Sendable {}
+extension Buffer.Linear: @unsafe @unchecked Sendable
+where S: Store.`Protocol` & ~Copyable & Sendable {}

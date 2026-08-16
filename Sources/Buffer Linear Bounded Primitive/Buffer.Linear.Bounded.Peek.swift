@@ -9,5 +9,7 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
 
 extension Buffer.Linear.Bounded.Peek where S: ~Copyable {
     /// A borrowed, typed view onto an element accessed through `.peek` without removing it.
-    public typealias View = Property<Buffer<S>.Linear.Peek, Buffer<S>.Linear.Bounded>.Borrow.Typed<S.Element>
+    public typealias View = Property<Buffer<S>.Linear.Peek, Buffer<S>.Linear.Bounded>.Borrow.Typed<
+        S.Element
+    >
 }

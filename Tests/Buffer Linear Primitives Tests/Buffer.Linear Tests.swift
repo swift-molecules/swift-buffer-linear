@@ -18,7 +18,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `append and removeFirst`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         buffer.append(10)
         buffer.append(20)
         buffer.append(30)
@@ -32,7 +34,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `append and removeLast`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         buffer.append(10)
         buffer.append(20)
         buffer.append(30)
@@ -46,7 +50,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `growth doubles capacity`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 2
+        )
         let originalCap = buffer.capacity
 
         var i = 0
@@ -68,7 +74,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `drain removes all in front-to-back order`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         var drained: [Int] = []
         buffer.drain { drained.append($0) }
         #expect(drained == [10, 20, 30])
@@ -78,7 +86,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `removeAll clears buffer`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([1, 2, 3])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            1, 2, 3,
+        ])
         buffer.remove.all()
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
@@ -86,14 +96,18 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `peekFront and peekBack (Copyable)`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         #expect(buffer.peek.front == 10)
         #expect(buffer.peek.back == 30)
     }
 
     @Test
     func `Iterable iteration (Copyable)`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         // Dual conformer: `: Iterable` (memory→Iterable bridge, bulk `Iterator.Chunk`)
         // and `: Sequenceable` (hand-written scalar `Buffer.Linear.Scalar`). `forEach`
         // is the `Sequenceable` borrowing terminal (non-destructive).
@@ -104,7 +118,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `single element`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 1)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 1
+        )
         buffer.append(42)
         #expect(buffer.count == 1)
         #expect(buffer.remove.last() == 42)
@@ -114,14 +130,18 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `reserveCapacity grows if needed`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 2
+        )
         buffer.reserveCapacity(100)
         #expect(buffer.capacity.underlying.rawValue >= 100)
     }
 
     @Test
     func `forEach visits all elements`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         var visited: [Int] = []
         buffer.forEach { visited.append($0) }
         #expect(visited == [10, 20, 30])
@@ -129,7 +149,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `subscript read and write`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         #expect(buffer[0] == 10)
         #expect(buffer[1] == 20)
         #expect(buffer[2] == 30)
@@ -139,7 +161,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `swap exchanges two elements`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         buffer.swap(at: 0, with: 2)
         #expect(buffer[0] == 30)
         #expect(buffer[2] == 10)
@@ -147,7 +171,9 @@ extension LinearGrowableTests.Unit {
 
     @Test
     func `truncate removes trailing elements`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30, 40, 50])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30, 40, 50,
+        ])
         buffer.truncate(to: 3)
         #expect(buffer.count == 3)
         #expect(buffer.peek.back == 30)
@@ -160,7 +186,9 @@ extension LinearGrowableTests.EdgeCase {
 
     @Test
     func `truncate to zero empties buffer`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         buffer.truncate(to: .zero)
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
@@ -168,14 +196,18 @@ extension LinearGrowableTests.EdgeCase {
 
     @Test
     func `swap same index is no-op`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         buffer.swap(at: 1, with: 1)
         #expect(buffer[1] == 20)
     }
 
     @Test
     func `empty buffer properties`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
         #expect(buffer.count == 0)
@@ -193,9 +225,13 @@ extension LinearGrowableTests.EdgeCase {
     // read/deinit with no trap at the point of misuse. Each case is an exit test: the risky call runs
     // in a forked child process, isolating any resulting memory corruption from the parent process.
     @Test
-    func `initialize at an off-discipline slot traps instead of silently desyncing header count`() async {
+    func `initialize at an off-discipline slot traps instead of silently desyncing header count`()
+        async
+    {
         await #expect(processExitsWith: .failure) {
-            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+                minimumCapacity: 4
+            )
             buffer.append(1)
             // count == 1; the contiguous discipline only permits appending at slot == count (slot 1).
             // Slot 3 is a different, still-uninitialized hole — physically in bounds (capacity 4), so
@@ -207,7 +243,9 @@ extension LinearGrowableTests.EdgeCase {
     @Test
     func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
         await #expect(processExitsWith: .failure) {
-            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+                minimumCapacity: 4
+            )
             buffer.append(1)
             buffer.append(2)
             buffer.append(3)
@@ -225,7 +263,9 @@ extension LinearGrowableTests.Integration {
 
     @Test
     func `drain then reuse`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         buffer.drain { _ in }
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)

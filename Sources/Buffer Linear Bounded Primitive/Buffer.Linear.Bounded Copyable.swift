@@ -35,7 +35,9 @@ where
     /// - Precondition: The buffer is not empty.
     @inlinable
     public var back: Element {
-        return base.value.storage[base.value.header.count.subtract.saturating(.one).map(Ordinal.init)]
+        return base.value.storage[
+            base.value.header.count.subtract.saturating(.one).map(Ordinal.init)
+        ]
     }
 }
 
@@ -50,7 +52,8 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
     ///   - capacity: The fixed capacity for the buffer.
     /// - Throws: ``Error/capacityExceeded`` if `elements.count` exceeds `capacity`.
     @inlinable
-    public init<E>(_ elements: [E], capacity: UInt) throws(Self.Error) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    public init<E>(_ elements: [E], capacity: UInt) throws(Self.Error)
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         guard elements.count <= Int(capacity) else { throw .capacityExceeded }
         var buffer = Self(minimumCapacity: .init(Cardinal(capacity)))
         for element in elements {

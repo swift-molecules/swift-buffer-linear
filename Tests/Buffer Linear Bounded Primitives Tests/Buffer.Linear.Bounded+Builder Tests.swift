@@ -32,11 +32,12 @@ extension LinearBoundedBuilderTests.WithinCapacity {
 
     @Test
     func `Constructs within capacity`() throws {
-        let buffer = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 8) {
-            1
-            2
-            3
-        }
+        let buffer = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+            .Bounded(minimumCapacity: 8) {
+                1
+                2
+                3
+            }
         #expect(buffer.count == 3)
     }
 }
@@ -46,7 +47,9 @@ extension LinearBoundedBuilderTests.Overflow {
     @Test
     func `Throws on overflow`() {
         do {
-            _ = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 2) {
+            _ = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+                minimumCapacity: 2
+            ) {
                 1
                 2
                 3
@@ -62,10 +65,11 @@ extension LinearBoundedBuilderTests.NonCopyable {
 
     @Test
     func `Constructs noncopyable bounded buffer`() throws {
-        let buffer = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Move>>.Linear.Bounded(minimumCapacity: 4) {
-            Move(1)
-            Move(2)
-        }
+        let buffer = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Move>>.Linear
+            .Bounded(minimumCapacity: 4) {
+                Move(1)
+                Move(2)
+            }
         #expect(buffer.count == 2)
     }
 }

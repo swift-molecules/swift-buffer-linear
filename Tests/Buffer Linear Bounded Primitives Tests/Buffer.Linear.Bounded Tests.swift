@@ -18,7 +18,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `init creates empty bounded buffer`() {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         #expect(buffer.isEmpty == true)
         #expect(buffer.count == .zero)
         #expect(buffer.isFull == false)
@@ -34,10 +36,14 @@ extension LinearBoundedTests.Unit {
     // tests above do), which is the part that actually locks the contract.
     @Test
     func `capacity is pinned to the exact requested minimumCapacity`() {
-        let two = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 2)
+        let two = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 2
+        )
         #expect(two.capacity == 2)
 
-        let seven = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 7)
+        let seven = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 7
+        )
         #expect(seven.capacity == 7)
     }
 
@@ -46,7 +52,9 @@ extension LinearBoundedTests.Unit {
         // Mirrors README.md's Quick Start "bounded" example verbatim: minimumCapacity 2 must
         // reject the third append, not silently accept it because the allocator rounded capacity
         // up past 2.
-        var bounded = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 2)
+        var bounded = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 2
+        )
         #expect(bounded.append(1) == nil)
         #expect(bounded.append(2) == nil)
         let rejected = bounded.append(3)
@@ -79,7 +87,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `clone preserves capacity exactly and detaches storage`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(1)
         _ = buffer.append(2)
         let capacityBefore = buffer.capacity
@@ -95,7 +105,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `append and removeLast`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(10)
         _ = buffer.append(20)
         _ = buffer.append(30)
@@ -108,7 +120,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `append and removeFirst`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(10)
         _ = buffer.append(20)
         _ = buffer.append(30)
@@ -121,7 +135,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `removeAll clears buffer`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(1)
         _ = buffer.append(2)
         _ = buffer.append(3)
@@ -132,7 +148,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `isFull detection`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 2
+        )
         #expect(buffer.isFull == false)
 
         let cap = buffer.capacity.underlying.rawValue
@@ -146,7 +164,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `append returns element when full`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 2
+        )
         let cap = buffer.capacity.underlying.rawValue
         var i: UInt = 0
         while i < cap {
@@ -162,7 +182,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `subscript access`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(10)
         _ = buffer.append(20)
         _ = buffer.append(30)
@@ -177,7 +199,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `peekFront and peekBack`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         _ = buffer.append(10)
         _ = buffer.append(20)
         _ = buffer.append(30)
@@ -189,7 +213,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `drain removes all in front-to-back order`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 8)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 8
+        )
         _ = buffer.append(10)
         _ = buffer.append(20)
         _ = buffer.append(30)
@@ -202,7 +228,9 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `single element`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 1)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 1
+        )
         let rejected = buffer.append(42)
         #expect(rejected == nil)
         #expect(buffer.count == 1)
@@ -219,9 +247,12 @@ extension LinearBoundedTests.EdgeCase {
     // `Buffer.Linear Tests.swift` for the full rationale. `Buffer.Linear.Bounded`'s own
     // `Store.`Protocol`` witnesses had the identical unconditional-mirror gap.
     @Test
-    func `initialize at an off-discipline slot traps instead of silently desyncing header count`() async {
+    func `initialize at an off-discipline slot traps instead of silently desyncing header count`()
+        async
+    {
         await #expect(processExitsWith: .failure) {
-            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+                .Bounded(minimumCapacity: 4)
             _ = buffer.append(1)
             // count == 1; the contiguous discipline only permits appending at slot == count (slot 1).
             buffer.initialize(at: 3, to: 99)
@@ -231,7 +262,8 @@ extension LinearBoundedTests.EdgeCase {
     @Test
     func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
         await #expect(processExitsWith: .failure) {
-            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+            var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+                .Bounded(minimumCapacity: 4)
             _ = buffer.append(1)
             _ = buffer.append(2)
             _ = buffer.append(3)
@@ -248,7 +280,9 @@ extension LinearBoundedTests.Integration {
 
     @Test
     func `fill drain fill cycle`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
+            minimumCapacity: 4
+        )
         let cap = Int(buffer.capacity.underlying.rawValue)
 
         var i = 0

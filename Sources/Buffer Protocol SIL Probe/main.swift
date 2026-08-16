@@ -48,7 +48,9 @@ where B.Element == Int {
     return 1
 }
 
-var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: Index<Int>.Count(1024))
+var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+    minimumCapacity: Index<Int>.Count(1024)
+)
 var i = 0
 while i < 1024 {
     buffer.append(1)

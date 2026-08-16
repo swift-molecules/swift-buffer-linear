@@ -44,4 +44,5 @@ extension Buffer.Linear where S: ~Copyable {
 /// ## Non-Goals
 ///
 /// - Not a shared concurrent buffer.
-extension Buffer.Linear.Bounded: @unsafe @unchecked Sendable where S: Store.`Protocol` & ~Copyable & Sendable {}
+extension Buffer.Linear.Bounded: @unsafe @unchecked Sendable
+where S: Store.`Protocol` & ~Copyable & Sendable {}

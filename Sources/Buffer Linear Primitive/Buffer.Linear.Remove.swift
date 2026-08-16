@@ -9,5 +9,7 @@ extension Buffer.Linear where S: ~Copyable {
 
 extension Buffer.Linear.Remove where S: ~Copyable {
     /// A mutating, typed view that removes and returns elements through `.remove`.
-    public typealias View = Property<Buffer<S>.Linear.Remove, Buffer<S>.Linear>.Inout.Typed<S.Element>
+    public typealias View = Property<Buffer<S>.Linear.Remove, Buffer<S>.Linear>.Inout.Typed<
+        S.Element
+    >
 }

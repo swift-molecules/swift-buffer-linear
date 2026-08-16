@@ -68,10 +68,13 @@ extension Buffer.Linear where S: ~Copyable {
     /// the new capacity fits the inline budget and spills to heap once it doesn't — so appending past
     /// the inline capacity is correct (it relocates into a heap region), never a trap.
     @inlinable
-    public mutating func append<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ element: consuming Element)
+    public mutating func append<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ element: consuming Element
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         if header.isFull {
-            let newCapacity: Index<Element>.Count = header.capacity == .zero ? .one : header.capacity * 2
+            let newCapacity: Index<Element>.Count =
+                header.capacity == .zero ? .one : header.capacity * 2
             _growTo(newCapacity)
         }
         Self.append(consume element, header: &header, storage: &storage)
@@ -89,7 +92,10 @@ extension Buffer.Linear where S: ~Copyable {
     ///
     /// - Precondition: The index must be in bounds.
     @inlinable
-    public mutating func replace(at index: Index<S.Element>, with newElement: consuming S.Element) -> S.Element {
+    public mutating func replace(
+        at index: Index<S.Element>,
+        with newElement: consuming S.Element
+    ) -> S.Element {
         Self.replace(at: index, with: consume newElement, storage: &storage)
     }
 
@@ -144,7 +150,9 @@ extension Buffer.Linear where S: ~Copyable {
     /// `keepingCapacity: true` clears the live elements but retains the current storage;
     /// `false` additionally resets to a fresh empty allocation.
     @inlinable
-    public mutating func removeAll<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(keepingCapacity: Bool)
+    public mutating func removeAll<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        keepingCapacity: Bool
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         _removeAll()
         if !keepingCapacity {
@@ -154,7 +162,9 @@ extension Buffer.Linear where S: ~Copyable {
 
     /// Ensures the buffer can hold at least `minimumCapacity` elements (any growable column).
     @inlinable
-    public mutating func reserveCapacity<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ minimumCapacity: Index<Element>.Count)
+    public mutating func reserveCapacity<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ minimumCapacity: Index<Element>.Count
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         if minimumCapacity > header.capacity {
             _growTo(minimumCapacity)
@@ -164,7 +174,9 @@ extension Buffer.Linear where S: ~Copyable {
     // MARK: - Growth (internal, any growable column)
 
     @inlinable
-    package mutating func _growTo<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(_ minimumCapacity: Index<Element>.Count)
+    package mutating func _growTo<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        _ minimumCapacity: Index<Element>.Count
+    )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         var newStorage = S.create(minimumCapacity: minimumCapacity)
         let newCapacity = newStorage.capacity
