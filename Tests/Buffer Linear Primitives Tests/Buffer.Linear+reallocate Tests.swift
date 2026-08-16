@@ -10,7 +10,9 @@ struct LinearReallocateTests {
 
     @Test
     func `reallocate can grow`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([1, 2, 3])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            1, 2, 3,
+        ])
         let initial = buffer.capacity
         buffer.reallocate(capacity: 100)
         #expect(buffer.capacity >= 100)
@@ -20,7 +22,9 @@ struct LinearReallocateTests {
 
     @Test
     func `reallocate can shrink`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 0)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 0
+        )
         buffer.reserveCapacity(100)
         buffer.append(1)
         buffer.append(2)
@@ -33,7 +37,9 @@ struct LinearReallocateTests {
 
     @Test
     func `reallocate preserves existing elements on grow`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         buffer.reallocate(capacity: 50)
         #expect(buffer.count == 3)
         // Elements should still be accessible (span-based read)
@@ -42,7 +48,9 @@ struct LinearReallocateTests {
 
     @Test
     func `reallocate preserves existing elements on shrink`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 0)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 0
+        )
         buffer.reserveCapacity(100)
         buffer.append(42)
         buffer.append(43)
@@ -53,7 +61,9 @@ struct LinearReallocateTests {
 
     @Test
     func `reallocate to capacity equal to count`() {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([1, 2, 3])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            1, 2, 3,
+        ])
         buffer.reserveCapacity(100)
         buffer.reallocate(capacity: 3)
         #expect(buffer.count == 3)

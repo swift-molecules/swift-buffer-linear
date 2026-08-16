@@ -15,8 +15,11 @@ extension Buffer.Linear where S: ~Copyable {
     ///
     /// - Complexity: O(`count`)
     @inlinable
-    public func clone<E>() -> Self where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable {
-        var newStorage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: header.count)
+    public func clone<E>() -> Self
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable {
+        var newStorage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+            minimumCapacity: header.count
+        )
         Self.copy(header: header, source: storage, to: &newStorage)
         var newHeader = Self.Header(capacity: newStorage.capacity)
         newHeader.count = header.count
@@ -34,12 +37,15 @@ extension Buffer.Linear where S: ~Copyable {
     /// - Complexity: O(`count`)
     /// - Precondition: `capacity >= count`
     @inlinable
-    public func clone<E>(capacity: Index<E>.Count) -> Self where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable {
+    public func clone<E>(capacity: Index<E>.Count) -> Self
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable {
         precondition(
             capacity >= header.count,
             "Buffer.Linear.clone(capacity:): capacity must be >= count"
         )
-        var newStorage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: capacity)
+        var newStorage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+            minimumCapacity: capacity
+        )
         Self.copy(header: header, source: storage, to: &newStorage)
         var newHeader = Self.Header(capacity: newStorage.capacity)
         newHeader.count = header.count

@@ -18,7 +18,9 @@ extension LinearHeaderTests.Unit {
     @Test
     func `init sets count to zero`() {
         let cap: Index<Int>.Count = 8
-        let header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(capacity: 8)
+        let header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 8
+        )
         #expect(header.count == 0)
         #expect(header.capacity == cap)
     }
@@ -26,7 +28,9 @@ extension LinearHeaderTests.Unit {
     @Test
     func `isEmpty and isFull`() {
         let cap: Index<Int>.Count = 4
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(capacity: cap)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: cap
+        )
         #expect(header.isEmpty)
         #expect(!header.isFull)
 
@@ -37,7 +41,9 @@ extension LinearHeaderTests.Unit {
 
     @Test
     func `initialization is always .empty or .one`() {
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(capacity: 8)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 8
+        )
 
         switch header.initialization {
         case .empty:
@@ -65,7 +71,9 @@ extension LinearHeaderTests.EdgeCase {
 
     @Test
     func `initialization linearize — always starts from zero`() {
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(capacity: 8)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 8
+        )
         header.count = 3
         // Linear buffers always start from offset 0
         switch header.initialization {
@@ -80,7 +88,9 @@ extension LinearHeaderTests.EdgeCase {
 
     @Test
     func `full header initialization covers entire capacity`() {
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(capacity: 4)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 4
+        )
         header.count = 4
         switch header.initialization {
         case .one(let range):

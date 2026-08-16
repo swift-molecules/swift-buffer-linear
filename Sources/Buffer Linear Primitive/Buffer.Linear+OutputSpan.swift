@@ -26,7 +26,9 @@ extension Buffer.Linear where S: ~Copyable {
         capacity: Index<E>.Count,
         initializingWith initializer: (inout Swift.OutputSpan<E>) throws(Failure) -> Void
     ) throws(Failure) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: capacity)
+        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+            minimumCapacity: capacity
+        )
         // Whole-region OutputSpan over the fresh storage (count 0, capacity = `capacity`); the
         // storage's `outputSpan` finalizes + commits the initialized count into its ledger on both
         // the normal and throwing exit. On throw the local `storage` is released and its deinit

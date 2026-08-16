@@ -18,7 +18,8 @@ extension Buffer.Linear where S: ~Copyable {
     /// - Precondition: `newCapacity >= count`
     /// - Complexity: O(`count`)
     @inlinable
-    public mutating func reallocate<E: ~Copyable>(capacity newCapacity: Index<E>.Count) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    public mutating func reallocate<E: ~Copyable>(capacity newCapacity: Index<E>.Count)
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         precondition(
             newCapacity >= header.count,
             "Buffer.Linear.reallocate(capacity:): capacity must be >= count"

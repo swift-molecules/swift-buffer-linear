@@ -29,6 +29,8 @@ where
     /// Returns the last element without removing it.
     @inlinable
     public var back: Element {
-        return base.value.storage[base.value.header.count.subtract.saturating(.one).map(Ordinal.init)]
+        return base.value.storage[
+            base.value.header.count.subtract.saturating(.one).map(Ordinal.init)
+        ]
     }
 }

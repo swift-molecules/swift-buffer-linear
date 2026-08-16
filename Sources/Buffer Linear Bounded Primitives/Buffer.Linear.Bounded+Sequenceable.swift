@@ -11,7 +11,8 @@ public import Span_Protocol_Primitives
 // the dormant memory-sequence bridge. The `@_implements(Sequenceable, Iterator)`
 // escape hatch binds THIS protocol's `Iterator` to `Buffer.Linear.Bounded.Scalar`.
 
-extension Buffer.Linear.Bounded: Sequenceable where S: Span.`Protocol`, S: Copyable, S.Element: Copyable {
+extension Buffer.Linear.Bounded: Sequenceable
+where S: Span.`Protocol`, S: Copyable, S.Element: Copyable {
     /// The single-pass iterator type, a hand-written concrete scalar iterator.
     @_implements(Sequenceable,Iterator)
     public typealias SequenceableIterator = Buffer<S>.Linear.Bounded.Scalar

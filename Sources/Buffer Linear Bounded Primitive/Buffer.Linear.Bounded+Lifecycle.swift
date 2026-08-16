@@ -21,8 +21,11 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
     /// capacity rather than the fresh storage's; any extra physical slots the allocator provides
     /// stay unused and untracked.
     @inlinable
-    public init<E: ~Copyable>(minimumCapacity: Index<E>.Count) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-        let storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: minimumCapacity)
+    public init<E: ~Copyable>(minimumCapacity: Index<E>.Count)
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+        let storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+            minimumCapacity: minimumCapacity
+        )
         self.init(
             header: Buffer.Linear.Header(capacity: minimumCapacity),
             storage: storage
@@ -71,7 +74,10 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
     ///
     /// - Precondition: The index must be in bounds.
     @inlinable
-    public mutating func replace(at index: Index<S.Element>, with newElement: consuming S.Element) -> S.Element {
+    public mutating func replace(
+        at index: Index<S.Element>,
+        with newElement: consuming S.Element
+    ) -> S.Element {
         Buffer.Linear.replace(at: index, with: consume newElement, storage: &storage)
     }
 
@@ -97,17 +103,20 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
 extension Buffer.Linear.Bounded where S: ~Copyable {
 
     @usableFromInline
-    mutating func _removeFirst<E: ~Copyable>() -> E where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    mutating func _removeFirst<E: ~Copyable>() -> E
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         Buffer.Linear.removeFirst(header: &header, storage: &storage)
     }
 
     @usableFromInline
-    mutating func _removeLast<E: ~Copyable>() -> E where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    mutating func _removeLast<E: ~Copyable>() -> E
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         Buffer.Linear.consumeBack(header: &header, storage: &storage)
     }
 
     @usableFromInline
-    mutating func _removeAll<E: ~Copyable>() where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    mutating func _removeAll<E: ~Copyable>()
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         Buffer.Linear.deinitializeAll(header: &header, storage: &storage)
     }
 }
@@ -193,7 +202,9 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
         initializingCount count: Index<E>.Count,
         with body: (inout Swift.OutputSpan<E>) -> Void
     ) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(minimumCapacity: minimumCapacity)
+        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+            minimumCapacity: minimumCapacity
+        )
         // Windowed OutputSpan over exactly the CALLER-REQUESTED `minimumCapacity` — fable-448/F-001:
         // the header below pins `minimumCapacity` (not `storage.capacity`) as the capacity ceiling,
         // so the closure must be structurally incapable of committing more than that many elements,

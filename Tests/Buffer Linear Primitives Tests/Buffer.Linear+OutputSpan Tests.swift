@@ -31,7 +31,9 @@ extension LinearOutputSpanTests.Init {
 
     @Test
     func `init with capacity and full population`() throws {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(capacity: 4) { span in
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            capacity: 4
+        ) { span in
             span.append(10)
             span.append(20)
             span.append(30)
@@ -42,7 +44,9 @@ extension LinearOutputSpanTests.Init {
 
     @Test
     func `init with partial population leaves correct count`() throws {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(capacity: 8) { span in
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            capacity: 8
+        ) { span in
             span.append(1)
             span.append(2)
         }
@@ -52,14 +56,18 @@ extension LinearOutputSpanTests.Init {
 
     @Test
     func `init with empty closure`() throws {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(capacity: 4) { _ in }
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            capacity: 4
+        ) { _ in }
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
     }
 
     @Test
     func `init with zero capacity`() throws {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(capacity: 0) { _ in }
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            capacity: 0
+        ) { _ in }
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
         #expect(buffer.count == .zero)
@@ -72,7 +80,9 @@ extension LinearOutputSpanTests.Append {
 
     @Test
     func `append adds to existing buffer`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 2
+        )
         buffer.append(1)
         buffer.append(2)
 
@@ -86,7 +96,9 @@ extension LinearOutputSpanTests.Append {
 
     @Test
     func `append triggers growth when required exceeds capacity`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 2
+        )
         buffer.append(1)
         buffer.append(2)
         let capacityBefore = buffer.capacity
@@ -103,7 +115,9 @@ extension LinearOutputSpanTests.Append {
 
     @Test
     func `append with partial population commits what was added`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         buffer.append(1)
 
         buffer.append(addingCapacity: 5) { span in
@@ -116,7 +130,9 @@ extension LinearOutputSpanTests.Append {
 
     @Test
     func `append with zero addingCapacity is a noop`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 4)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 4
+        )
         buffer.append(1)
         buffer.append(2)
 
@@ -138,7 +154,9 @@ extension LinearOutputSpanTests.Edit {
 
     @Test
     func `edit can append beyond current count up to capacity`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([1, 2, 3])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            1, 2, 3,
+        ])
         buffer.reserveCapacity(10)
 
         buffer.edit { span in
@@ -150,7 +168,9 @@ extension LinearOutputSpanTests.Edit {
 
     @Test
     func `edit can remove elements`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([1, 2, 3, 4, 5])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            1, 2, 3, 4, 5,
+        ])
 
         buffer.edit { span in
             _ = span.removeLast()
@@ -161,7 +181,9 @@ extension LinearOutputSpanTests.Edit {
 
     @Test
     func `edit returns the closure result`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([1, 2, 3])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            1, 2, 3,
+        ])
 
         let doubled: Int = buffer.edit { span in
             return span.count * 2
@@ -171,7 +193,9 @@ extension LinearOutputSpanTests.Edit {
 
     @Test
     func `edit preserves state on throw`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([10, 20, 30])
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
+            10, 20, 30,
+        ])
         buffer.reserveCapacity(10)
 
         do {
@@ -196,7 +220,9 @@ extension LinearOutputSpanTests.NonCopyable {
 
     @Test
     func `init with noncopyable elements`() throws {
-        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<MoveOnly>>.Linear(capacity: 3) { span in
+        let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<MoveOnly>>.Linear(
+            capacity: 3
+        ) { span in
             span.append(MoveOnly(1))
             span.append(MoveOnly(2))
             span.append(MoveOnly(3))
@@ -206,7 +232,9 @@ extension LinearOutputSpanTests.NonCopyable {
 
     @Test
     func `append with noncopyable elements, triggering growth`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<MoveOnly>>.Linear(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<MoveOnly>>.Linear(
+            minimumCapacity: 2
+        )
         buffer.append(MoveOnly(1))
         buffer.append(addingCapacity: 4) { span in
             span.append(MoveOnly(10))
@@ -225,7 +253,9 @@ extension LinearOutputSpanTests.Throwing {
     @Test
     func `init throw destroys partial state and propagates error`() {
         #expect(throws: FixtureError.deliberate) {
-            _ = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(capacity: 4) { span throws(FixtureError) in
+            _ = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+                capacity: 4
+            ) { span throws(FixtureError) in
                 span.append(1)
                 span.append(2)
                 throw FixtureError.deliberate
@@ -235,7 +265,9 @@ extension LinearOutputSpanTests.Throwing {
 
     @Test
     func `append throw preserves already-initialized elements`() throws {
-        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(minimumCapacity: 2)
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear(
+            minimumCapacity: 2
+        )
         buffer.append(100)
 
         do {
@@ -256,7 +288,9 @@ extension LinearOutputSpanTests.Throwing {
     @Test
     func `init throw with noncopyable elements propagates`() {
         #expect(throws: FixtureError.deliberate) {
-            _ = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<MoveOnly>>.Linear(capacity: 3) { span throws(FixtureError) in
+            _ = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<MoveOnly>>.Linear(
+                capacity: 3
+            ) { span throws(FixtureError) in
                 span.append(MoveOnly(1))
                 throw FixtureError.deliberate
             }

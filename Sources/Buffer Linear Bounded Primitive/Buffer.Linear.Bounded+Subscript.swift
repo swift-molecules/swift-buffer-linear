@@ -9,7 +9,8 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
     ///
     /// - Parameter index: The index of the element to access.
     @inlinable
-    public subscript<E: ~Copyable>(index: Index<E>) -> E where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    public subscript<E: ~Copyable>(index: Index<E>) -> E
+    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
         _read {
             yield storage[index]
         }

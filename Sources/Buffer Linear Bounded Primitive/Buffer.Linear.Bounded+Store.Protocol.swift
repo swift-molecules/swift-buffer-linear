@@ -55,7 +55,8 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
     @inlinable
     public mutating func move(at slot: Index<S.Element>) -> S.Element {
         precondition(
-            header.count > .zero && slot == header.count.subtract.saturating(.one).map(Ordinal.init),
+            header.count > .zero
+                && slot == header.count.subtract.saturating(.one).map(Ordinal.init),
             "Buffer.Linear.Bounded.move(at:): the contiguous discipline only retracts the trailing slot (slot == count.subtract.saturating(.one))"
         )
         let element = storage.move(at: slot)
