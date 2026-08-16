@@ -42,7 +42,9 @@ extension LinearBuilderTests {
     ) -> [Int] {
         var rest = consume buffer
         var result: [Int] = []
-        while !rest.isEmpty {
+        var remaining = rest.count
+        while remaining > .zero {
+            remaining = remaining.subtract.saturating(.one)
             result.append(rest.remove.first())
         }
         return result
@@ -53,7 +55,9 @@ extension LinearBuilderTests {
     ) -> [Int] {
         var rest = consume buffer
         var result: [Int] = []
-        while !rest.isEmpty {
+        var remaining = rest.count
+        while remaining > .zero {
+            remaining = remaining.subtract.saturating(.one)
             let m = rest.remove.first()
             result.append(m.value)
         }
