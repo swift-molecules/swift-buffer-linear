@@ -42,9 +42,7 @@ extension LinearBuilderTests {
     ) -> [Int] {
         var rest = consume buffer
         var result: [Int] = []
-        var remaining = rest.count
-        while remaining > .zero {
-            remaining = remaining.subtract.saturating(.one)
+        while !rest.isEmpty {
             result.append(rest.remove.first())
         }
         return result
@@ -55,9 +53,7 @@ extension LinearBuilderTests {
     ) -> [Int] {
         var rest = consume buffer
         var result: [Int] = []
-        var remaining = rest.count
-        while remaining > .zero {
-            remaining = remaining.subtract.saturating(.one)
+        while !rest.isEmpty {
             let m = rest.remove.first()
             result.append(m.value)
         }
@@ -87,6 +83,21 @@ extension LinearBuilderTests.Unit {
             3
         }
         #expect(LinearBuilderTests.collected(buffer) == [1, 2, 3])
+    }
+
+    /// Release-mode regression fixture for swift-ownership-primitives#13: two
+    /// builder elements are enough to drive the `while !rest.isEmpty` drain in
+    /// `buildPartialBlock(accumulated:next:)`. At -O, before the `~Escapable`
+    /// inout-view initializers became `@_transparent`, this never terminated.
+    @Test
+    func `Two element block drains and terminates`() {
+        let buffer: Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear = Buffer<
+            Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>
+        >.Linear {
+            1
+            2
+        }
+        #expect(LinearBuilderTests.collected(buffer) == [1, 2])
     }
 
     @Test
