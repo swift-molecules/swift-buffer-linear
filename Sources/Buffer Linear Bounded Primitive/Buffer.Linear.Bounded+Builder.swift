@@ -44,13 +44,8 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
             throw .capacityExceeded
         }
         self.init(minimumCapacity: minimumCapacity)
-        // Counted drain — see the note on
-        // `Buffer.Linear.Builder.buildPartialBlock(accumulated:next:)`.
-        var remaining = dynamic.count
-        while remaining > .zero {
-            remaining = remaining.subtract.saturating(.one)
-            let element = dynamic.remove.first()
-            _ = self.append(element)
+        while !dynamic.isEmpty {
+            _ = self.append(dynamic.remove.first())
         }
     }
 }
