@@ -20,6 +20,6 @@ extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: ~Copyable, S.Elemen
     public func withUnsafeBufferPointer<R, E: Swift.Error>(
         _ body: (UnsafeBufferPointer<S.Element>) throws(E) -> R
     ) throws(E) -> R {
-        return try unsafe span.withUnsafeBufferPointer(body)
+        return try span.withUnsafeBufferPointer(body)
     }
 }
