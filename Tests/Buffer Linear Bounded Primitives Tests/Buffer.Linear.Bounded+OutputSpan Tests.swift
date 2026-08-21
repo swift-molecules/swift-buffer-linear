@@ -13,9 +13,6 @@ struct LinearBoundedOutputSpanTests {
     @Suite struct Throwing {}
 }
 
-// MARK: - Test fixtures
-
-/// Move-only element used to verify that the OutputSpan-based init works with ~Copyable elements.
 private struct MoveOnly: ~Copyable {
     let value: Int
     init(_ value: Int) { self.value = value }
@@ -25,15 +22,11 @@ private enum FixtureError: Swift.Error, Equatable {
     case deliberate
 }
 
-// MARK: - Unit (Copyable elements)
-
 extension LinearBoundedOutputSpanTests.Unit {
 
     @Test
     func `init fills the OutputSpan exactly`() throws {
-        // Note: the header pins the CALLER-REQUESTED `capacity` exactly (fable-448/F-001), not
-        // whatever `storage.capacity` the allocator happens to return; the OutputSpan the closure
-        // receives is windowed to that same requested `capacity` (matches stdlib semantics).
+
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
             capacity: 4
         ) { span in
@@ -79,15 +72,6 @@ extension LinearBoundedOutputSpanTests.Unit {
         #expect(buffer.count == .zero)
     }
 
-    // Regression coverage for fable-448 F-001: `init(capacity:initializingWith:)` used to pin
-    // `header.capacity` to `storage.capacity` (whatever the allocator returned) rather than the
-    // caller-requested `capacity`. Pinning the exact literal value (not deriving it back from
-    // `buffer.capacity`) is what actually locks the contract. This is green-at-pin under today's
-    // Heap allocator (`create(minimumCapacity:)` never rounds up — see
-    // `Storage.Contiguous.swift`), so it does not by itself distinguish the fixed code from the
-    // pre-fix code; the structural guarantee comes from windowing the OutputSpan to `capacity`
-    // via `withOutputSpan(addingCapacity:)`, which makes `header.count > header.capacity`
-    // unreachable regardless of allocator rounding.
     @Test
     func `capacity is pinned to the exact requested capacity`() throws {
         let four = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
@@ -102,8 +86,6 @@ extension LinearBoundedOutputSpanTests.Unit {
     }
 }
 
-// MARK: - EdgeCase
-
 extension LinearBoundedOutputSpanTests.EdgeCase {
 
     @Test
@@ -112,11 +94,11 @@ extension LinearBoundedOutputSpanTests.EdgeCase {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
             capacity: 3
         ) { span in
-            captured.append(span.freeCapacity)  // 3
+            captured.append(span.freeCapacity)
             span.append(100)
-            captured.append(span.freeCapacity)  // 2
+            captured.append(span.freeCapacity)
             span.append(200)
-            captured.append(span.freeCapacity)  // 1
+            captured.append(span.freeCapacity)
         }
         #expect(captured == [3, 2, 1])
         #expect(buffer.count == 2)
@@ -132,12 +114,10 @@ extension LinearBoundedOutputSpanTests.EdgeCase {
             span.append(2)
             fullAtEnd = span.isFull
         }
-        #expect(fullAtEnd == true)  // OutputSpan is sized to requested capacity
-        #expect(buffer.count == 2)  // All requested slots populated
+        #expect(fullAtEnd == true)
+        #expect(buffer.count == 2)
     }
 }
-
-// MARK: - NonCopyable (~Copyable elements)
 
 extension LinearBoundedOutputSpanTests.NonCopyable {
 
@@ -163,8 +143,6 @@ extension LinearBoundedOutputSpanTests.NonCopyable {
     }
 }
 
-// MARK: - Throwing
-
 extension LinearBoundedOutputSpanTests.Throwing {
 
     @Test
@@ -182,8 +160,7 @@ extension LinearBoundedOutputSpanTests.Throwing {
 
     @Test
     func `init throws with noncopyable elements — elements cleaned up`() {
-        // If this test leaks, ASan or debug allocators will catch it.
-        // Behaviourally we just verify the throw propagates.
+
         #expect(throws: FixtureError.deliberate) {
             _ = try Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<MoveOnly>>.Linear
                 .Bounded(capacity: 3) { span throws(FixtureError) in

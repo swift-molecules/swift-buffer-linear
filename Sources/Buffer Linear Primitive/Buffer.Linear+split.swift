@@ -7,10 +7,6 @@ import Store_Protocol_Primitives
 
 extension Buffer.Linear where S: ~Copyable {
 
-    /// Consumes this buffer into independently owned leading and remaining buffers.
-    ///
-    /// The prefix contains `min(maximum, count)` elements. This operation relocates each
-    /// element into a fresh allocation; it does not provide a zero-copy view.
     @inlinable
     public consuming func split<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
         maximum: Index<Element>.Count

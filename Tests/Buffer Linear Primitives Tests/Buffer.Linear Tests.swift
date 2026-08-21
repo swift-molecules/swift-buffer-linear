@@ -12,8 +12,6 @@ struct LinearGrowableTests {
     @Suite struct Integration {}
 }
 
-// MARK: - Unit
-
 extension LinearGrowableTests.Unit {
 
     @Test
@@ -64,7 +62,6 @@ extension LinearGrowableTests.Unit {
 
         #expect(buffer.capacity.underlying.rawValue > originalCap.underlying.rawValue)
 
-        // Verify elements survived growth
         i = 0
         while i < needed {
             #expect(buffer.remove.first() == i * 10)
@@ -108,9 +105,7 @@ extension LinearGrowableTests.Unit {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear([
             10, 20, 30,
         ])
-        // Dual conformer: `: Iterable` (memory→Iterable bridge, bulk `Iterator.Chunk`)
-        // and `: Sequenceable` (hand-written scalar `Buffer.Linear.Scalar`). `forEach`
-        // is the `Sequenceable` borrowing terminal (non-destructive).
+
         var collected: [Int] = []
         buffer.forEach { collected.append($0) }
         #expect(collected == [10, 20, 30])
@@ -180,8 +175,6 @@ extension LinearGrowableTests.Unit {
     }
 }
 
-// MARK: - Edge Cases
-
 extension LinearGrowableTests.EdgeCase {
 
     @Test
@@ -213,17 +206,6 @@ extension LinearGrowableTests.EdgeCase {
         #expect(buffer.count == 0)
     }
 
-    // Regression coverage for fable-448 F-004: the `Store.`Protocol`` seam's `initialize(at:to:)`
-    // and `move(at:)` witnesses used to mirror `header.count` unconditionally, with no check that
-    // `slot` actually matched the trailing-slot append/retract discipline the header arithmetic
-    // assumes. Off-discipline seam use (calling the witness directly at a slot other than the one
-    // the contiguous discipline permits) silently desynced `header.count` from what was actually
-    // written/removed — no crash at the call site itself, since the underlying storage witness
-    // (`Storage.Contiguous.initialize`/`.move`) just writes the raw pointer and blindly advances its
-    // own ledger by one, regardless of `slot`. The corruption (a "live" slot that was never actually
-    // written, or a "dead" slot in the ledger that was) only surfaces later — an uninitialized-memory
-    // read/deinit with no trap at the point of misuse. Each case is an exit test: the risky call runs
-    // in a forked child process, isolating any resulting memory corruption from the parent process.
     @Test
     func `initialize at an off-discipline slot traps instead of silently desyncing header count`()
         async
@@ -233,9 +215,7 @@ extension LinearGrowableTests.EdgeCase {
                 minimumCapacity: 4
             )
             buffer.append(1)
-            // count == 1; the contiguous discipline only permits appending at slot == count (slot 1).
-            // Slot 3 is a different, still-uninitialized hole — physically in bounds (capacity 4), so
-            // nothing else would trap; only the discipline check being regressed here should.
+
             buffer.initialize(at: 3, to: 99)
         }
     }
@@ -249,15 +229,11 @@ extension LinearGrowableTests.EdgeCase {
             buffer.append(1)
             buffer.append(2)
             buffer.append(3)
-            // count == 3; the contiguous discipline only permits retracting the trailing slot
-            // (slot == count.subtract.saturating(.one) == 2). Slot 0 is a live, initialized element —
-            // physically valid to read — so only the discipline check being regressed here should trap.
+
             _ = buffer.move(at: 0)
         }
     }
 }
-
-// MARK: - Integration
 
 extension LinearGrowableTests.Integration {
 

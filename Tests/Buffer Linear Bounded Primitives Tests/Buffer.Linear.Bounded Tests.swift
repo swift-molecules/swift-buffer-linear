@@ -12,8 +12,6 @@ struct LinearBoundedTests {
     @Suite struct Integration {}
 }
 
-// MARK: - Unit
-
 extension LinearBoundedTests.Unit {
 
     @Test
@@ -26,14 +24,6 @@ extension LinearBoundedTests.Unit {
         #expect(buffer.isFull == false)
     }
 
-    // Regression coverage for fable-448 F-001: `init(minimumCapacity:)` used to pin
-    // `header.capacity` to `storage.capacity` (whatever the allocator returned) rather than the
-    // caller-requested `minimumCapacity`, unlike the already-ratified `clone()` precedent in this
-    // same package. A bounded buffer's capacity IS its contract (see the README's `Bounded`
-    // example), so the ceiling must be the exact requested value, not an allocator-rounding-
-    // dependent one. These pin the exact literal value rather than deriving it back from
-    // `buffer.capacity` (as the older `isFull detection` / `append returns element when full`
-    // tests above do), which is the part that actually locks the contract.
     @Test
     func `capacity is pinned to the exact requested minimumCapacity`() {
         let two = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
@@ -49,9 +39,7 @@ extension LinearBoundedTests.Unit {
 
     @Test
     func `README hard-ceiling example - append rejects exactly at the requested capacity`() {
-        // Mirrors README.md's Quick Start "bounded" example verbatim: minimumCapacity 2 must
-        // reject the third append, not silently accept it because the allocator rounded capacity
-        // up past 2.
+
         var bounded = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
             minimumCapacity: 2
         )
@@ -61,16 +49,6 @@ extension LinearBoundedTests.Unit {
         #expect(rejected == 3)
     }
 
-    // Regression coverage for fable-448 F-001: `init(minimumCapacity:initializingCount:with:)`
-    // used to pin `header.capacity` to `storage.capacity` (whatever the allocator returned) and
-    // hand the closure a whole-region `OutputSpan` over that physical capacity, rather than
-    // pinning the caller-requested `minimumCapacity` and windowing the span to it. Pinning the
-    // exact literal value (not deriving it back from `buffer.capacity`) is what actually locks
-    // the contract. This is green-at-pin under today's Heap allocator (`create(minimumCapacity:)`
-    // never rounds up), so it does not by itself distinguish the fixed code from the pre-fix
-    // code; the structural guarantee comes from `withOutputSpan(addingCapacity:)` windowing the
-    // closure's span to `minimumCapacity`, which makes `header.count > header.capacity`
-    // unreachable regardless of allocator rounding.
     @Test
     func `closure init pins capacity to the exact requested minimumCapacity`() {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Bounded(
@@ -94,11 +72,11 @@ extension LinearBoundedTests.Unit {
         _ = buffer.append(2)
         let capacityBefore = buffer.capacity
         var copy = buffer.clone()
-        #expect(copy.capacity == capacityBefore)  // capacity-preserving, exactly
+        #expect(copy.capacity == capacityBefore)
         #expect(copy.count == buffer.count)
-        _ = copy.append(3)  // in-contract push on the clone
+        _ = copy.append(3)
         #expect(copy.count == 3)
-        #expect(buffer.count == 2)  // original untouched
+        #expect(buffer.count == 2)
         #expect(buffer[1] == 2)
         #expect(copy[2] == 3)
     }
@@ -239,13 +217,8 @@ extension LinearBoundedTests.Unit {
     }
 }
 
-// MARK: - Edge Cases
-
 extension LinearBoundedTests.EdgeCase {
 
-    // Regression coverage for fable-448 F-004: see the growable-buffer counterpart in
-    // `Buffer.Linear Tests.swift` for the full rationale. `Buffer.Linear.Bounded`'s own
-    // `Store.`Protocol`` witnesses had the identical unconditional-mirror gap.
     @Test
     func `initialize at an off-discipline slot traps instead of silently desyncing header count`()
         async
@@ -254,7 +227,7 @@ extension LinearBoundedTests.EdgeCase {
             var buffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
                 .Bounded(minimumCapacity: 4)
             _ = buffer.append(1)
-            // count == 1; the contiguous discipline only permits appending at slot == count (slot 1).
+
             buffer.initialize(at: 3, to: 99)
         }
     }
@@ -267,14 +240,11 @@ extension LinearBoundedTests.EdgeCase {
             _ = buffer.append(1)
             _ = buffer.append(2)
             _ = buffer.append(3)
-            // count == 3; the contiguous discipline only permits retracting the trailing slot
-            // (slot == count.subtract.saturating(.one) == 2).
+
             _ = buffer.move(at: 0)
         }
     }
 }
-
-// MARK: - Integration
 
 extension LinearBoundedTests.Integration {
 

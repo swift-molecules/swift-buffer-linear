@@ -12,13 +12,13 @@ let package = Package(
         .visionOS(.v27),
     ],
     products: [
-        // MARK: - Type modules (lean ~Copyable types; Copyable-requiring conformances live in the ops modules per [MOD-004])
+
         .library(name: "Buffer Linear Primitive", targets: ["Buffer Linear Primitive"]),
         .library(
             name: "Buffer Linear Bounded Primitive",
             targets: ["Buffer Linear Bounded Primitive"]
         ),
-        // MARK: - Ops modules (one per variant); `Buffer Linear Primitives` doubles as the [MOD-005] umbrella
+
         .library(name: "Buffer Linear Primitives", targets: ["Buffer Linear Primitives"]),
         .library(
             name: "Buffer Linear Bounded Primitives",
@@ -34,8 +34,7 @@ let package = Package(
             url: "https://github.com/swift-primitives/swift-buffer-primitives.git",
             branch: "main"
         ),
-        // W3 tower: the dense column is `Storage<Memory.Allocator<Memory.Heap>.System>.Contiguous<E>`,
-        // over the 4-op `Store.`Protocol`` seam. Storage + Store + the heap allocation all enter here.
+
         .package(
             url: "https://github.com/swift-primitives/swift-storage-primitives.git",
             branch: "main"
@@ -76,10 +75,7 @@ let package = Package(
             url: "https://github.com/swift-primitives/swift-sequence-primitives.git",
             branch: "main"
         ),
-        // Iteration bridges. `: Iterable` (multipass) uses the memory→Iterable witness over the
-        // existing Span.`Protocol` conformance. `: Sequenceable` (single-pass) is a hand-written
-        // scalar iterator (the generic Memory.Cursor bridge demangle-crashes — OQ-2), so the
-        // swift-memory-sequence-primitives dep is intentionally absent.
+
         .package(
             url: "https://github.com/swift-primitives/swift-iterator-primitives.git",
             branch: "main"
@@ -91,7 +87,6 @@ let package = Package(
     ],
     targets: [
 
-        // MARK: - Type modules — lean ~Copyable types + @usableFromInline internal ops co-located with storage ([MOD-036])
         .target(
             name: "Buffer Linear Primitive",
             dependencies: [
@@ -153,9 +148,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Ops modules — Copyable-requiring conformances isolated per [MOD-004].
-        //         `Buffer Linear Primitives` (the base conformances module) doubles as the
-        //         [MOD-005] umbrella: it re-exports every variant module.
         .target(
             name: "Buffer Linear Primitives",
             dependencies: [
@@ -207,7 +199,7 @@ let package = Package(
                 .product(name: "Ordinal Primitives", package: "swift-ordinal-primitives"),
             ]
         ),
-        // MARK: - SIL Probe (cross-module consumer for the witness_method specialization check)
+
         .executableTarget(
             name: "Buffer Protocol SIL Probe",
             dependencies: [
@@ -226,7 +218,6 @@ let package = Package(
             ]
         ),
 
-        // MARK: - Test Support
         .target(
             name: "Buffer Linear Primitives Test Support",
             dependencies: [
@@ -250,7 +241,6 @@ let package = Package(
             path: "Tests/Support"
         ),
 
-        // MARK: - Tests
         .testTarget(
             name: "Buffer Linear Primitives Tests",
             dependencies: [

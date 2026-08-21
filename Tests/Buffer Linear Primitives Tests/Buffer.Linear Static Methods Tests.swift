@@ -11,8 +11,6 @@ struct LinearStaticTests {
     @Suite struct EdgeCase {}
 }
 
-// MARK: - Unit
-
 extension LinearStaticTests.Unit {
 
     @Test
@@ -38,7 +36,6 @@ extension LinearStaticTests.Unit {
 
         #expect(header.count == 2)
 
-        // Verify storage contents via consumeBack
         let b = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.consumeBack(
             header: &header,
             storage: &storage
@@ -196,8 +193,6 @@ extension LinearStaticTests.Unit {
         )
     }
 }
-
-// MARK: - Edge Cases
 
 extension LinearStaticTests.EdgeCase {
 

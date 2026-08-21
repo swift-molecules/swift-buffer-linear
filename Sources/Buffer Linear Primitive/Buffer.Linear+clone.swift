@@ -7,13 +7,6 @@ public import Storage_Primitive
 
 extension Buffer.Linear where S: ~Copyable {
 
-    /// Returns an independent copy of this buffer with its own storage, sized
-    /// to exactly fit the current count of elements.
-    ///
-    /// Unlike a CoW value-semantic copy (`var new = self`), which may share
-    /// storage until mutation, `clone()` always allocates new storage.
-    ///
-    /// - Complexity: O(`count`)
     @inlinable
     public func clone<E>() -> Self
     where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable {
@@ -27,15 +20,6 @@ extension Buffer.Linear where S: ~Copyable {
         return Self(header: newHeader, storage: newStorage)
     }
 
-    /// Returns an independent copy of this buffer with its own storage
-    /// allocated to the specified capacity.
-    ///
-    /// - Parameter capacity: The desired capacity of the resulting buffer.
-    ///     Must be greater than or equal to `count`.
-    /// - Returns: An independent buffer of the requested capacity holding a copy of every element.
-    ///
-    /// - Complexity: O(`count`)
-    /// - Precondition: `capacity >= count`
     @inlinable
     public func clone<E>(capacity: Index<E>.Count) -> Self
     where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable {

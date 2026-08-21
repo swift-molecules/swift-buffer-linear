@@ -1,37 +1,8 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 public import Index_Primitives
 public import Store_Protocol_Primitives
 
-// MARK: - The seam, forwarded through the nesting (the ratified template shape)
-//
-// The buffer conforms the 4-op seam by yielding into the layer below — the reference/rich-spike
-// recipe ("each layer yields into the layer below"), which specializes to zero `witness_method`
-// through a concrete tower. `capacity` and the subscript are witnessed by the existing members;
-// the lifecycle ops forward to the storage seam and mirror the buffer's header cursor with the
-// SEAM'S OWN prefix arithmetic (the 4-op seam carries no `count`; the storage ledger applies the
-// identical rule, so the two stay in lockstep by construction). First consumer: the W4 `Shared`
-// column combinator, whose box drains and whose conformance carriers walk through this seam.
 extension Buffer.Linear: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyable {
-    /// Initializes the uninitialized slot (uninit → init).
-    ///
-    /// The contiguous discipline appends at
-    /// `slot == count` — the same unconditional contract the storage ledger applies — so the
-    /// header cursor mirrors with the identical arithmetic.
-    ///
-    /// - Precondition: `slot == count` (fable-448/F-004: off-discipline seam use — e.g. a caller
-    ///   reaching this witness directly at a slot other than the trailing hole — would otherwise
-    ///   advance `header.count` past what was actually written, and a later `edit()` mirrors that
-    ///   wrong count into `storage.initialization`, reaching memory unsafety without a trap).
+
     @inlinable
     public mutating func initialize(at slot: Index<S.Element>, to element: consuming S.Element) {
         precondition(
@@ -42,11 +13,6 @@ extension Buffer.Linear: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyabl
         header.count += .one
     }
 
-    /// Moves the initialized element out (init → uninit; the discipline retracts at
-    /// the trailing slot), mirroring the header cursor with the ledger's arithmetic.
-    ///
-    /// - Precondition: `slot == count.subtract.saturating(.one)` (fable-448/F-004: same
-    ///   off-discipline hazard as `initialize(at:to:)`, mirrored for retraction).
     @inlinable
     public mutating func move(at slot: Index<S.Element>) -> S.Element {
         precondition(
@@ -59,19 +25,6 @@ extension Buffer.Linear: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyabl
         return element
     }
 
-    /// Exchanges the elements at `i` and `j` in place.
-    ///
-    /// The count is unchanged, so no ledger mirroring is needed.
-    ///
-    /// Forwards directly to the storage's own `swapAt(_:_:)` rather than through this
-    /// conformer's `move(at:)` / `initialize(at:to:)` witnesses above. Those two are
-    /// trailing-slot-only (fable-448/F-004); the seam's defaulted `swapAt(_:_:)` (swift-storage-
-    /// primitives, `Store.Protocol.swift`) is built from exactly that pair of `move`/`initialize`
-    /// calls, so inheriting the default here would route every interior swap through the
-    /// trailing-slot precondition and trap (swift-buffer-linear-primitives#3). `storage` is the
-    /// unrestricted single-region store one tier down — it carries no such discipline — so this
-    /// witness is the lawful one for a conformer whose own `move`/`initialize` guard the ledger
-    /// rather than merely maintain it.
     @inlinable
     public mutating func swapAt(_ i: Index<S.Element>, _ j: Index<S.Element>) {
         storage.swapAt(i, j)

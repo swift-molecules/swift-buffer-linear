@@ -34,8 +34,7 @@ struct LinearCloneTests {
 
         #expect(cloned.count == 2)
         #expect(cloned.capacity >= 2)
-        // The cloned buffer's capacity should be near the count, not 100.
-        // (Storage may round up to slotCapacity, so exact equality isn't asserted.)
+
         #expect(cloned.capacity < source.capacity)
     }
 
@@ -59,7 +58,7 @@ struct LinearCloneTests {
         #expect(cloned.count == 3)
         #expect(cloned.capacity >= 50)
 
-        source.append(999)  // Should not affect cloned
+        source.append(999)
         #expect(cloned.count == 3)
     }
 }

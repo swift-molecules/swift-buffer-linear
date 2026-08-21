@@ -1,22 +1,9 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 import Buffer_Linear_Primitives
 import Buffer_Linear_Primitives_Test_Support
 import Memory_Allocator_Primitive
 import Memory_Heap_Primitives
 import Storage_Contiguous_Primitives
 import Testing
-
-// MARK: - Test Suite Structure
 
 @Suite("Buffer.Linear.Builder")
 struct LinearBuilderTests {
@@ -27,14 +14,10 @@ struct LinearBuilderTests {
     @Suite struct StaticMethods {}
 }
 
-// MARK: - Move-Only Test Fixture
-
 private struct Move: ~Copyable {
     let value: Int
     init(_ value: Int) { self.value = value }
 }
-
-// MARK: - Iteration Helpers (for ~Copyable comparison)
 
 extension LinearBuilderTests {
     fileprivate static func collected(
@@ -61,8 +44,6 @@ extension LinearBuilderTests {
     }
 }
 
-// MARK: - Unit Tests
-
 extension LinearBuilderTests.Unit {
 
     @Test
@@ -85,10 +66,6 @@ extension LinearBuilderTests.Unit {
         #expect(LinearBuilderTests.collected(buffer) == [1, 2, 3])
     }
 
-    /// Release-mode regression fixture for swift-ownership-primitives#13: two
-    /// builder elements are enough to drive the `while !rest.isEmpty` drain in
-    /// `buildPartialBlock(accumulated:next:)`. At -O, before the `~Escapable`
-    /// inout-view initializers became `@_transparent`, this never terminated.
     @Test
     func `Two element block drains and terminates`() {
         let buffer: Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear = Buffer<
@@ -143,8 +120,6 @@ extension LinearBuilderTests.Unit {
         #expect(isEmpty)
     }
 }
-
-// MARK: - Control Flow
 
 extension LinearBuilderTests.Unit {
 
@@ -223,8 +198,6 @@ extension LinearBuilderTests.Unit {
     }
 }
 
-// MARK: - Edge Cases
-
 extension LinearBuilderTests.EdgeCase {
 
     @Test
@@ -272,8 +245,6 @@ extension LinearBuilderTests.EdgeCase {
     }
 }
 
-// MARK: - Integration
-
 extension LinearBuilderTests.Integration {
 
     @Test
@@ -301,8 +272,6 @@ extension LinearBuilderTests.Integration {
         #expect(LinearBuilderTests.collected(buffer) == [1, 2])
     }
 }
-
-// MARK: - NonCopyable
 
 extension LinearBuilderTests.NonCopyable {
 
@@ -382,8 +351,6 @@ extension LinearBuilderTests.NonCopyable {
         #expect(isEmpty)
     }
 }
-
-// MARK: - Static Method Tests
 
 extension LinearBuilderTests.StaticMethods {
 

@@ -1,42 +1,14 @@
-// ===----------------------------------------------------------------------===//
-//
-// This source file is part of the swift-primitives open source project
-//
-// Copyright (c) 2024-2026 Coen ten Thije Boonkkamp and the swift-primitives project authors
-// Licensed under Apache License v2.0
-//
-// See LICENSE for license information
-//
-// ===----------------------------------------------------------------------===//
-
 public import Index_Primitives
 public import Store_Protocol_Primitives
 
-// MARK: - The seam, forwarded through the nesting (the ratified template shape)
-//
-// Mirrors `Buffer.Linear+Store.Protocol.swift`: the bounded buffer conforms the seam by
-// yielding into the storage below, mirroring the header cursor with the SEAM'S OWN prefix
-// arithmetic. The capacity property and the element subscript are witnessed by existing
-// members. First consumer: the column-generic `Fixed<S>` ADT (the Q3-B ruling) — the
-// bounded buffer IS the non-growable column.
 extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyable {
-    /// The seam's per-slot element access, forwarded to the storage below.
-    ///
-    /// The bounded buffer's own element subscript is pinned to the heap column; the seam witness is
-    /// the generic coroutine pair.
+
     @inlinable
     public subscript(slot: Index<S.Element>) -> S.Element {
         _read { yield storage[slot] }
         _modify { yield &storage[slot] }
     }
 
-    /// Initializes the uninitialized slot (uninit → init), mirroring the header cursor with
-    /// the storage ledger's arithmetic.
-    ///
-    /// - Precondition: `slot == count` (fable-448/F-004: off-discipline seam use — e.g. a caller
-    ///   reaching this witness directly at a slot other than the trailing hole — would otherwise
-    ///   advance `header.count` past what was actually written, and a later `edit()` mirrors that
-    ///   wrong count into `storage.initialization`, reaching memory unsafety without a trap).
     @inlinable
     public mutating func initialize(at slot: Index<S.Element>, to element: consuming S.Element) {
         precondition(
@@ -47,11 +19,6 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
         header.count += .one
     }
 
-    /// Moves the initialized element out (init → uninit), mirroring the header cursor with
-    /// the ledger's arithmetic.
-    ///
-    /// - Precondition: `slot == count.subtract.saturating(.one)` (fable-448/F-004: same
-    ///   off-discipline hazard as `initialize(at:to:)`, mirrored for retraction).
     @inlinable
     public mutating func move(at slot: Index<S.Element>) -> S.Element {
         precondition(
@@ -64,14 +31,6 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
         return element
     }
 
-    /// Exchanges the elements at `i` and `j` in place.
-    ///
-    /// The count is unchanged, so no ledger mirroring is needed.
-    ///
-    /// Mirrors `Buffer.Linear+Store.Protocol.swift`: forwards directly to the storage's own
-    /// `swapAt(_:_:)` rather than through this conformer's trailing-slot-only `move(at:)` /
-    /// `initialize(at:to:)` witnesses above, which would otherwise trap on every interior swap
-    /// once the seam's defaulted `swapAt(_:_:)` is inherited (swift-buffer-linear-primitives#3).
     @inlinable
     public mutating func swapAt(_ i: Index<S.Element>, _ j: Index<S.Element>) {
         storage.swapAt(i, j)

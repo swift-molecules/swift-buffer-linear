@@ -5,9 +5,7 @@ import Ordinal_Primitives_Standard_Library_Integration
 public import Storage_Contiguous_Primitives
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
-    /// Accesses the element at the given index.
-    ///
-    /// - Parameter index: The index of the element to access.
+
     @inlinable
     public subscript<E: ~Copyable>(index: Index<E>) -> E
     where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {

@@ -42,7 +42,7 @@ struct LinearReallocateTests {
         ])
         buffer.reallocate(capacity: 50)
         #expect(buffer.count == 3)
-        // Elements should still be accessible (span-based read)
+
         #expect(buffer.span.count == 3)
     }
 

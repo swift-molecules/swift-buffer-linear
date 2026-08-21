@@ -4,47 +4,8 @@ import Ordinal_Primitives_Standard_Library_Integration
 public import Storage_Protocol_Primitives
 public import Store_Protocol_Primitives
 
-// MARK: - Generic Linear Algorithm (storage-agnostic core)
-//
-// The single linear-buffer element algorithm, written once over any single-region
-// `Store.`Protocol`` conformer (`__StoreProtocol` is the hoisted name per
-// [API-IMPL-009]; the `Store.`Protocol`` typealias cannot be extended directly
-// because `Storage<Element>` would need its generic parameter). Bodies touch ONLY
-// the north-star typed primitives — `subscript` / `initialize(at:to:)` /
-// `move(at:)` and the `Storage.Protocol+Move` / `+Deinitialize` derivations
-// (`moveInitialize(from:to:count:)`, `swapAt(_:_:)`, `deinitialize(range:)`) — plus
-// the `count` cursor. The legacy raw slot-address primitive is fully gone here, as
-// is any whole-region unsafe-buffer / output-span construct: the generic consumer
-// is migrated entirely onto the typed surface (plan §5). The bodies do NOT read or
-// write `storage.initialization` and do NOT trigger copy-on-write.
-//
-// `storage` is `inout Self`: the north-star `initialize` / `move` / `_modify`
-// witnesses take exclusive `&self` (plan §1/§3), so the storage-agnostic core
-// threads the conformer mutably. The exclusive borrow is exactly what makes the
-// per-slot mutation sound (it forecloses the aliasing hazard the returning-span
-// model could not).
-//
-// The two storage-side concerns are the concrete per-leaf shell's responsibility,
-// NOT the core's (R1, HANDOFF-buffer-heap-leaf-teardown.md):
-//   - teardown sync: the heap backing-class `deinit` frees `storage.initialization`,
-//     so the heap shell keeps `storage.initialization = header.initialization` after
-//     each op. The core never touches it (the setter is not on `Store.`Protocol``).
-//   - CoW: the Copyable heap shell triggers copy-on-write through the conformer's
-//     own `initialize` / `move` CoW choke points before the core mutates.
-//
-// Declared in the buffer package (NOT swift-storage-primitives): this is
-// buffer-domain logic that happens to be generic over storage; placing it in
-// storage would invert the layer dependency ([ARCH-LAYER-001] / [PRIM-ARCH-002]).
-//
-// `count` is the logical element count (the buffer `Header`'s truth), passed
-// `inout` and kept header-agnostic so the same core can serve future single-region
-// disciplines (Ring/Gap/Slab) without rewrite.
-
 extension __StoreProtocol where Self: ~Copyable {
 
-    /// Writes `element` at slot `count`, then increments `count`.
-    ///
-    /// - Precondition: `count < capacity` (the caller grows first).
     @inlinable
     package static func linearAppend(
         _ element: consuming Element,
@@ -56,9 +17,6 @@ extension __StoreProtocol where Self: ~Copyable {
         count = count.add.saturating(.one)
     }
 
-    /// Removes and returns the element at slot 0, shifting the remaining `[1, count)` elements down by one slot.
-    ///
-    /// - Precondition: `count > 0`.
     @inlinable
     package static func linearRemoveFirst(
         count: inout Index<Element>.Count,
@@ -74,9 +32,6 @@ extension __StoreProtocol where Self: ~Copyable {
         return element
     }
 
-    /// Removes and returns the element at `index`, shifting subsequent elements left.
-    ///
-    /// - Precondition: `index < count`.
     @inlinable
     package static func linearRemove(
         at index: Index<Element>,
@@ -94,9 +49,6 @@ extension __StoreProtocol where Self: ~Copyable {
         return element
     }
 
-    /// Replaces the element at `index`, returning the old element.
-    ///
-    /// The logical count is unchanged.
     @inlinable
     package static func linearReplace(
         at index: Index<Element>,
@@ -108,9 +60,6 @@ extension __StoreProtocol where Self: ~Copyable {
         return old
     }
 
-    /// Removes and returns the last element (at the trailing slot), decrementing `count`.
-    ///
-    /// - Precondition: `count > 0`.
     @inlinable
     package static func linearConsumeBack(
         count: inout Index<Element>.Count,
@@ -122,9 +71,6 @@ extension __StoreProtocol where Self: ~Copyable {
         return element
     }
 
-    /// Swaps the elements at `i` and `j` in place.
-    ///
-    /// The logical count is unchanged.
     @inlinable
     package static func linearSwap(
         at i: Index<Element>,
@@ -134,7 +80,6 @@ extension __StoreProtocol where Self: ~Copyable {
         storage.swapAt(i, j)
     }
 
-    /// Deinitializes all live elements `[0, count)` and resets `count` to zero.
     @inlinable
     package static func linearDeinitializeAll(
         count: inout Index<Element>.Count,
@@ -147,9 +92,6 @@ extension __StoreProtocol where Self: ~Copyable {
         count = .zero
     }
 
-    /// Deinitializes elements `[newCount, count)`, keeping `[0, newCount)`.
-    ///
-    /// No-op if `newCount >= count`.
     @inlinable
     package static func linearTruncate(
         to newCount: Index<Element>.Count,

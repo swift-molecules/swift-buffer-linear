@@ -14,8 +14,6 @@ struct LinearOutputSpanTests {
     @Suite struct Throwing {}
 }
 
-// MARK: - Test fixtures
-
 private struct MoveOnly: ~Copyable {
     let value: Int
     init(_ value: Int) { self.value = value }
@@ -24,8 +22,6 @@ private struct MoveOnly: ~Copyable {
 private enum FixtureError: Swift.Error, Equatable {
     case deliberate
 }
-
-// MARK: - Init
 
 extension LinearOutputSpanTests.Init {
 
@@ -74,8 +70,6 @@ extension LinearOutputSpanTests.Init {
     }
 }
 
-// MARK: - Append
-
 extension LinearOutputSpanTests.Append {
 
     @Test
@@ -123,7 +117,7 @@ extension LinearOutputSpanTests.Append {
         buffer.append(addingCapacity: 5) { span in
             span.append(10)
             span.append(20)
-            // Only appends 2, not 5.
+
         }
         #expect(buffer.count == 3)
     }
@@ -147,8 +141,6 @@ extension LinearOutputSpanTests.Append {
         #expect(buffer.count == 2)
     }
 }
-
-// MARK: - Edit
 
 extension LinearOutputSpanTests.Edit {
 
@@ -209,12 +201,9 @@ extension LinearOutputSpanTests.Edit {
             #expect(error == .deliberate)
         }
 
-        // Elements appended before throw remain committed.
         #expect(buffer.count == 5)
     }
 }
-
-// MARK: - NonCopyable
 
 extension LinearOutputSpanTests.NonCopyable {
 
@@ -245,8 +234,6 @@ extension LinearOutputSpanTests.NonCopyable {
         #expect(buffer.count == 5)
     }
 }
-
-// MARK: - Throwing
 
 extension LinearOutputSpanTests.Throwing {
 
@@ -281,7 +268,6 @@ extension LinearOutputSpanTests.Throwing {
             #expect(error == .deliberate)
         }
 
-        // The two appended-before-throw elements remain; total count = 1 + 2 = 3.
         #expect(buffer.count == 3)
     }
 

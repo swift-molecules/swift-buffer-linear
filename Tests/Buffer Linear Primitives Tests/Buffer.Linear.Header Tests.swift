@@ -11,8 +11,6 @@ struct LinearHeaderTests {
     @Suite struct EdgeCase {}
 }
 
-// MARK: - Unit
-
 extension LinearHeaderTests.Unit {
 
     @Test
@@ -65,8 +63,6 @@ extension LinearHeaderTests.Unit {
     }
 }
 
-// MARK: - Edge Cases
-
 extension LinearHeaderTests.EdgeCase {
 
     @Test
@@ -75,7 +71,7 @@ extension LinearHeaderTests.EdgeCase {
             capacity: 8
         )
         header.count = 3
-        // Linear buffers always start from offset 0
+
         switch header.initialization {
         case .one(let range):
             #expect(range.lowerBound == 0)
