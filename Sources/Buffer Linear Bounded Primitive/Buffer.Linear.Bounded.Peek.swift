@@ -1,6 +1,6 @@
-import Affine_Primitives_Standard_Library_Integration
-import Ordinal_Primitives_Standard_Library_Integration
-public import Storage_Contiguous_Primitives
+import Affine_Standard_Library_Integration
+import Ordinal_Standard_Library_Integration
+public import Storage_Contiguous
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 

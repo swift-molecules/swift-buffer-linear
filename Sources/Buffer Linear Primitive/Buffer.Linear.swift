@@ -1,10 +1,10 @@
-import Affine_Primitives_Standard_Library_Integration
-import Index_Primitives
-import Ordinal_Primitives_Standard_Library_Integration
-import Storage_Contiguous_Primitives
+import Affine_Standard_Library_Integration
+import Index
+import Ordinal_Standard_Library_Integration
+import Storage_Contiguous
 import Storage_Primitive
-public import Storage_Protocol_Primitives
-public import Store_Protocol_Primitives
+public import Storage_Protocol
+public import Store_Protocol
 
 extension Buffer where S: Store.`Protocol`, S: ~Copyable {
 

@@ -1,6 +1,6 @@
-import Affine_Primitives_Standard_Library_Integration
-import Ordinal_Primitives_Standard_Library_Integration
-public import Span_Protocol_Primitives
+import Affine_Standard_Library_Integration
+import Ordinal_Standard_Library_Integration
+public import Span_Protocol
 
 extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: ~Copyable {
 

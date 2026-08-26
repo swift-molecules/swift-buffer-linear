@@ -1,6 +1,6 @@
 public import Memory_Allocator_Primitive
-public import Memory_Heap_Primitives
-public import Storage_Contiguous_Primitives
+public import Memory_Heap
+public import Storage_Contiguous
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 

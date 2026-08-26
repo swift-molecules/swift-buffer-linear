@@ -1,8 +1,8 @@
 import Buffer_Linear_Primitive
-import Buffer_Protocol_Primitives
-import Index_Primitives
+import Buffer_Protocol
+import Index
 import Memory_Allocator_Primitive
-import Storage_Contiguous_Primitives
+import Storage_Contiguous
 
 @inline(never)
 func bufferProtocolProbe<B: Buffer.`Protocol` & ~Copyable>(_ b: borrowing B) -> Int

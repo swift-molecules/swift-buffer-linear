@@ -1,8 +1,8 @@
 public import Memory_Allocator_Primitive
-public import Memory_Heap_Primitives
-public import Storage_Contiguous_Primitives
+public import Memory_Heap
+public import Storage_Contiguous
 public import Storage_Primitive
-import Storage_Protocol_Primitives
+import Storage_Protocol
 
 extension Buffer.Linear where S: ~Copyable {
 

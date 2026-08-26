@@ -1,8 +1,8 @@
-import Affine_Primitives_Standard_Library_Integration
-public import Finite_Primitives
-import Ordinal_Primitives_Standard_Library_Integration
-import Storage_Contiguous_Primitives
-public import Store_Protocol_Primitives
+import Affine_Standard_Library_Integration
+public import Finite
+import Ordinal_Standard_Library_Integration
+import Storage_Contiguous
+public import Store_Protocol
 
 extension Buffer.Linear where S: ~Copyable {
 

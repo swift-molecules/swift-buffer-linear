@@ -1,3 +1,3 @@
-public import Store_Protocol_Primitives
+public import Store_Protocol
 
 extension Buffer.Linear: Store.Direct where S: Store.`Protocol`, S: ~Copyable {}

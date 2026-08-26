@@ -1,11 +1,11 @@
-import Affine_Primitives_Standard_Library_Integration
+import Affine_Standard_Library_Integration
 public import Memory_Allocator_Primitive
-public import Memory_Heap_Primitives
-import Ordinal_Primitives_Standard_Library_Integration
-public import Storage_Contiguous_Primitives
+public import Memory_Heap
+import Ordinal_Standard_Library_Integration
+public import Storage_Contiguous
 public import Storage_Primitive
-import Storage_Protocol_Primitives
-public import Store_Protocol_Primitives
+import Storage_Protocol
+public import Store_Protocol
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 

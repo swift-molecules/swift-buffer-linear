@@ -1,5 +1,5 @@
-public import Index_Primitives
-public import Store_Protocol_Primitives
+public import Index
+public import Store_Protocol
 
 extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyable {
 

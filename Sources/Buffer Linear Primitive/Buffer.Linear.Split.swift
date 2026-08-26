@@ -1,6 +1,6 @@
-import Affine_Primitives_Standard_Library_Integration
-import Index_Primitives
-public import Store_Protocol_Primitives
+import Affine_Standard_Library_Integration
+import Index
+public import Store_Protocol
 
 extension Buffer.Linear where S: ~Copyable {
 

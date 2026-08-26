@@ -1,4 +1,4 @@
-import Storage_Protocol_Primitives
+import Storage_Protocol
 
 extension Buffer.Linear where S: ~Copyable {
 

@@ -1,9 +1,9 @@
-import Affine_Primitives_Standard_Library_Integration
+import Affine_Standard_Library_Integration
 public import Memory_Allocator_Primitive
-public import Memory_Allocator_Protocol_Primitives
-import Ordinal_Primitives_Standard_Library_Integration
-public import Storage_Contiguous_Primitives
-import Store_Protocol_Primitives
+public import Memory_Allocator_Protocol
+import Ordinal_Standard_Library_Integration
+public import Storage_Contiguous
+import Store_Protocol
 
 extension Buffer.Linear where S: ~Copyable {
 

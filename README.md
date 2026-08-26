@@ -1,4 +1,4 @@
-# Buffer Linear Primitives
+# Buffer Linear
 
 ![Development Status](https://img.shields.io/badge/status-active--development-blue.svg)
 
@@ -11,7 +11,7 @@ The **linear buffer discipline** over the `Buffer` namespace: contiguous, count-
 `Buffer.Linear` is a move-only (`~Copyable`) buffer that keeps its elements contiguous at slots `0 ..< count` and grows its heap backing automatically as you append. It is generic over its storage, so the element type appears inside the storage spelling — alias it once to keep call sites readable.
 
 ```swift
-import Buffer_Linear_Primitives
+import Buffer_Linear
 
 // A growable, heap-backed buffer of Int. Alias the storage spelling once.
 typealias IntBuffer = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
@@ -55,7 +55,7 @@ Both forms expose `count` / `capacity` / `isFull`, namespaced `peek` (`.front` /
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-primitives/swift-buffer-linear-primitives.git", branch: "main")
+    .package(url: "https://github.com/swift-molecules/swift-buffer-linear.git", branch: "main")
 ]
 ```
 
@@ -64,9 +64,9 @@ dependencies: [
     name: "App",
     dependencies: [
         // The umbrella — the whole package.
-        .product(name: "Buffer Linear Primitives", package: "swift-buffer-linear-primitives"),
+        .product(name: "Buffer Linear", package: "swift-buffer-linear"),
         // …or depend on just the variant you use, e.g. the bounded form:
-        // .product(name: "Buffer Linear Bounded Primitives", package: "swift-buffer-linear-primitives"),
+        // .product(name: "Buffer Linear Bounded", package: "swift-buffer-linear"),
     ]
 )
 ```
@@ -77,15 +77,15 @@ The package is pre-1.0 — depend on `branch: "main"` until `0.1.0` is tagged. R
 
 ## Architecture
 
-Each variant ships as **two products**: a lean type module (the move-only value type plus the operations that touch its storage) and a conformances module (the `Iterable` / `Sequenceable` / drain conformances, kept separate so they never constrain noncopyable use). Importing `Buffer Linear Primitives` — the umbrella — brings in the whole package; importing a single variant module brings in just that variant.
+Each variant ships as **two products**: a lean type module (the move-only value type plus the operations that touch its storage) and a conformances module (the `Iterable` / `Sequenceable` / drain conformances, kept separate so they never constrain noncopyable use). Importing `Buffer Linear` — the umbrella — brings in the whole package; importing a single variant module brings in just that variant.
 
 | Product | Target | Purpose |
 |---------|--------|---------|
 | `Buffer Linear Primitive` | `Sources/Buffer Linear Primitive/` | The growable `Buffer.Linear` value type: heap-backed, auto-growing, with append/remove/replace/swap/truncate, peek, the result builder, and `clone()`. |
 | `Buffer Linear Bounded Primitive` | `Sources/Buffer Linear Bounded Primitive/` | The fixed-capacity `Buffer.Linear.Bounded` value type: a hard capacity ceiling whose `append` returns the element when full. |
-| `Buffer Linear Primitives` | `Sources/Buffer Linear Primitives/` | The umbrella: the growable conformances (`Iterable`, `Sequenceable`, drain) plus a re-export of every variant module. |
-| `Buffer Linear Bounded Primitives` | `Sources/Buffer Linear Bounded Primitives/` | The bounded conformances (`Iterable`, `Sequenceable`, drain). |
-| `Buffer Linear Primitives Test Support` | `Tests/Support/` | Re-exports the package for test consumers. |
+| `Buffer Linear` | `Sources/Buffer Linear/` | The umbrella: the growable conformances (`Iterable`, `Sequenceable`, drain) plus a re-export of every variant module. |
+| `Buffer Linear Bounded` | `Sources/Buffer Linear Bounded/` | The bounded conformances (`Iterable`, `Sequenceable`, drain). |
+| `Buffer Linear Test Support` | `Tests/Support/` | Re-exports the package for test consumers. |
 
 Foundation-free.
 

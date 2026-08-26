@@ -1,0 +1,100 @@
+import Buffer_Linear
+import Buffer_Linear_Test_Support
+import Memory_Allocator_Primitive
+import Memory_Heap
+import Storage_Contiguous
+import Testing
+
+@Suite("Buffer.Linear.Header")
+struct LinearHeaderTests {
+    @Suite struct Unit {}
+    @Suite struct EdgeCase {}
+}
+
+extension LinearHeaderTests.Unit {
+
+    @Test
+    func `init sets count to zero`() {
+        let cap: Index<Int>.Count = 8
+        let header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 8
+        )
+        #expect(header.count == 0)
+        #expect(header.capacity == cap)
+    }
+
+    @Test
+    func `isEmpty and isFull`() {
+        let cap: Index<Int>.Count = 4
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: cap
+        )
+        #expect(header.isEmpty)
+        #expect(!header.isFull)
+
+        header.count = cap
+        #expect(!header.isEmpty)
+        #expect(header.isFull)
+    }
+
+    @Test
+    func `initialization is always .empty or .one`() {
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 8
+        )
+
+        switch header.initialization {
+        case .empty:
+            break
+
+        default:
+            Issue.record("Expected .empty")
+        }
+
+        header.count = 5
+        switch header.initialization {
+        case .one(let range):
+            #expect(range.lowerBound == 0)
+            #expect(range.upperBound == 5)
+
+        default:
+            Issue.record("Expected .one(0..<5)")
+        }
+    }
+}
+
+extension LinearHeaderTests.EdgeCase {
+
+    @Test
+    func `initialization linearize — always starts from zero`() {
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 8
+        )
+        header.count = 3
+
+        switch header.initialization {
+        case .one(let range):
+            #expect(range.lowerBound == 0)
+            #expect(range.upperBound == 3)
+
+        default:
+            Issue.record("Expected .one")
+        }
+    }
+
+    @Test
+    func `full header initialization covers entire capacity`() {
+        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+            capacity: 4
+        )
+        header.count = 4
+        switch header.initialization {
+        case .one(let range):
+            #expect(range.lowerBound == 0)
+            #expect(range.upperBound == 4)
+
+        default:
+            Issue.record("Expected .one(0..<4)")
+        }
+    }
+}
