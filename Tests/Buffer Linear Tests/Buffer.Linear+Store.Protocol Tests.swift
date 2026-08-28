@@ -1,4 +1,5 @@
 import Index
+import Cardinal
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Memory_Allocator_Primitive
@@ -6,6 +7,7 @@ import Memory
 import Memory_Small
 import Storage_Memory
 import Storage
+import Tagged
 import Testing
 
 private func exerciseSeamSwap<S>(
@@ -14,6 +16,11 @@ private func exerciseSeamSwap<S>(
     _ j: Index<S.Element>
 ) where S: Store.`Protocol`, S: ~Copyable {
     store.swapAt(i, j)
+}
+
+private func ledgeredCount<S>(_ store: borrowing S) -> Tagged<S.Element, Cardinal>
+where S: Store.Ledgered.`Protocol`, S: ~Copyable {
+    store.initialization.count
 }
 
 @Suite("Buffer.Linear+Store.Protocol")
@@ -68,5 +75,16 @@ extension LinearStoreProtocolTests.Regression {
         #expect(buffer[Index<Int>(1)] == 30)
         #expect(buffer[Index<Int>(2)] == 20)
         #expect(buffer.count == .init(3))
+    }
+
+    @Test
+    func `ledgered conformance exposes the linear prefix to generic consumers`() {
+        var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
+            minimumCapacity: .init(4)
+        )
+        buffer.append(10)
+        buffer.append(20)
+
+        #expect(ledgeredCount(buffer) == .init(2))
     }
 }
