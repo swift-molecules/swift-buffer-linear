@@ -1,7 +1,9 @@
+import Ordinal
+public import Index
 import Affine_Standard_Library_Integration
-import Memory_Heap
+import Memory
 import Ordinal_Standard_Library_Integration
-public import Storage_Contiguous
+import Storage_Memory
 
 extension Buffer.Linear where S: ~Copyable {
 

@@ -1,14 +1,21 @@
+public import Tagged
+public import Cardinal
+public import Ordinal
+public import Index
 import Affine_Standard_Library_Integration
-public import Iterable
-public import Memory_Allocator_Primitive
-import Memory_Heap
+public import Iterator
 import Ordinal_Standard_Library_Integration
-public import Span_Protocol
-public import Storage_Contiguous
+public import Span
 
 extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 
-    public struct Scalar: Iterator_Primitive.Iterator.`Protocol`, ~Copyable {
+    public struct Scalar: Iterating<S.Element, Never>, ~Copyable {
+        @_implements(Iterating,Element)
+        public typealias ScalarElement = S.Element
+
+        @_implements(Iterating,Failure)
+        public typealias ScalarFailure = Never
+
         @usableFromInline
         var base: Buffer<S>.Linear
 
@@ -25,13 +32,11 @@ extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable, S.Element: Copya
 
 extension Buffer.Linear.Scalar where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 
-    public typealias Failure = Never
-
     @inlinable
     public mutating func next() -> S.Element? {
-        let end = base.count.map(Ordinal.init)
+        let end = base.count.map { Ordinal($0.rawValue) }
         guard position < end else { return nil }
-        defer { position += .one }
+        defer { position = position.advanced(by: .one) }
 
         return base[position]
     }

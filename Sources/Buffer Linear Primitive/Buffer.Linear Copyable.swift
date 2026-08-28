@@ -1,14 +1,21 @@
+public import Ownership
+public import Tagged
+public import Cardinal
+public import Property
+public import Property_Ownership
+public import Ordinal
 import Affine_Standard_Library_Integration
 public import Memory_Allocator_Primitive
-public import Memory_Heap
+public import Memory
+public import Memory_Small
 import Ordinal_Standard_Library_Integration
-public import Storage_Contiguous
-public import Storage_Primitive
+public import Storage_Memory
+public import Storage
 
 extension Property.Borrow.Typed
 where
-    Tag == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Linear.Peek,
-    Base == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Linear,
+    Tag == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Linear.Peek,
+    Base == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Linear,
     Element: Copyable
 {
 
@@ -20,7 +27,7 @@ where
     @inlinable
     public var back: Element {
         return base.value.storage[
-            base.value.header.count.subtract.saturating(.one).map(Ordinal.init)
+            base.value.header.count.subtracting(saturating: .one).map { Ordinal($0.rawValue) }
         ]
     }
 }

@@ -7,17 +7,3 @@ extension Buffer.Linear: Sequence.Drain.`Protocol` where S: ~Copyable {
         _drain(body)
     }
 }
-
-extension Buffer.Linear where S: ~Copyable {
-
-    @inlinable
-    public var drain: Property<Sequence.Drain, Self>.Inout {
-        mutating _read {
-            yield Property<Sequence.Drain, Self>.Inout(&self)
-        }
-        mutating _modify {
-            var accessor = Property<Sequence.Drain, Self>.Inout(&self)
-            yield &accessor
-        }
-    }
-}

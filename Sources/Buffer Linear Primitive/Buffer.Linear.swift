@@ -1,10 +1,9 @@
+import Ordinal
 import Affine_Standard_Library_Integration
 import Index
 import Ordinal_Standard_Library_Integration
-import Storage_Contiguous
-import Storage_Primitive
-public import Storage_Protocol
-public import Store_Protocol
+import Storage_Memory
+public import Storage
 
 extension Buffer where S: Store.`Protocol`, S: ~Copyable {
 

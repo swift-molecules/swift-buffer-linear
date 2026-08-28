@@ -1,18 +1,24 @@
+public import Ownership
+import Ordinal
+public import Index
 import Affine_Standard_Library_Integration
+public import Cardinal
 public import Memory_Allocator_Primitive
-public import Memory_Heap
+public import Memory
+public import Memory_Small
 import Ordinal_Standard_Library_Integration
-public import Storage_Contiguous
-public import Storage_Primitive
-import Storage_Protocol
-public import Store_Protocol
+public import Property_Ownership
+public import Property
+public import Tagged
+public import Storage_Memory
+public import Storage
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 
     @inlinable
-    public init<E: ~Copyable>(minimumCapacity: Index<E>.Count)
-    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-        let storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+    public init<E: ~Copyable>(minimumCapacity: Tagged<E, Cardinal>)
+    where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
+        let storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E>.create(
             minimumCapacity: minimumCapacity
         )
         self.init(
@@ -22,13 +28,13 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
     }
 
     @inlinable
-    public var count: Index<S.Element>.Count { header.count }
+    public var count: Tagged<S.Element, Cardinal> { header.count }
 
     @inlinable
     public var isEmpty: Bool { header.isEmpty }
 
     @inlinable
-    public var capacity: Index<S.Element>.Count { header.capacity }
+    public var capacity: Tagged<S.Element, Cardinal> { header.capacity }
 
     @inlinable
     public var isFull: Bool { header.isFull }
@@ -61,7 +67,7 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
     }
 
     @inlinable
-    public mutating func truncate(to newCount: Index<S.Element>.Count) {
+    public mutating func truncate(to newCount: Tagged<S.Element, Cardinal>) {
         Buffer.Linear.truncate(to: newCount, header: &header, storage: &storage)
     }
 }
@@ -70,19 +76,19 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
 
     @usableFromInline
     mutating func _removeFirst<E: ~Copyable>() -> E
-    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
         Buffer.Linear.removeFirst(header: &header, storage: &storage)
     }
 
     @usableFromInline
     mutating func _removeLast<E: ~Copyable>() -> E
-    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
         Buffer.Linear.consumeBack(header: &header, storage: &storage)
     }
 
     @usableFromInline
     mutating func _removeAll<E: ~Copyable>()
-    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
         Buffer.Linear.deinitializeAll(header: &header, storage: &storage)
     }
 }
@@ -110,8 +116,8 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
 
 extension Property.Inout.Typed
 where
-    Tag == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Linear.Remove,
-    Base == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Linear.Bounded,
+    Tag == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Linear.Remove,
+    Base == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Linear.Bounded,
     Element: ~Copyable
 {
 
@@ -135,11 +141,11 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
 
     @inlinable
     public init<E: ~Copyable>(
-        minimumCapacity: Index<E>.Count,
-        initializingCount count: Index<E>.Count,
+        minimumCapacity: Tagged<E, Cardinal>,
+        initializingCount count: Tagged<E, Cardinal>,
         with body: (inout Swift.OutputSpan<E>) -> Void
-    ) where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+    ) where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
+        var storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E>.create(
             minimumCapacity: minimumCapacity
         )
 

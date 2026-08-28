@@ -1,13 +1,14 @@
 public import Memory_Allocator_Primitive
-public import Memory_Heap
-public import Storage_Contiguous
+public import Memory
+public import Memory_Small
+public import Storage_Memory
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 
     @inlinable
     public func clone<E>() -> Self
-    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>, E: Copyable {
-        var newStorage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E>.create(
+    where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E>, E: Copyable {
+        var newStorage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E>.create(
             minimumCapacity: header.capacity
         )
         Buffer.Linear.copy(header: header, source: storage, to: &newStorage)

@@ -1,7 +1,10 @@
+import Ordinal
+public import Index
 import Affine_Standard_Library_Integration
+public import Cardinal
 import Ordinal_Standard_Library_Integration
-public import Storage_Protocol
-public import Store_Protocol
+public import Tagged
+public import Storage
 
 extension Buffer.Linear where S: ~Copyable {
 
@@ -67,7 +70,7 @@ extension Buffer.Linear where S: ~Copyable {
 
     @inlinable
     public static func truncate(
-        to newCount: Index<S.Element>.Count,
+        to newCount: Tagged<S.Element, Cardinal>,
         header: inout Header,
         storage: inout S
     ) {

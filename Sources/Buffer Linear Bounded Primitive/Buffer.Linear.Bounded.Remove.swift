@@ -1,6 +1,9 @@
+import Ordinal
 import Affine_Standard_Library_Integration
 import Ordinal_Standard_Library_Integration
-public import Storage_Contiguous
+public import Property_Ownership
+public import Property
+import Storage_Memory
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 

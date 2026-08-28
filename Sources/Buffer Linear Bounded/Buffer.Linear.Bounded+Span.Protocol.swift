@@ -1,7 +1,4 @@
-import Affine_Standard_Library_Integration
-import Ordinal_Standard_Library_Integration
-public import Span_Protocol
-public import Storage_Contiguous
+public import Span
 
 extension Buffer.Linear.Bounded: Span.`Protocol` where S: Span.`Protocol`, S: ~Copyable {}
 

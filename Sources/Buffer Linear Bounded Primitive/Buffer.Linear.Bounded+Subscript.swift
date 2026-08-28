@@ -1,14 +1,17 @@
+import Ordinal
+public import Index
 import Affine_Standard_Library_Integration
 public import Memory_Allocator_Primitive
-public import Memory_Heap
+public import Memory
+public import Memory_Small
 import Ordinal_Standard_Library_Integration
-public import Storage_Contiguous
+public import Storage_Memory
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 
     @inlinable
     public subscript<E: ~Copyable>(index: Index<E>) -> E
-    where S == Storage<Memory.Allocator<Memory.Heap>>.Contiguous<E> {
+    where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
         _read {
             yield storage[index]
         }

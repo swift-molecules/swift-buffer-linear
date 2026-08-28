@@ -1,6 +1,6 @@
 import Affine_Standard_Library_Integration
 import Index
-public import Store_Protocol
+public import Storage
 
 extension Buffer.Linear where S: ~Copyable {
 

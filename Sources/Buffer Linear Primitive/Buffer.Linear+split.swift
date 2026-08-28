@@ -1,31 +1,35 @@
+public import Ordinal
+public import Index
 import Affine_Standard_Library_Integration
+public import Cardinal
 public import Memory_Allocator_Primitive
 public import Memory_Allocator_Protocol
 import Ordinal_Standard_Library_Integration
-public import Storage_Contiguous
-import Store_Protocol
+public import Tagged
+public import Storage_Memory
+import Storage
 
 extension Buffer.Linear where S: ~Copyable {
 
     @inlinable
     public consuming func split<Element: ~Copyable, Resource: Memory.Growable & ~Copyable>(
-        maximum: Index<Element>.Count
+        maximum: Tagged<Element, Cardinal>
     ) -> Split where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         var source = consume self
         let prefixCount = maximum < source.header.count ? maximum : source.header.count
-        let remainderCount = source.header.count.subtract.saturating(prefixCount)
+        let remainderCount = source.header.count.subtracting(saturating: prefixCount)
         var prefixStorage = S.create(minimumCapacity: prefixCount)
         var remainderStorage = S.create(minimumCapacity: remainderCount)
 
         var sourceSlot: Index<Element> = .zero
-        let prefixEnd = prefixCount.map(Ordinal.init)
+        let prefixEnd = prefixCount.map { Ordinal($0.rawValue) }
         while sourceSlot < prefixEnd {
             prefixStorage.initialize(at: sourceSlot, to: source.storage.move(at: sourceSlot))
             sourceSlot += .one
         }
 
         var remainderSlot: Index<Element> = .zero
-        let sourceEnd = source.header.count.map(Ordinal.init)
+        let sourceEnd = source.header.count.map { Ordinal($0.rawValue) }
         while sourceSlot < sourceEnd {
             remainderStorage.initialize(
                 at: remainderSlot,

@@ -1,5 +1,5 @@
 import Sequence
-public import Span_Protocol
+public import Span
 
 extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: Copyable, S.Element: Copyable {
 

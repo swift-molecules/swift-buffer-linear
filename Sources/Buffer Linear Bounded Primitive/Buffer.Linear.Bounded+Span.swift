@@ -1,6 +1,7 @@
+import Ordinal
 import Affine_Standard_Library_Integration
 import Ordinal_Standard_Library_Integration
-public import Span_Protocol
+public import Span
 
 extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: ~Copyable {
 
@@ -9,17 +10,6 @@ extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: ~Copyable {
         @inlinable
         borrowing get {
             storage.span
-        }
-    }
-}
-
-extension Buffer.Linear.Bounded where S: Span.Mutable.`Protocol`, S: ~Copyable {
-
-    public var mutableSpan: Swift.MutableSpan<S.Element> {
-        @_lifetime(&self)
-        @inlinable
-        mutating get {
-            storage.mutableSpan(count: header.count)
         }
     }
 }

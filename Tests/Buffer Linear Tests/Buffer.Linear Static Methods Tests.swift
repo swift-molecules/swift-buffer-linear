@@ -1,9 +1,12 @@
 import Buffer_Linear
 import Buffer_Linear_Test_Support
+import Cardinal
 import Memory_Allocator_Primitive
-import Memory_Heap
-import Storage_Contiguous
+import Memory
+import Memory_Small
+import Storage_Memory
 import Testing
+import Tagged
 
 @Suite("Buffer.Linear Static Operations")
 struct LinearStaticTests {
@@ -15,32 +18,32 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `append increments count and stores element`() {
-        let cap: Index<Int>.Count = 8
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+        let cap: Tagged<Int, Cardinal> = .init(8)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>.create(
+        var storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>.create(
             minimumCapacity: cap
         )
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             10,
             header: &header,
             storage: &storage
         )
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             20,
             header: &header,
             storage: &storage
         )
 
-        #expect(header.count == 2)
+        #expect(header.count == .init(2))
 
-        let b = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.consumeBack(
+        let b = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.consumeBack(
             header: &header,
             storage: &storage
         )
-        let a = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.consumeBack(
+        let a = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.consumeBack(
             header: &header,
             storage: &storage
         )
@@ -52,40 +55,40 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `removeFirst removes first and shifts`() {
-        let cap: Index<Int>.Count = 8
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+        let cap: Tagged<Int, Cardinal> = .init(8)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>.create(
+        var storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>.create(
             minimumCapacity: cap
         )
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             10,
             header: &header,
             storage: &storage
         )
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             20,
             header: &header,
             storage: &storage
         )
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             30,
             header: &header,
             storage: &storage
         )
 
-        let first = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+        let first = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .removeFirst(header: &header, storage: &storage)
         #expect(first == 10)
-        #expect(header.count == 2)
+        #expect(header.count == .init(2))
 
-        let second = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+        let second = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .removeFirst(header: &header, storage: &storage)
         #expect(second == 20)
 
-        let third = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+        let third = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .removeFirst(header: &header, storage: &storage)
         #expect(third == 30)
 
@@ -95,31 +98,31 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `consumeBack removes last element`() {
-        let cap: Index<Int>.Count = 8
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+        let cap: Tagged<Int, Cardinal> = .init(8)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>.create(
+        var storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>.create(
             minimumCapacity: cap
         )
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             10,
             header: &header,
             storage: &storage
         )
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             20,
             header: &header,
             storage: &storage
         )
 
-        let last = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+        let last = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .consumeBack(header: &header, storage: &storage)
         #expect(last == 20)
-        #expect(header.count == 1)
+        #expect(header.count == .init(1))
 
-        let first = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear
+        let first = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .consumeBack(header: &header, storage: &storage)
         #expect(first == 10)
         #expect(header.isEmpty)
@@ -129,31 +132,31 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `deinitializeAll clears everything`() {
-        let cap: Index<Int>.Count = 8
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+        let cap: Tagged<Int, Cardinal> = .init(8)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>.create(
+        var storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>.create(
             minimumCapacity: cap
         )
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             1,
             header: &header,
             storage: &storage
         )
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             2,
             header: &header,
             storage: &storage
         )
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             3,
             header: &header,
             storage: &storage
         )
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.deinitializeAll(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.deinitializeAll(
             header: &header,
             storage: &storage
         )
@@ -163,31 +166,31 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `initialization stays .one for linear`() {
-        let cap: Index<Int>.Count = 8
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+        let cap: Tagged<Int, Cardinal> = .init(8)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>.create(
+        var storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>.create(
             minimumCapacity: cap
         )
 
         #expect(header.initialization == .empty)
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             42,
             header: &header,
             storage: &storage
         )
         switch header.initialization {
         case .one(let range):
-            #expect(range.lowerBound == 0)
-            #expect(range.upperBound == 1)
+            #expect(range.lowerBound == .init(0))
+            #expect(range.upperBound == .init(1))
 
         default:
             Issue.record("Expected .one")
         }
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.deinitializeAll(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.deinitializeAll(
             header: &header,
             storage: &storage
         )
@@ -198,20 +201,20 @@ extension LinearStaticTests.EdgeCase {
 
     @Test
     func `append then consumeBack round-trips single element`() {
-        let cap: Index<Int>.Count = 4
-        var header = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.Header(
+        let cap: Tagged<Int, Cardinal> = .init(4)
+        var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
-        var storage = Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>.create(
+        var storage = Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>.create(
             minimumCapacity: cap
         )
 
-        Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.append(
+        Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.append(
             42,
             header: &header,
             storage: &storage
         )
-        let v = Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Int>>.Linear.consumeBack(
+        let v = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.consumeBack(
             header: &header,
             storage: &storage
         )
