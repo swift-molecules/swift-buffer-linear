@@ -120,6 +120,7 @@ let package = Package(
                 .product(name: "Sequence Drain", package: "swift-sequence"),
                 .product(name: "Sequence", package: "swift-sequence"),
                 .product(name: "Ordinal", package: "swift-ordinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal Carrier", package: "swift-cardinal"),
@@ -162,6 +163,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
                 .product(name: "Ownership", package: "swift-ownership"),
@@ -180,6 +182,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Span Protocol", package: "swift-span"),
                 .product(name: "Store Ledgered", package: "swift-store"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal Carrier", package: "swift-cardinal"),
@@ -221,6 +224,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Property", package: "swift-property"),
                 .product(name: "Ownership", package: "swift-ownership"),
@@ -238,6 +242,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Span Protocol", package: "swift-span"),
                 .product(name: "Store Ledgered", package: "swift-store"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal Carrier", package: "swift-cardinal"),
                 .product(name: "Cardinal Tagged", package: "swift-cardinal"),
@@ -267,6 +272,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
@@ -280,6 +286,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Span Protocol", package: "swift-span"),
                 .product(name: "Store Ledgered", package: "swift-store"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal Carrier", package: "swift-cardinal"),
                 .product(name: "Cardinal Tagged", package: "swift-cardinal"),
@@ -309,6 +316,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Ordinal Comparison", package: "swift-ordinal"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
@@ -325,6 +333,7 @@ let package = Package(
                 .product(name: "Ordinal", package: "swift-ordinal"),
                 .product(name: "Span Protocol", package: "swift-span"),
                 .product(name: "Store Ledgered", package: "swift-store"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal Carrier", package: "swift-cardinal"),
                 .product(name: "Cardinal Tagged", package: "swift-cardinal"),
@@ -349,6 +358,7 @@ let package = Package(
                 .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ],
             path: "Tests/Support"
@@ -357,6 +367,7 @@ let package = Package(
         .testTarget(
             name: "Buffer Linear Tests",
             dependencies: [
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Sequence Protocol", package: "swift-sequence"),
                 .product(name: "Iterable", package: "swift-iterator"),
@@ -386,12 +397,14 @@ let package = Package(
                 .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
         .testTarget(
             name: "Buffer Linear Bounded Tests",
             dependencies: [
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Sequence Protocol", package: "swift-sequence"),
@@ -422,6 +435,7 @@ let package = Package(
                 .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
+                .product(name: "Buffer Protocol", package: "swift-buffer"),
                 .product(name: "Tagged", package: "swift-tagged"),
             ]
         ),
