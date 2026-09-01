@@ -2,7 +2,7 @@ import Ordinal
 import Affine_Standard_Library_Integration
 public import Cardinal
 public import Buffer
-public import Memory_Allocator_Primitive
+public import Memory_Allocator
 public import Memory
 public import Memory_Small
 import Ordinal_Standard_Library_Integration

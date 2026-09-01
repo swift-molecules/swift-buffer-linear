@@ -1,6 +1,6 @@
 import Buffer_Linear
 import Buffer_Linear_Test_Support
-import Memory_Allocator_Primitive
+import Memory_Allocator
 import Memory
 import Memory_Small
 import Storage_Memory
