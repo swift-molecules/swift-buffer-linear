@@ -1,3 +1,9 @@
+import Store_Ledgered
+import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal
+import Cardinal_Carrier
+import Cardinal_Tagged
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Cardinal
@@ -20,7 +26,7 @@ extension LinearGrowableTests.Unit {
     @Test
     func `append and removeFirst`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         buffer.append(10)
         buffer.append(20)
@@ -36,7 +42,7 @@ extension LinearGrowableTests.Unit {
     @Test
     func `append and removeLast`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         buffer.append(10)
         buffer.append(20)
@@ -52,7 +58,7 @@ extension LinearGrowableTests.Unit {
     @Test
     func `growth doubles capacity`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(2)
+            minimumCapacity: .init(_unchecked: Cardinal(2))
         )
         let originalCap = buffer.capacity
 
@@ -117,10 +123,10 @@ extension LinearGrowableTests.Unit {
     @Test
     func `single element`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(1)
+            minimumCapacity: .init(_unchecked: Cardinal(1))
         )
         buffer.append(42)
-        #expect(buffer.count == .init(1))
+        #expect(buffer.count == .init(_unchecked: Cardinal(1)))
         #expect(buffer.remove.last() == 42)
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
@@ -129,9 +135,9 @@ extension LinearGrowableTests.Unit {
     @Test
     func `reserveCapacity grows if needed`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(2)
+            minimumCapacity: .init(_unchecked: Cardinal(2))
         )
-        buffer.reserveCapacity(.init(100))
+        buffer.reserveCapacity(.init(_unchecked: Cardinal(100)))
         #expect(buffer.capacity.underlying.rawValue >= 100)
     }
 
@@ -150,11 +156,11 @@ extension LinearGrowableTests.Unit {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear([
             10, 20, 30,
         ])
-        #expect(buffer[.init(0)] == 10)
-        #expect(buffer[.init(1)] == 20)
-        #expect(buffer[.init(2)] == 30)
-        buffer[.init(1)] = 999
-        #expect(buffer[.init(1)] == 999)
+        #expect(buffer[.init(_unchecked: Ordinal(0))] == 10)
+        #expect(buffer[.init(_unchecked: Ordinal(1))] == 20)
+        #expect(buffer[.init(_unchecked: Ordinal(2))] == 30)
+        buffer[.init(_unchecked: Ordinal(1))] = 999
+        #expect(buffer[.init(_unchecked: Ordinal(1))] == 999)
     }
 
     @Test
@@ -162,9 +168,9 @@ extension LinearGrowableTests.Unit {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear([
             10, 20, 30,
         ])
-        buffer.swap(at: .init(0), with: .init(2))
-        #expect(buffer[.init(0)] == 30)
-        #expect(buffer[.init(2)] == 10)
+        buffer.swap(at: .init(_unchecked: Ordinal(0)), with: .init(_unchecked: Ordinal(2)))
+        #expect(buffer[.init(_unchecked: Ordinal(0))] == 30)
+        #expect(buffer[.init(_unchecked: Ordinal(2))] == 10)
     }
 
     @Test
@@ -172,8 +178,8 @@ extension LinearGrowableTests.Unit {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear([
             10, 20, 30, 40, 50,
         ])
-        buffer.truncate(to: .init(3))
-        #expect(buffer.count == .init(3))
+        buffer.truncate(to: .init(_unchecked: Cardinal(3)))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
         #expect(buffer.peek.back == 30)
     }
 }
@@ -195,18 +201,18 @@ extension LinearGrowableTests.EdgeCase {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear([
             10, 20, 30,
         ])
-        buffer.swap(at: .init(1), with: .init(1))
-        #expect(buffer[.init(1)] == 20)
+        buffer.swap(at: .init(_unchecked: Ordinal(1)), with: .init(_unchecked: Ordinal(1)))
+        #expect(buffer[.init(_unchecked: Ordinal(1))] == 20)
     }
 
     @Test
     func `empty buffer properties`() {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         let bufferIsEmpty = buffer.isEmpty
         #expect(bufferIsEmpty)
-        #expect(buffer.count == .init(0))
+        #expect(buffer.count == .init(_unchecked: Cardinal(0)))
     }
 
     @Test
@@ -215,11 +221,11 @@ extension LinearGrowableTests.EdgeCase {
     {
         await #expect(processExitsWith: .failure) {
             var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-                minimumCapacity: .init(4)
+                minimumCapacity: .init(_unchecked: Cardinal(4))
             )
             buffer.append(1)
 
-            buffer.initialize(at: .init(3), to: 99)
+            buffer.initialize(at: .init(_unchecked: Ordinal(3)), to: 99)
         }
     }
 
@@ -227,13 +233,13 @@ extension LinearGrowableTests.EdgeCase {
     func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
         await #expect(processExitsWith: .failure) {
             var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-                minimumCapacity: .init(4)
+                minimumCapacity: .init(_unchecked: Cardinal(4))
             )
             buffer.append(1)
             buffer.append(2)
             buffer.append(3)
 
-            _ = buffer.move(at: .init(0))
+            _ = buffer.move(at: .init(_unchecked: Ordinal(0)))
         }
     }
 }

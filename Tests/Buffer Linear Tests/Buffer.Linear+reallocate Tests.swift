@@ -1,3 +1,11 @@
+import Store_Ledgered
+import Cardinal
+import Tagged
+import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal
+import Cardinal_Carrier
+import Cardinal_Tagged
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Memory_Allocator
@@ -15,25 +23,25 @@ struct LinearReallocateTests {
             1, 2, 3,
         ])
         let initial = buffer.capacity
-        buffer.reallocate(capacity: .init(100))
-        #expect(buffer.capacity >= .init(100))
+        buffer.reallocate(capacity: .init(_unchecked: Cardinal(100)))
+        #expect(buffer.capacity >= .init(_unchecked: Cardinal(100)))
         #expect(buffer.capacity > initial)
-        #expect(buffer.count == .init(3))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
     }
 
     @Test
     func `reallocate can shrink`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(0)
+            minimumCapacity: .init(_unchecked: Cardinal(0))
         )
-        buffer.reserveCapacity(.init(100))
+        buffer.reserveCapacity(.init(_unchecked: Cardinal(100)))
         buffer.append(1)
         buffer.append(2)
         let beforeShrink = buffer.capacity
-        buffer.reallocate(capacity: .init(5))
-        #expect(buffer.count == .init(2))
+        buffer.reallocate(capacity: .init(_unchecked: Cardinal(5)))
+        #expect(buffer.count == .init(_unchecked: Cardinal(2)))
         #expect(buffer.capacity < beforeShrink)
-        #expect(buffer.capacity >= .init(2))
+        #expect(buffer.capacity >= .init(_unchecked: Cardinal(2)))
     }
 
     @Test
@@ -41,8 +49,8 @@ struct LinearReallocateTests {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear([
             10, 20, 30,
         ])
-        buffer.reallocate(capacity: .init(50))
-        #expect(buffer.count == .init(3))
+        buffer.reallocate(capacity: .init(_unchecked: Cardinal(50)))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
 
         #expect(buffer.span.count == 3)
     }
@@ -50,13 +58,13 @@ struct LinearReallocateTests {
     @Test
     func `reallocate preserves existing elements on shrink`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(0)
+            minimumCapacity: .init(_unchecked: Cardinal(0))
         )
-        buffer.reserveCapacity(.init(100))
+        buffer.reserveCapacity(.init(_unchecked: Cardinal(100)))
         buffer.append(42)
         buffer.append(43)
-        buffer.reallocate(capacity: .init(2))
-        #expect(buffer.count == .init(2))
+        buffer.reallocate(capacity: .init(_unchecked: Cardinal(2)))
+        #expect(buffer.count == .init(_unchecked: Cardinal(2)))
         #expect(buffer.span.count == 2)
     }
 
@@ -65,9 +73,9 @@ struct LinearReallocateTests {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear([
             1, 2, 3,
         ])
-        buffer.reserveCapacity(.init(100))
-        buffer.reallocate(capacity: .init(3))
-        #expect(buffer.count == .init(3))
-        #expect(buffer.capacity >= .init(3))
+        buffer.reserveCapacity(.init(_unchecked: Cardinal(100)))
+        buffer.reallocate(capacity: .init(_unchecked: Cardinal(3)))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
+        #expect(buffer.capacity >= .init(_unchecked: Cardinal(3)))
     }
 }

@@ -1,3 +1,17 @@
+public import Iterator_Protocol
+public import Store_Ledgered
+public import Store_Operations
+public import Span_Protocol
+public import Store_Initialization
+public import Store_Protocol
+public import Store
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Tagged
 public import Cardinal
 public import Ordinal
@@ -36,7 +50,7 @@ extension Buffer.Linear.Scalar where S: Span.`Protocol`, S: ~Copyable, S.Element
     public mutating func next() -> S.Element? {
         let end = base.count.map { Ordinal($0.rawValue) }
         guard position < end else { return nil }
-        defer { position = position.advanced(by: .one) }
+        defer { position = (position + .one) }
 
         return base[position]
     }

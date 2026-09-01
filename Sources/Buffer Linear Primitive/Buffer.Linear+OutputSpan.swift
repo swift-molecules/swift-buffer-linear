@@ -1,3 +1,17 @@
+public import Store_Operations
+public import Store_Ledgered
+public import Span_Protocol
+public import Index
+public import Store_Initialization
+public import Store_Protocol
+public import Store
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Cardinal
 public import Memory_Allocator
 public import Memory
@@ -38,7 +52,7 @@ extension Buffer.Linear where S: ~Copyable {
         addingCapacity: Tagged<E, Cardinal>,
         initializingWith initializer: (inout Swift.OutputSpan<E>) throws(Failure) -> Void
     ) throws(Failure) where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
-        let required = header.count.adding(saturating: addingCapacity)
+        let required = header.count.add.saturating(addingCapacity)
         if required > header.capacity {
             _growTo(required)
         }

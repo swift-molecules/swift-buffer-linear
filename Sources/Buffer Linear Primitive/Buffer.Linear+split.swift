@@ -1,3 +1,16 @@
+public import Store_Operations
+public import Store_Ledgered
+public import Span_Protocol
+public import Store_Initialization
+public import Store_Protocol
+public import Store
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Ordinal
 public import Index
 import Affine_Standard_Library_Integration
@@ -17,7 +30,7 @@ extension Buffer.Linear where S: ~Copyable {
     ) -> Split where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
         var source = consume self
         let prefixCount = maximum < source.header.count ? maximum : source.header.count
-        let remainderCount = source.header.count.subtracting(saturating: prefixCount)
+        let remainderCount = source.header.count.subtract.saturating(prefixCount)
         var prefixStorage = S.create(minimumCapacity: prefixCount)
         var remainderStorage = S.create(minimumCapacity: remainderCount)
 

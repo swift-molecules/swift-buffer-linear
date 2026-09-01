@@ -1,3 +1,16 @@
+public import Store_Ledgered
+public import Span_Protocol
+public import Store_Operations
+public import Store_Initialization
+public import Store_Protocol
+public import Store
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Ordinal
 import Affine_Standard_Library_Integration
 public import Cardinal
@@ -16,7 +29,7 @@ extension __StoreProtocol where Self: ~Copyable {
     ) {
         let slot = count.map { Ordinal($0.rawValue) }
         storage.initialize(at: slot, to: consume element)
-        count = count.adding(saturating: .one)
+        count = count.add.saturating(.one)
     }
 
     @inlinable
@@ -27,10 +40,10 @@ extension __StoreProtocol where Self: ~Copyable {
         let element = storage.move(at: .zero)
         if count > .one {
             let secondSlot = Tagged<Element, Cardinal>.one.map { Ordinal($0.rawValue) }
-            let followingCount = count.subtracting(saturating: .one)
+            let followingCount = count.subtract.saturating(.one)
             storage.moveInitialize(from: secondSlot, to: .zero, count: followingCount)
         }
-        count = count.subtracting(saturating: .one)
+        count = count.subtract.saturating(.one)
         return element
     }
 
@@ -40,16 +53,15 @@ extension __StoreProtocol where Self: ~Copyable {
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
     ) -> Element {
-        precondition(index < Index<Element>(count), "Index out of bounds")
+        precondition(index < Index<Element>(_unchecked: Ordinal(count.underlying)), "Index out of bounds")
         let element = storage.move(at: index)
-        let nextSlot = index.advanced(by: .one)
-        let followingCount = count.subtracting(
-            saturating: Tagged<Element, Cardinal>(nextSlot)
+        let nextSlot = (index + .one)
+        let followingCount = count.subtract.saturating(Tagged<Element, Cardinal>(_unchecked: Cardinal(nextSlot.ordinal))
         )
         if followingCount > .zero {
             storage.moveInitialize(from: nextSlot, to: index, count: followingCount)
         }
-        count = count.subtracting(saturating: .one)
+        count = count.subtract.saturating(.one)
         return element
     }
 
@@ -69,7 +81,7 @@ extension __StoreProtocol where Self: ~Copyable {
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
     ) -> Element {
-        let newCount = count.subtracting(saturating: .one)
+        let newCount = count.subtract.saturating(.one)
         let element = storage.move(at: newCount.map { Ordinal($0.rawValue) })
         count = newCount
         return element
@@ -90,7 +102,7 @@ extension __StoreProtocol where Self: ~Copyable {
         storage: inout Self
     ) {
         if count > .zero {
-            storage.deinitialize(range: Store.Span(start: .zero, count: count))
+            storage.deinitialize(range: Index<Element>(_unchecked: .zero)..<(Index<Element>(_unchecked: .zero) + count))
         }
         count = .zero
     }
@@ -104,10 +116,7 @@ extension __StoreProtocol where Self: ~Copyable {
         guard newCount < count else { return }
         let start: Index<Element> = newCount.map { Ordinal($0.rawValue) }
         storage.deinitialize(
-            range: Store.Span(
-                start: start,
-                count: count.subtracting(saturating: newCount)
-            )
+            range: start..<(start + count.subtract.saturating(newCount))
         )
         count = newCount
     }

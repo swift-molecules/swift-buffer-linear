@@ -1,3 +1,9 @@
+import Store_Ledgered
+import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal
+import Cardinal_Carrier
+import Cardinal_Tagged
 import Index
 import Buffer_Linear
 import Buffer_Linear_Test_Support
@@ -21,7 +27,7 @@ extension LinearBoundedTests.Unit {
     @Test
     func `init creates empty bounded buffer`() {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         #expect(buffer.isEmpty == true)
         #expect(buffer.count == .zero)
@@ -31,21 +37,21 @@ extension LinearBoundedTests.Unit {
     @Test
     func `capacity is pinned to the exact requested minimumCapacity`() {
         let two = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(2)
+            minimumCapacity: .init(_unchecked: Cardinal(2))
         )
-        #expect(two.capacity == .init(2))
+        #expect(two.capacity == .init(_unchecked: Cardinal(2)))
 
         let seven = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(7)
+            minimumCapacity: .init(_unchecked: Cardinal(7))
         )
-        #expect(seven.capacity == .init(7))
+        #expect(seven.capacity == .init(_unchecked: Cardinal(7)))
     }
 
     @Test
     func `README hard-ceiling example - append rejects exactly at the requested capacity`() {
 
         var bounded = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(2)
+            minimumCapacity: .init(_unchecked: Cardinal(2))
         )
         #expect(bounded.append(1) == nil)
         #expect(bounded.append(2) == nil)
@@ -56,21 +62,21 @@ extension LinearBoundedTests.Unit {
     @Test
     func `closure init pins capacity to the exact requested minimumCapacity`() {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(5),
-            initializingCount: .init(3)
+            minimumCapacity: .init(_unchecked: Cardinal(5)),
+            initializingCount: .init(_unchecked: Cardinal(3))
         ) { span in
             span.append(1)
             span.append(2)
             span.append(3)
         }
-        #expect(buffer.capacity == .init(5))
-        #expect(buffer.count == .init(3))
+        #expect(buffer.capacity == .init(_unchecked: Cardinal(5)))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
     }
 
     @Test
     func `clone preserves capacity exactly and detaches storage`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         _ = buffer.append(1)
         _ = buffer.append(2)
@@ -79,16 +85,16 @@ extension LinearBoundedTests.Unit {
         #expect(copy.capacity == capacityBefore)
         #expect(copy.count == buffer.count)
         _ = copy.append(3)
-        #expect(copy.count == .init(3))
-        #expect(buffer.count == .init(2))
-        #expect(buffer[.init(1)] == 2)
-        #expect(copy[.init(2)] == 3)
+        #expect(copy.count == .init(_unchecked: Cardinal(3)))
+        #expect(buffer.count == .init(_unchecked: Cardinal(2)))
+        #expect(buffer[.init(_unchecked: Ordinal(1))] == 2)
+        #expect(copy[.init(_unchecked: Ordinal(2))] == 3)
     }
 
     @Test
     func `append and removeLast`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         _ = buffer.append(10)
         _ = buffer.append(20)
@@ -103,7 +109,7 @@ extension LinearBoundedTests.Unit {
     @Test
     func `append and removeFirst`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         _ = buffer.append(10)
         _ = buffer.append(20)
@@ -118,7 +124,7 @@ extension LinearBoundedTests.Unit {
     @Test
     func `removeAll clears buffer`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         _ = buffer.append(1)
         _ = buffer.append(2)
@@ -131,7 +137,7 @@ extension LinearBoundedTests.Unit {
     @Test
     func `isFull detection`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(2)
+            minimumCapacity: .init(_unchecked: Cardinal(2))
         )
         #expect(buffer.isFull == false)
 
@@ -147,7 +153,7 @@ extension LinearBoundedTests.Unit {
     @Test
     func `append returns element when full`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(2)
+            minimumCapacity: .init(_unchecked: Cardinal(2))
         )
         let cap = buffer.capacity.underlying.rawValue
         var i: UInt = 0
@@ -165,24 +171,24 @@ extension LinearBoundedTests.Unit {
     @Test
     func `subscript access`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         _ = buffer.append(10)
         _ = buffer.append(20)
         _ = buffer.append(30)
 
-        #expect(buffer[Index<Int>(0)] == 10)
-        #expect(buffer[Index<Int>(1)] == 20)
-        #expect(buffer[Index<Int>(2)] == 30)
+        #expect(buffer[Index<Int>(_unchecked: Ordinal(0))] == 10)
+        #expect(buffer[Index<Int>(_unchecked: Ordinal(1))] == 20)
+        #expect(buffer[Index<Int>(_unchecked: Ordinal(2))] == 30)
 
-        buffer[Index<Int>(1)] = 999
-        #expect(buffer[Index<Int>(1)] == 999)
+        buffer[Index<Int>(_unchecked: Ordinal(1))] = 999
+        #expect(buffer[Index<Int>(_unchecked: Ordinal(1))] == 999)
     }
 
     @Test
     func `peekFront and peekBack`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         _ = buffer.append(10)
         _ = buffer.append(20)
@@ -190,13 +196,13 @@ extension LinearBoundedTests.Unit {
 
         #expect(buffer.peek.front == 10)
         #expect(buffer.peek.back == 30)
-        #expect(buffer.count == .init(3))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
     }
 
     @Test
     func `drain removes all in front-to-back order`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(8)
+            minimumCapacity: .init(_unchecked: Cardinal(8))
         )
         _ = buffer.append(10)
         _ = buffer.append(20)
@@ -211,11 +217,11 @@ extension LinearBoundedTests.Unit {
     @Test
     func `single element`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(1)
+            minimumCapacity: .init(_unchecked: Cardinal(1))
         )
         let rejected = buffer.append(42)
         #expect(rejected == nil)
-        #expect(buffer.count == .init(1))
+        #expect(buffer.count == .init(_unchecked: Cardinal(1)))
         #expect(buffer.remove.last() == 42)
         #expect(buffer.isEmpty == true)
     }
@@ -229,10 +235,10 @@ extension LinearBoundedTests.EdgeCase {
     {
         await #expect(processExitsWith: .failure) {
             var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
-                .Bounded(minimumCapacity: .init(4))
+                .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
             _ = buffer.append(1)
 
-            buffer.initialize(at: .init(3), to: 99)
+            buffer.initialize(at: .init(_unchecked: Ordinal(3)), to: 99)
         }
     }
 
@@ -240,12 +246,12 @@ extension LinearBoundedTests.EdgeCase {
     func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
         await #expect(processExitsWith: .failure) {
             var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
-                .Bounded(minimumCapacity: .init(4))
+                .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
             _ = buffer.append(1)
             _ = buffer.append(2)
             _ = buffer.append(3)
 
-            _ = buffer.move(at: .init(0))
+            _ = buffer.move(at: .init(_unchecked: Ordinal(0)))
         }
     }
 }
@@ -255,7 +261,7 @@ extension LinearBoundedTests.Integration {
     @Test
     func `fill drain fill cycle`() {
         var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            minimumCapacity: .init(4)
+            minimumCapacity: .init(_unchecked: Cardinal(4))
         )
         let cap = Int(buffer.capacity.underlying.rawValue)
 

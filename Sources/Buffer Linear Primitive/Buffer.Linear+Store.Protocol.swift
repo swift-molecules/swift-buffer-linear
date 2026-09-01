@@ -1,3 +1,16 @@
+public import Store_Operations
+public import Store_Ledgered
+public import Span_Protocol
+public import Store_Initialization
+public import Store_Protocol
+public import Store
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Tagged
 public import Cardinal
 public import Ordinal
@@ -20,11 +33,11 @@ extension Buffer.Linear: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyabl
     public mutating func move(at slot: Index<S.Element>) -> S.Element {
         precondition(
             header.count > .zero
-                && slot == header.count.subtracting(saturating: .one).map { Ordinal($0.rawValue) },
-            "Buffer.Linear.move(at:): the contiguous discipline only retracts the trailing slot (slot == count.subtracting(saturating: .one))"
+                && slot == header.count.subtract.saturating(.one).map { Ordinal($0.rawValue) },
+            "Buffer.Linear.move(at:): the contiguous discipline only retracts the trailing slot (slot == count.subtract.saturating(.one))"
         )
         let element = storage.move(at: slot)
-        header.count = header.count.subtracting(saturating: .one)
+        header.count = header.count.subtract.saturating(.one)
         return element
     }
 

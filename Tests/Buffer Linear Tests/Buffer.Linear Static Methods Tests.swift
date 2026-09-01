@@ -1,3 +1,10 @@
+import Store_Initialization
+import Store_Ledgered
+import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal
+import Cardinal_Carrier
+import Cardinal_Tagged
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Cardinal
@@ -18,7 +25,7 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `append increments count and stores element`() {
-        let cap: Tagged<Int, Cardinal> = .init(8)
+        let cap: Tagged<Int, Cardinal> = .init(_unchecked: Cardinal(8))
         var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
@@ -37,7 +44,7 @@ extension LinearStaticTests.Unit {
             storage: &storage
         )
 
-        #expect(header.count == .init(2))
+        #expect(header.count == .init(_unchecked: Cardinal(2)))
 
         let b = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.consumeBack(
             header: &header,
@@ -55,7 +62,7 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `removeFirst removes first and shifts`() {
-        let cap: Tagged<Int, Cardinal> = .init(8)
+        let cap: Tagged<Int, Cardinal> = .init(_unchecked: Cardinal(8))
         var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
@@ -82,7 +89,7 @@ extension LinearStaticTests.Unit {
         let first = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .removeFirst(header: &header, storage: &storage)
         #expect(first == 10)
-        #expect(header.count == .init(2))
+        #expect(header.count == .init(_unchecked: Cardinal(2)))
 
         let second = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .removeFirst(header: &header, storage: &storage)
@@ -98,7 +105,7 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `consumeBack removes last element`() {
-        let cap: Tagged<Int, Cardinal> = .init(8)
+        let cap: Tagged<Int, Cardinal> = .init(_unchecked: Cardinal(8))
         var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
@@ -120,7 +127,7 @@ extension LinearStaticTests.Unit {
         let last = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .consumeBack(header: &header, storage: &storage)
         #expect(last == 20)
-        #expect(header.count == .init(1))
+        #expect(header.count == .init(_unchecked: Cardinal(1)))
 
         let first = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
             .consumeBack(header: &header, storage: &storage)
@@ -132,7 +139,7 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `deinitializeAll clears everything`() {
-        let cap: Tagged<Int, Cardinal> = .init(8)
+        let cap: Tagged<Int, Cardinal> = .init(_unchecked: Cardinal(8))
         var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
@@ -166,7 +173,7 @@ extension LinearStaticTests.Unit {
 
     @Test
     func `initialization stays .one for linear`() {
-        let cap: Tagged<Int, Cardinal> = .init(8)
+        let cap: Tagged<Int, Cardinal> = .init(_unchecked: Cardinal(8))
         var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )
@@ -183,8 +190,8 @@ extension LinearStaticTests.Unit {
         )
         switch header.initialization {
         case .one(let range):
-            #expect(range.lowerBound == .init(0))
-            #expect(range.upperBound == .init(1))
+            #expect(range.lowerBound == .init(_unchecked: Ordinal(0)))
+            #expect(range.upperBound == .init(_unchecked: Ordinal(1)))
 
         default:
             Issue.record("Expected .one")
@@ -201,7 +208,7 @@ extension LinearStaticTests.EdgeCase {
 
     @Test
     func `append then consumeBack round-trips single element`() {
-        let cap: Tagged<Int, Cardinal> = .init(4)
+        let cap: Tagged<Int, Cardinal> = .init(_unchecked: Cardinal(4))
         var header = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Header(
             capacity: cap
         )

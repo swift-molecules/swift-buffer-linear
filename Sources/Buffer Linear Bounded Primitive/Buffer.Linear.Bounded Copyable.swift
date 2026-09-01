@@ -1,3 +1,17 @@
+public import Index
+public import Store_Ledgered
+public import Store_Operations
+public import Span_Protocol
+public import Store_Initialization
+public import Store_Protocol
+public import Store
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Ownership
 public import Ordinal
 import Affine_Standard_Library_Integration
@@ -27,7 +41,7 @@ where
     @inlinable
     public var back: Element {
         return base.value.storage[
-            base.value.header.count.subtracting(saturating: .one).map { Ordinal($0.rawValue) }
+            base.value.header.count.subtract.saturating(.one).map { Ordinal($0.rawValue) }
         ]
     }
 }

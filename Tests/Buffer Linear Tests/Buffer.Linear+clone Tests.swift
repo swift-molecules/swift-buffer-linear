@@ -1,3 +1,11 @@
+import Store_Ledgered
+import Cardinal
+import Tagged
+import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal
+import Cardinal_Carrier
+import Cardinal_Tagged
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Memory_Allocator
@@ -18,23 +26,23 @@ struct LinearCloneTests {
 
         original.append(999)
 
-        #expect(original.count == .init(4))
-        #expect(cloned.count == .init(3))
+        #expect(original.count == .init(_unchecked: Cardinal(4)))
+        #expect(cloned.count == .init(_unchecked: Cardinal(3)))
     }
 
     @Test
     func `clone sizes capacity to count`() {
         var source = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(0)
+            minimumCapacity: .init(_unchecked: Cardinal(0))
         )
-        source.reserveCapacity(.init(100))
+        source.reserveCapacity(.init(_unchecked: Cardinal(100)))
         source.append(1)
         source.append(2)
 
         let cloned = source.clone()
 
-        #expect(cloned.count == .init(2))
-        #expect(cloned.capacity >= .init(2))
+        #expect(cloned.count == .init(_unchecked: Cardinal(2)))
+        #expect(cloned.capacity >= .init(_unchecked: Cardinal(2)))
 
         #expect(cloned.capacity < source.capacity)
     }
@@ -42,7 +50,7 @@ struct LinearCloneTests {
     @Test
     func `clone of empty buffer`() {
         let source = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
-            minimumCapacity: .init(0)
+            minimumCapacity: .init(_unchecked: Cardinal(0))
         )
         let cloned = source.clone()
         let clonedIsEmpty = cloned.isEmpty
@@ -54,12 +62,12 @@ struct LinearCloneTests {
         var source = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear([
             10, 20, 30,
         ])
-        let cloned = source.clone(capacity: .init(50))
+        let cloned = source.clone(capacity: .init(_unchecked: Cardinal(50)))
 
-        #expect(cloned.count == .init(3))
-        #expect(cloned.capacity >= .init(50))
+        #expect(cloned.count == .init(_unchecked: Cardinal(3)))
+        #expect(cloned.capacity >= .init(_unchecked: Cardinal(50)))
 
         source.append(999)
-        #expect(cloned.count == .init(3))
+        #expect(cloned.count == .init(_unchecked: Cardinal(3)))
     }
 }

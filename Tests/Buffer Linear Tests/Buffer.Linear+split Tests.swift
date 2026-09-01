@@ -1,3 +1,11 @@
+import Store_Ledgered
+import Tagged
+import Cardinal
+import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal
+import Cardinal_Carrier
+import Cardinal_Tagged
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Memory_Allocator
@@ -19,7 +27,7 @@ extension LinearSplitTests.Unit {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
             [10, 20, 30, 40]
         )
-        let split = buffer.split(maximum: .init(2))
+        let split = buffer.split(maximum: .init(_unchecked: Cardinal(2)))
         var prefix: [Int] = []
         var remainder: [Int] = []
         split.prefix.forEach { prefix.append($0) }
@@ -51,7 +59,7 @@ extension LinearSplitTests.EdgeCase {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear(
             [10, 20]
         )
-        let split = buffer.split(maximum: .init(3))
+        let split = buffer.split(maximum: .init(_unchecked: Cardinal(3)))
         var prefix: [Int] = []
         let remainderCount = split.remainder.count
         split.prefix.forEach { prefix.append($0) }

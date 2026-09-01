@@ -1,3 +1,16 @@
+public import Store_Operations
+public import Store_Ledgered
+public import Span_Protocol
+public import Store_Initialization
+public import Store_Protocol
+public import Store
+public import Ownership_Inout
+public import Ownership_Borrow
+public import Ordinal_Tagged
+public import Ordinal_Protocol
+public import Ordinal_Cardinal
+public import Cardinal_Tagged
+public import Cardinal_Carrier
 public import Ownership
 public import Ordinal
 public import Index
@@ -54,7 +67,7 @@ extension Buffer.Linear where S: ~Copyable {
             let newCapacity: Tagged<Element, Cardinal> =
                 header.capacity == .zero
                 ? .one
-                : header.capacity.adding(saturating: header.capacity)
+                : header.capacity.add.saturating(header.capacity)
             _growTo(newCapacity)
         }
         Self.append(consume element, header: &header, storage: &storage)

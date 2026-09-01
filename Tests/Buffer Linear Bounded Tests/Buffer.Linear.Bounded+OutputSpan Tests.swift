@@ -1,3 +1,11 @@
+import Store_Ledgered
+import Cardinal
+import Tagged
+import Ordinal_Cardinal
+import Ordinal_Tagged
+import Ordinal
+import Cardinal_Carrier
+import Cardinal_Tagged
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Memory_Allocator
@@ -29,45 +37,45 @@ extension LinearBoundedOutputSpanTests.Unit {
     func `init fills the OutputSpan exactly`() throws {
 
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(4)
+            capacity: .init(_unchecked: Cardinal(4))
         ) { span in
             span.append(10)
             span.append(20)
             span.append(30)
             span.append(40)
         }
-        #expect(buffer.count == .init(4))
-        #expect(buffer.capacity == .init(4))
+        #expect(buffer.count == .init(_unchecked: Cardinal(4)))
+        #expect(buffer.capacity == .init(_unchecked: Cardinal(4)))
     }
 
     @Test
     func `init with partial population leaves correct count`() throws {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(8)
+            capacity: .init(_unchecked: Cardinal(8))
         ) { span in
             span.append(1)
             span.append(2)
             span.append(3)
         }
-        #expect(buffer.count == .init(3))
-        #expect(buffer.capacity == .init(8))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
+        #expect(buffer.capacity == .init(_unchecked: Cardinal(8)))
         #expect(buffer.isFull == false)
     }
 
     @Test
     func `init with empty closure yields empty buffer`() throws {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(4)
+            capacity: .init(_unchecked: Cardinal(4))
         ) { _ in }
         #expect(buffer.isEmpty == true)
         #expect(buffer.count == .zero)
-        #expect(buffer.capacity == .init(4))
+        #expect(buffer.capacity == .init(_unchecked: Cardinal(4)))
     }
 
     @Test
     func `init with zero capacity`() throws {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(0)
+            capacity: .init(_unchecked: Cardinal(0))
         ) { _ in }
         #expect(buffer.isEmpty == true)
         #expect(buffer.count == .zero)
@@ -76,14 +84,14 @@ extension LinearBoundedOutputSpanTests.Unit {
     @Test
     func `capacity is pinned to the exact requested capacity`() throws {
         let four = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(4)
+            capacity: .init(_unchecked: Cardinal(4))
         ) { _ in }
-        #expect(four.capacity == .init(4))
+        #expect(four.capacity == .init(_unchecked: Cardinal(4)))
 
         let nine = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(9)
+            capacity: .init(_unchecked: Cardinal(9))
         ) { _ in }
-        #expect(nine.capacity == .init(9))
+        #expect(nine.capacity == .init(_unchecked: Cardinal(9)))
     }
 }
 
@@ -93,7 +101,7 @@ extension LinearBoundedOutputSpanTests.EdgeCase {
     func `OutputSpan freeCapacity decreases with appends`() throws {
         var captured: [Int] = []
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(3)
+            capacity: .init(_unchecked: Cardinal(3))
         ) { span in
             captured.append(span.freeCapacity)
             span.append(100)
@@ -102,21 +110,21 @@ extension LinearBoundedOutputSpanTests.EdgeCase {
             captured.append(span.freeCapacity)
         }
         #expect(captured == [3, 2, 1])
-        #expect(buffer.count == .init(2))
+        #expect(buffer.count == .init(_unchecked: Cardinal(2)))
     }
 
     @Test
     func `OutputSpan isFull reflects requested capacity`() throws {
         var fullAtEnd: Bool = false
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-            capacity: .init(2)
+            capacity: .init(_unchecked: Cardinal(2))
         ) { span in
             span.append(1)
             span.append(2)
             fullAtEnd = span.isFull
         }
         #expect(fullAtEnd == true)
-        #expect(buffer.count == .init(2))
+        #expect(buffer.count == .init(_unchecked: Cardinal(2)))
     }
 }
 
@@ -125,22 +133,22 @@ extension LinearBoundedOutputSpanTests.NonCopyable {
     @Test
     func `init with noncopyable elements`() throws {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<MoveOnly>>.Linear
-            .Bounded(capacity: .init(3)) { span in
+            .Bounded(capacity: .init(_unchecked: Cardinal(3))) { span in
                 span.append(MoveOnly(1))
                 span.append(MoveOnly(2))
                 span.append(MoveOnly(3))
             }
-        #expect(buffer.count == .init(3))
+        #expect(buffer.count == .init(_unchecked: Cardinal(3)))
     }
 
     @Test
     func `init partial-populate with noncopyable elements`() throws {
         let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<MoveOnly>>.Linear
-            .Bounded(capacity: .init(5)) { span in
+            .Bounded(capacity: .init(_unchecked: Cardinal(5))) { span in
                 span.append(MoveOnly(42))
             }
-        #expect(buffer.count == .init(1))
-        #expect(buffer.capacity == .init(5))
+        #expect(buffer.count == .init(_unchecked: Cardinal(1)))
+        #expect(buffer.capacity == .init(_unchecked: Cardinal(5)))
     }
 }
 
@@ -150,7 +158,7 @@ extension LinearBoundedOutputSpanTests.Throwing {
     func `init throws propagates the error`() {
         #expect(throws: FixtureError.deliberate) {
             _ = try Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded(
-                capacity: .init(4)
+                capacity: .init(_unchecked: Cardinal(4))
             ) { span throws(FixtureError) in
                 span.append(1)
                 span.append(2)
@@ -164,7 +172,7 @@ extension LinearBoundedOutputSpanTests.Throwing {
 
         #expect(throws: FixtureError.deliberate) {
             _ = try Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<MoveOnly>>.Linear
-                .Bounded(capacity: .init(3)) { span throws(FixtureError) in
+                .Bounded(capacity: .init(_unchecked: Cardinal(3))) { span throws(FixtureError) in
                     span.append(MoveOnly(1))
                     span.append(MoveOnly(2))
                     throw FixtureError.deliberate
