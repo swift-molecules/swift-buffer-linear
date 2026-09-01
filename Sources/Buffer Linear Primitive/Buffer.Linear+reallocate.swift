@@ -1,3 +1,4 @@
+public import Memory_Allocator_Protocol
 public import Store_Operations
 public import Store_Ledgered
 public import Span_Protocol
@@ -25,8 +26,9 @@ public import Storage_Memory
 extension Buffer.Linear where S: ~Copyable {
 
     @inlinable
-    public mutating func reallocate<E: ~Copyable>(capacity newCapacity: Tagged<E, Cardinal>)
-    where S == Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<E> {
+    public mutating func reallocate<E: ~Copyable, Resource: Memory.Growable & ~Copyable>(
+        capacity newCapacity: Tagged<E, Cardinal>
+    ) where S == Storage<Memory.Allocator<Resource>>.Contiguous<E> {
         precondition(
             newCapacity >= header.count,
             "Buffer.Linear.reallocate(capacity:): capacity must be >= count"

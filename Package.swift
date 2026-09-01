@@ -113,6 +113,7 @@ let package = Package(
         .target(
             name: "Buffer Linear Primitive",
             dependencies: [
+                .product(name: "Memory Allocator Protocol", package: "swift-memory-allocation"),
                 .product(name: "Sequence Protocol", package: "swift-sequence"),
                 .product(name: "Iterable", package: "swift-iterator"),
                 .product(name: "Iterator", package: "swift-iterator"),

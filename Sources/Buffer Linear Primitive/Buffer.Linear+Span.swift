@@ -1,3 +1,6 @@
+public import Memory
+public import Memory_Allocator
+public import Storage
 public import Store_Operations
 public import Store_Ledgered
 public import Span_Protocol
@@ -26,5 +29,17 @@ extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable {
         borrowing get {
             storage.span
         }
+    }
+}
+
+
+extension Buffer.Linear where S: ~Copyable {
+
+    @inlinable
+    @_lifetime(&self)
+    public mutating func mutableSpan<E: ~Copyable, Resource: Memory.Region & ~Copyable>()
+        -> Swift.MutableSpan<E>
+    where S == Storage<Memory.Allocator<Resource>>.Contiguous<E> {
+        storage.mutableSpan(count: header.count)
     }
 }
