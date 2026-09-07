@@ -1,11 +1,7 @@
-import Store_Ledgered
-import Cardinal
+import Store
 import Tagged
-public import Ordinal_Cardinal
-public import Ordinal_Tagged
 public import Ordinal
-public import Cardinal_Carrier
-public import Cardinal_Tagged
+public import Cardinal
 @_exported public import Buffer_Linear_Bounded
 @_exported public import Buffer_Linear
 @_exported public import Memory

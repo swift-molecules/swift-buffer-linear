@@ -1,15 +1,7 @@
-import Store_Ledgered
-import Store_Operations
-import Store_Initialization
-import Store_Protocol
 import Store
-import Ordinal_Cardinal
-import Ordinal_Tagged
 import Ordinal
-import Cardinal_Carrier
-import Cardinal_Tagged
-import Index
 import Cardinal
+import Index
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Memory_Allocator

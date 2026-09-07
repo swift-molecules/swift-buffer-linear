@@ -1,11 +1,7 @@
-import Store_Ledgered
-public import Ordinal_Cardinal
-public import Ordinal_Tagged
+import Store
 public import Ordinal
-public import Cardinal_Carrier
-public import Cardinal_Tagged
-public import Buffer_Linear
 public import Cardinal
+public import Buffer_Linear
 public import Memory_Allocator
 public import Memory
 public import Memory_Small

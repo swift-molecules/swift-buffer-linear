@@ -1,11 +1,7 @@
-import Store_Ledgered
+import Store
 import Cardinal
 import Tagged
-import Ordinal_Cardinal
-import Ordinal_Tagged
 import Ordinal
-import Cardinal_Carrier
-import Cardinal_Tagged
 import Buffer_Linear
 import Buffer_Linear_Test_Support
 import Memory_Allocator
