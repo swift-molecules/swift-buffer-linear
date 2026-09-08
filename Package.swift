@@ -98,10 +98,6 @@ let package = Package(
             url: "https://github.com/swift-atoms/swift-ownership.git",
             branch: "main"
         ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-property-ownership.git",
-            branch: "main"
-        ),
     ],
     targets: [
 
@@ -129,11 +125,10 @@ let package = Package(
                 .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Finite", package: "swift-finite"),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Property", package: "swift-property"),
-                .product(name: "Property Ownership", package: "swift-property-ownership"),
             ]
         ),
         .target(
@@ -164,11 +159,10 @@ let package = Package(
                 .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Finite", package: "swift-finite"),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Property", package: "swift-property"),
-                .product(name: "Property Ownership", package: "swift-property-ownership"),
             ]
         ),
 
@@ -188,7 +182,7 @@ let package = Package(
                 "Buffer Linear Bounded",
                 .product(name: "Index", package: "swift-index"),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
             ]
@@ -209,7 +203,7 @@ let package = Package(
                 .product(name: "Storage", package: "swift-storage"),
                 .product(name: "Index", package: "swift-index"),
                 .product(
-                    name: "Ordinal Standard Library Integration",
+                    name: "Ordinal",
                     package: "swift-ordinal"
                 ),
             ]

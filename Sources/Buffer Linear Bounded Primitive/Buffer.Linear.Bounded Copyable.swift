@@ -7,8 +7,7 @@ public import Cardinal
 public import Memory_Allocator
 public import Memory
 public import Memory_Small
-import Ordinal_Standard_Library_Integration
-public import Property_Ownership
+import Ordinal
 public import Property
 public import Tagged
 public import Storage_Memory

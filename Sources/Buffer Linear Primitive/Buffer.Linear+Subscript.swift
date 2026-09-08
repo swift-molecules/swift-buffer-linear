@@ -6,7 +6,7 @@ public import Ordinal
 public import Cardinal
 public import Index
 import Memory
-import Ordinal_Standard_Library_Integration
+import Ordinal
 import Storage_Memory
 
 extension Buffer.Linear where S: ~Copyable {

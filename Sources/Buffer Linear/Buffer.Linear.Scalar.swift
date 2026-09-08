@@ -6,7 +6,7 @@ public import Ordinal
 public import Cardinal
 public import Tagged
 public import Index
-import Ordinal_Standard_Library_Integration
+import Ordinal
 
 extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 

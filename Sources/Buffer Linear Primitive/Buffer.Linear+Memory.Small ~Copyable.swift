@@ -4,7 +4,7 @@ public import Ownership
 public import Ordinal
 public import Cardinal
 public import Index
-import Ordinal_Standard_Library_Integration
+import Ordinal
 public import Tagged
 public import Storage
 

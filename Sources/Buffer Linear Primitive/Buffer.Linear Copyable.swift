@@ -6,11 +6,10 @@ public import Ordinal
 public import Cardinal
 public import Tagged
 public import Property
-public import Property_Ownership
 public import Memory_Allocator
 public import Memory
 public import Memory_Small
-import Ordinal_Standard_Library_Integration
+import Ordinal
 public import Storage_Memory
 public import Storage
 

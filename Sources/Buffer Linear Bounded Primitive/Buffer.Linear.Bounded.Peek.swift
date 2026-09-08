@@ -5,8 +5,7 @@ public import Span
 public import Ownership
 public import Ordinal
 public import Cardinal
-import Ordinal_Standard_Library_Integration
-public import Property_Ownership
+import Ordinal
 public import Property
 import Storage_Memory
 

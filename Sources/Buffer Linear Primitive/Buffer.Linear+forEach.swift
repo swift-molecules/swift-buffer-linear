@@ -6,7 +6,7 @@ public import Cardinal
 public import Tagged
 public import Index
 import Finite
-import Ordinal_Standard_Library_Integration
+import Ordinal
 import Storage_Memory
 public import Storage
 

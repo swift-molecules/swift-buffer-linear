@@ -8,7 +8,7 @@ public import Index
 public import Memory_Allocator
 public import Memory
 public import Memory_Small
-import Ordinal_Standard_Library_Integration
+import Ordinal
 public import Storage_Memory
 
 extension Buffer.Linear.Bounded where S: ~Copyable {

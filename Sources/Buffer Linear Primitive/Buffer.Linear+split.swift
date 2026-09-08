@@ -6,7 +6,7 @@ public import Cardinal
 public import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
-import Ordinal_Standard_Library_Integration
+import Ordinal
 public import Tagged
 public import Storage_Memory
 import Storage

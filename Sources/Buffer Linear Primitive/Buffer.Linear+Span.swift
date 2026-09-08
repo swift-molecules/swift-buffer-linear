@@ -8,7 +8,7 @@ public import Tagged
 public import Ownership
 public import Ordinal
 public import Cardinal
-import Ordinal_Standard_Library_Integration
+import Ordinal
 
 extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable {
 
