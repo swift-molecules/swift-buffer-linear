@@ -1,6 +1,6 @@
-public import Index
-public import Store
-public import Span
+import Index
+import Store
+import Span
 public import Ownership
 public import Ordinal
 public import Cardinal

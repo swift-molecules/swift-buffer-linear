@@ -1,12 +1,12 @@
 public import Store
-public import Span
-public import Ownership
+import Span
+import Ownership
 public import Ordinal
 public import Cardinal
 public import Index
 import Ordinal
 public import Tagged
-public import Storage
+import Storage
 
 extension __StoreProtocol where Self: ~Copyable {
 

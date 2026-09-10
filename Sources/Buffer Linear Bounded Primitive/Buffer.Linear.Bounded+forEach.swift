@@ -1,6 +1,6 @@
 public import Store
-public import Span
-public import Ownership
+import Span
+import Ownership
 public import Ordinal
 public import Cardinal
 public import Tagged
@@ -8,7 +8,7 @@ public import Index
 import Finite
 import Ordinal
 import Storage_Memory
-public import Storage
+import Storage
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 

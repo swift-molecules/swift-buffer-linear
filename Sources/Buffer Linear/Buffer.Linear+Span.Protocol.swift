@@ -1,10 +1,10 @@
-public import Index
-public import Tagged
+import Index
+import Tagged
 public import Store
 public import Span
-public import Ownership
-public import Ordinal
-public import Cardinal
+import Ownership
+import Ordinal
+import Cardinal
 
 extension Buffer.Linear: Span.`Protocol` where S: Span.`Protocol`, S: ~Copyable {}
 

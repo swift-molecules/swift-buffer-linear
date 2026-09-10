@@ -1,7 +1,7 @@
 public import Iterator
 public import Store
 public import Span
-public import Ownership
+import Ownership
 public import Ordinal
 public import Cardinal
 public import Tagged

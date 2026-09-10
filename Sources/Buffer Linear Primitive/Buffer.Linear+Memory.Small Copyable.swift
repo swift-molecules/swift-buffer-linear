@@ -1,8 +1,8 @@
 public import Store
-public import Span
+import Span
 public import Index
 public import Tagged
-public import Ownership
+import Ownership
 public import Ordinal
 public import Cardinal
 public import Memory_Allocator

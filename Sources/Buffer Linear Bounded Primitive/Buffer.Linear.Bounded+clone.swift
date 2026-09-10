@@ -1,10 +1,10 @@
-public import Index
-public import Tagged
-public import Store
-public import Span
-public import Ownership
-public import Ordinal
-public import Cardinal
+import Index
+import Tagged
+import Store
+import Span
+import Ownership
+import Ordinal
+import Cardinal
 public import Memory_Allocator
 public import Memory
 public import Memory_Small

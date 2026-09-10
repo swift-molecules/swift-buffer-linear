@@ -1,13 +1,13 @@
 public import Memory_Allocator_Protocol
-public import Store
-public import Span
-public import Index
-public import Ownership
-public import Ordinal
+import Store
+import Span
+import Index
+import Ownership
+import Ordinal
 public import Cardinal
 public import Memory_Allocator
 public import Memory
-public import Memory_Small
+import Memory_Small
 import Ordinal
 public import Tagged
 public import Storage_Memory

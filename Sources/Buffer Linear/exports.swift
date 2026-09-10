@@ -1,10 +1,10 @@
-public import Index
-public import Tagged
-public import Store
-public import Span
-public import Ownership
-public import Ordinal
-public import Cardinal
+import Index
+import Tagged
+import Store
+import Span
+import Ownership
+import Ordinal
+import Cardinal
 @_exported public import Buffer_Linear_Bounded
 @_exported public import Buffer_Linear_Primitive
 @_exported public import Iterator

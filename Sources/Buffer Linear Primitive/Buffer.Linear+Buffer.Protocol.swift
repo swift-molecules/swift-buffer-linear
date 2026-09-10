@@ -1,8 +1,8 @@
 public import Buffer
-public import Cardinal
-public import Index
-public import Ordinal
-public import Tagged
+import Cardinal
+import Index
+import Ordinal
+import Tagged
 
 extension Buffer.Linear: Buffer.`Protocol` where S: ~Copyable {
 

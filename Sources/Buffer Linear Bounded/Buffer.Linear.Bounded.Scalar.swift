@@ -1,13 +1,13 @@
 public import Iterator
 public import Store
 public import Span
-public import Ownership
+import Ownership
 public import Ordinal
 public import Cardinal
 public import Tagged
 public import Index
 import Ordinal
-public import Storage
+import Storage
 
 extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: Copyable, S.Element: Copyable {
 

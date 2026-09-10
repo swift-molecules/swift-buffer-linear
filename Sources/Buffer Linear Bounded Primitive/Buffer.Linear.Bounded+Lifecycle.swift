@@ -1,7 +1,7 @@
 public import Store
-public import Span
+import Span
 public import Ownership
-public import Ordinal
+import Ordinal
 public import Cardinal
 public import Index
 public import Memory_Allocator

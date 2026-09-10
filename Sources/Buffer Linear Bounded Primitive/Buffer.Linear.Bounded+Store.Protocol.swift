@@ -1,11 +1,11 @@
 public import Store
-public import Span
-public import Ownership
+import Span
+import Ownership
 public import Ordinal
 public import Cardinal
 public import Tagged
 public import Index
-public import Storage
+import Storage
 
 extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyable {
 

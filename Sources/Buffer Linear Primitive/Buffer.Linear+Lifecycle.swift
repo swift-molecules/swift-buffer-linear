@@ -1,5 +1,5 @@
 public import Store
-public import Span
+import Span
 public import Ownership
 public import Ordinal
 public import Cardinal
