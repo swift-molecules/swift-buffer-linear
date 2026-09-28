@@ -5,8 +5,6 @@ import Ordinal
 import Cardinal
 import Tagged
 import Index
-import Ordinal
-import Storage_Memory
 import Storage
 
 extension Buffer.Linear.Bounded where S: ~Copyable {

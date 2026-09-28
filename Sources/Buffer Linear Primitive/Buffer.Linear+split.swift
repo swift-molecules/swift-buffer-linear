@@ -8,7 +8,7 @@ public import Memory_Allocator
 public import Memory_Allocator_Protocol
 import Ordinal
 public import Tagged
-public import Storage_Memory
+public import Storage
 import Storage
 
 extension Buffer.Linear where S: ~Copyable {
@@ -27,7 +27,7 @@ extension Buffer.Linear where S: ~Copyable {
         let prefixEnd = prefixCount.map { Ordinal($0.rawValue) }
         while sourceSlot < prefixEnd {
             prefixStorage.initialize(at: sourceSlot, to: source.storage.move(at: sourceSlot))
-            sourceSlot += .one
+            sourceSlot += Tagged<Element, Cardinal>.one
         }
 
         var remainderSlot: Index<Element> = .zero
@@ -37,8 +37,8 @@ extension Buffer.Linear where S: ~Copyable {
                 at: remainderSlot,
                 to: source.storage.move(at: sourceSlot)
             )
-            sourceSlot += .one
-            remainderSlot += .one
+            sourceSlot += Tagged<Element, Cardinal>.one
+            remainderSlot += Tagged<Element, Cardinal>.one
         }
 
         var prefixHeader = Self.Header(capacity: prefixStorage.capacity)

@@ -8,9 +8,8 @@ public import Cardinal
 public import Memory_Allocator
 public import Memory
 import Memory_Small
-import Ordinal
 public import Tagged
-public import Storage_Memory
+public import Storage
 
 extension Buffer.Linear where S: ~Copyable {
 

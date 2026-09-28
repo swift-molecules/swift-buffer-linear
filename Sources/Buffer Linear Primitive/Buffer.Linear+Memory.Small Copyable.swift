@@ -9,16 +9,16 @@ public import Memory_Allocator
 public import Memory
 public import Memory_Small
 import Ordinal
-public import Storage_Memory
 public import Storage
+public import Memory_Allocator_Protocol
 
 extension Buffer.Linear where S: ~Copyable, S.Element: Copyable {
 
     @inlinable
-    public static func copy(
+    public static func copy<Resource: Memory.Growable & ~Copyable>(
         header: Header,
-        source: borrowing Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<S.Element>,
-        to destination: inout Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<S.Element>
+        source: borrowing Storage<Memory.Allocator<Resource>>.Contiguous<S.Element>,
+        to destination: inout Storage<Memory.Allocator<Resource>>.Contiguous<S.Element>
     ) {
         let n = header.count.underlying.rawValue
         var i: UInt = 0

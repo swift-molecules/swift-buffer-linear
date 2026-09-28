@@ -5,7 +5,7 @@ public import Buffer_Linear
 public import Memory_Allocator
 public import Memory
 public import Memory_Small
-public import Storage_Memory
+public import Storage
 public import Tagged
 
 extension Buffer.Linear where S: ~Copyable {

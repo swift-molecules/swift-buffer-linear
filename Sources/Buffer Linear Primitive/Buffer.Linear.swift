@@ -5,8 +5,6 @@ import Ownership
 import Ordinal
 import Cardinal
 import Index
-import Ordinal
-import Storage_Memory
 import Storage
 
 extension Buffer where S: Store.`Protocol`, S: ~Copyable {

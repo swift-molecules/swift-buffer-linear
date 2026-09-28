@@ -5,9 +5,8 @@ import Tagged
 import Ownership
 import Ordinal
 import Cardinal
-import Ordinal
 public import Property
-import Storage_Memory
+import Storage
 
 extension Buffer.Linear where S: ~Copyable {
 

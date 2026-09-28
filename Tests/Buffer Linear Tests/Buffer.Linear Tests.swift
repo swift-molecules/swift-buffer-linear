@@ -6,7 +6,7 @@ import Buffer_Linear_Test_Support
 import Memory_Allocator
 import Memory
 import Memory_Small
-import Storage_Memory
+import Storage
 import Tagged
 import Testing
 
@@ -211,6 +211,7 @@ extension LinearGrowableTests.EdgeCase {
         #expect(buffer.count == .init(_unchecked: Cardinal(0)))
     }
 
+#if os(macOS) || os(Linux) || os(Windows)
     @Test
     func `initialize at an off-discipline slot traps instead of silently desyncing header count`()
         async
@@ -224,7 +225,9 @@ extension LinearGrowableTests.EdgeCase {
             buffer.initialize(at: .init(_unchecked: Ordinal(3)), to: 99)
         }
     }
+#endif
 
+#if os(macOS) || os(Linux) || os(Windows)
     @Test
     func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
         await #expect(processExitsWith: .failure) {
@@ -238,6 +241,7 @@ extension LinearGrowableTests.EdgeCase {
             _ = buffer.move(at: .init(_unchecked: Ordinal(0)))
         }
     }
+#endif
 }
 
 extension LinearGrowableTests.Integration {

@@ -11,7 +11,6 @@ public import Memory_Small
 import Ordinal
 public import Property
 public import Tagged
-public import Storage_Memory
 public import Storage
 
 extension Buffer.Linear where S: ~Copyable {
@@ -132,7 +131,7 @@ extension Buffer.Linear where S: ~Copyable {
         let end = oldCount.map { Ordinal($0.rawValue) }
         while slot < end {
             newStorage.initialize(at: slot, to: storage.move(at: slot))
-            slot += .one
+            slot += Tagged<Element, Cardinal>.one
         }
         storage = newStorage
         header = Self.Header(capacity: newCapacity)
@@ -179,25 +178,27 @@ extension Buffer.Linear where S: ~Copyable {
     }
 }
 
-extension Property.Inout.Typed
-where
-    Tag == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Linear.Remove,
-    Base == Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Element>>.Linear,
-    Element: ~Copyable
-{
+extension Property.Inout.Typed where Base: ~Copyable, Element: ~Copyable {
+
 
     @inlinable
-    public mutating func first() -> Element {
+    public mutating func first<Resource: Memory.Growable & ~Copyable>() -> Element
+    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
+    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear {
         base.value._removeFirst()
     }
 
     @inlinable
-    public mutating func last() -> Element {
+    public mutating func last<Resource: Memory.Growable & ~Copyable>() -> Element
+    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
+    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear {
         base.value._removeLast()
     }
 
     @inlinable
-    public mutating func all() {
+    public mutating func all<Resource: Memory.Growable & ~Copyable>()
+    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
+    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear {
         base.value._removeAll()
     }
 }

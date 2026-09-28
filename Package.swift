@@ -40,20 +40,10 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/swift-atoms/swift-storage.git",
-            branch: "main"
-        ),
+            branch: "main", traits: ["Generational", "Memory"]),
         .package(
             url: "https://github.com/swift-molecules/swift-memory-allocation.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-memory-small.git",
-            branch: "main"
-        ),
-        .package(
-            url: "https://github.com/swift-molecules/swift-storage-memory.git",
-            branch: "main"
-        ),
+            branch: "main", traits: ["MemorySmall"]),
         .package(
             url: "https://github.com/swift-atoms/swift-index.git",
             branch: "main"
@@ -116,19 +106,18 @@ let package = Package(
                 .product(name: "Store", package: "swift-store"),
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Storage", package: "swift-storage"),
-                .product(name: "Storage Memory", package: "swift-storage-memory"),
                 .product(
                     name: "Memory Allocator",
                     package: "swift-memory-allocation"
                 ),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Finite", package: "swift-finite"),
                 .product(
                     name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Property", package: "swift-property"),
+                .product(name: "Memory Small", package: "swift-memory-allocation"),
             ]
         ),
         .target(
@@ -146,7 +135,6 @@ let package = Package(
                 .product(name: "Ownership", package: "swift-ownership"),
                 "Buffer Linear Primitive",
                 .product(name: "Storage", package: "swift-storage"),
-                .product(name: "Storage Memory", package: "swift-storage-memory"),
                 .product(
                     name: "Memory Allocator",
                     package: "swift-memory-allocation"
@@ -156,13 +144,13 @@ let package = Package(
                     package: "swift-memory-allocation"
                 ),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Finite", package: "swift-finite"),
                 .product(
                     name: "Ordinal",
                     package: "swift-ordinal"
                 ),
                 .product(name: "Property", package: "swift-property"),
+                .product(name: "Memory Small", package: "swift-memory-allocation"),
             ]
         ),
 
@@ -224,14 +212,13 @@ let package = Package(
                 "Buffer Linear",
                 "Buffer Linear Bounded",
                 .product(name: "Storage", package: "swift-storage"),
-                .product(name: "Storage Memory", package: "swift-storage-memory"),
                 .product(
                     name: "Memory Allocator",
                     package: "swift-memory-allocation"
                 ),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Index", package: "swift-index"),
+                .product(name: "Memory Small", package: "swift-memory-allocation"),
             ],
             path: "Tests/Support"
         ),
@@ -251,10 +238,9 @@ let package = Package(
                 "Buffer Linear",
                 "Buffer Linear Test Support",
                 .product(name: "Storage", package: "swift-storage"),
-                .product(name: "Storage Memory", package: "swift-storage-memory"),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Index", package: "swift-index"),
+                .product(name: "Memory Small", package: "swift-memory-allocation"),
             ]
         ),
         .testTarget(
@@ -272,12 +258,13 @@ let package = Package(
                 "Buffer Linear Bounded",
                 "Buffer Linear Test Support",
                 .product(name: "Storage", package: "swift-storage"),
-                .product(name: "Storage Memory", package: "swift-storage-memory"),
                 .product(name: "Memory", package: "swift-memory"),
-                .product(name: "Memory Small", package: "swift-memory-small"),
                 .product(name: "Index", package: "swift-index"),
+                .product(name: "Memory Small", package: "swift-memory-allocation"),
             ]
         ),
+
+        .testTarget(name: "Buffer Linear Decision Column Integration Tests", dependencies: [.target(name: "Buffer Linear"), .target(name: "Buffer Linear Bounded"), .product(name: "Buffer", package: "swift-buffer"), .product(name: "Storage", package: "swift-storage"), .product(name: "Memory Allocator", package: "swift-memory-allocation"), .product(name: "Memory", package: "swift-memory"), .product(name: "Store", package: "swift-store"), .product(name: "Index", package: "swift-index"), .product(name: "Tagged", package: "swift-tagged"), .product(name: "Cardinal", package: "swift-cardinal")], path: "Tests/Buffer Linear Decision Column Integration Tests"),
     ],
     swiftLanguageModes: [.v6]
 )
