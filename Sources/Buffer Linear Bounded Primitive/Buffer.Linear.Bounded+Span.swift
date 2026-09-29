@@ -1,3 +1,6 @@
+public import Memory
+public import Memory_Allocator
+public import Storage
 import Index
 import Tagged
 public import Store
@@ -15,5 +18,16 @@ extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: ~Copyable {
         borrowing get {
             storage.span
         }
+    }
+}
+
+extension Buffer.Linear.Bounded where S: ~Copyable {
+
+    @inlinable
+    @_lifetime(&self)
+    public mutating func mutableSpan<E: ~Copyable, Resource: Memory.Region & ~Copyable>()
+        -> Swift.MutableSpan<E>
+    where S == Storage<Memory.Allocator<Resource>>.Contiguous<E> {
+        storage.mutableSpan(count: header.count)
     }
 }
