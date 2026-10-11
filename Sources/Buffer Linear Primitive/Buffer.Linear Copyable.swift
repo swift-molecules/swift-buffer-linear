@@ -9,7 +9,6 @@ public import Property
 public import Memory_Allocator
 public import Memory
 public import Memory_Small
-import Ordinal
 public import Storage
 
 extension Property.Borrow.Typed

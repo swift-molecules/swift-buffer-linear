@@ -7,7 +7,6 @@ public import Cardinal
 public import Memory_Allocator
 public import Memory
 public import Memory_Small
-import Ordinal
 public import Property
 public import Tagged
 public import Storage

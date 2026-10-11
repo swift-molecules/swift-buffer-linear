@@ -7,7 +7,7 @@ import Ordinal
 import Cardinal
 public import Memory_Allocator
 public import Memory
-public import Memory_Small
+import Memory_Small
 public import Storage
 public import Memory_Allocator_Protocol
 

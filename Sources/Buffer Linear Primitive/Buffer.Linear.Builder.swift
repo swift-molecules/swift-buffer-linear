@@ -8,9 +8,8 @@ public import Cardinal
 public import Buffer
 public import Memory_Allocator
 public import Memory
-public import Memory_Small
+import Memory_Small
 public import Storage
-import Storage
 public import Memory_Allocator_Protocol
 
 extension Buffer.Linear where S: ~Copyable {
@@ -154,7 +153,7 @@ extension Buffer.Linear where S: ~Copyable {
 extension Buffer.Linear.Builder where S: ~Copyable {
 
     @inlinable
-    public static func buildExpression<E, Seq: Swift.Sequence, Resource: Memory.Growable & ~Copyable>(
+    public static func buildExpression<E, Seq: Swift::Sequence, Resource: Memory.Growable & ~Copyable>(
         _ expression: Seq
     ) -> Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<E>>.Linear
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<E>, E: Copyable, Seq.Element == E {

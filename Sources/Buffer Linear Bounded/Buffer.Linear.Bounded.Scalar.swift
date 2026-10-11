@@ -6,7 +6,6 @@ public import Ordinal
 public import Cardinal
 public import Tagged
 public import Index
-import Ordinal
 import Storage
 
 extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: Copyable, S.Element: Copyable {

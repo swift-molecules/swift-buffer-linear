@@ -133,7 +133,7 @@ let package = Package(
                 .product(name: "Index", package: "swift-index"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ownership", package: "swift-ownership"),
-                "Buffer Linear Primitive",
+                .target(name: "Buffer Linear Primitive"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(
                     name: "Memory Allocator",
@@ -166,8 +166,8 @@ let package = Package(
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ownership", package: "swift-ownership"),
-                "Buffer Linear Primitive",
-                "Buffer Linear Bounded",
+                .target(name: "Buffer Linear Primitive"),
+                .target(name: "Buffer Linear Bounded"),
                 .product(name: "Index", package: "swift-index"),
                 .product(
                     name: "Ordinal",
@@ -187,7 +187,7 @@ let package = Package(
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ownership", package: "swift-ownership"),
-                "Buffer Linear Bounded Primitive",
+                .target(name: "Buffer Linear Bounded Primitive"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(name: "Index", package: "swift-index"),
                 .product(
@@ -209,8 +209,8 @@ let package = Package(
                 .product(name: "Tagged", package: "swift-tagged"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ownership", package: "swift-ownership"),
-                "Buffer Linear",
-                "Buffer Linear Bounded",
+                .target(name: "Buffer Linear"),
+                .target(name: "Buffer Linear Bounded"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(
                     name: "Memory Allocator",
@@ -235,8 +235,8 @@ let package = Package(
                 .product(name: "Store", package: "swift-store"),
                 .product(name: "Cardinal", package: "swift-cardinal"),
                 .product(name: "Ownership", package: "swift-ownership"),
-                "Buffer Linear",
-                "Buffer Linear Test Support",
+                .target(name: "Buffer Linear"),
+                .target(name: "Buffer Linear Test Support"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(name: "Index", package: "swift-index"),
@@ -255,8 +255,8 @@ let package = Package(
                 .product(name: "Span", package: "swift-span"),
                 .product(name: "Store", package: "swift-store"),
                 .product(name: "Ownership", package: "swift-ownership"),
-                "Buffer Linear Bounded",
-                "Buffer Linear Test Support",
+                .target(name: "Buffer Linear Bounded"),
+                .target(name: "Buffer Linear Test Support"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(name: "Index", package: "swift-index"),
@@ -270,20 +270,14 @@ let package = Package(
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    let ecosystem: [SwiftSetting] = [
+    target.swiftSettings = (target.swiftSettings ?? []) + [
         .strictMemorySafety(),
         .enableUpcomingFeature("ExistentialAny"),
         .enableUpcomingFeature("InternalImportsByDefault"),
         .enableUpcomingFeature("MemberImportVisibility"),
         .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("Lifetimes"),
         .enableUpcomingFeature("InferIsolatedConformances"),
+        .enableExperimentalFeature("Lifetimes"),
+        .treatAllWarnings(as: .error),
     ]
-
-    let package: [SwiftSetting] = [
-        .enableExperimentalFeature("BuiltinModule"),
-        .enableExperimentalFeature("RawLayout"),
-    ]
-
-    target.swiftSettings = (target.swiftSettings ?? []) + ecosystem + package
 }

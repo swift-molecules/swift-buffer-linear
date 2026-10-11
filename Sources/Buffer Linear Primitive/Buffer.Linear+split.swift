@@ -6,10 +6,8 @@ public import Cardinal
 public import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
-import Ordinal
 public import Tagged
 public import Storage
-import Storage
 
 extension Buffer.Linear where S: ~Copyable {
 

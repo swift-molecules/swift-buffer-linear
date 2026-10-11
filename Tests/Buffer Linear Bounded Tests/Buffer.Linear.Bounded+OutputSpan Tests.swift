@@ -23,7 +23,7 @@ private struct MoveOnly: ~Copyable {
     init(_ value: Int) { self.value = value }
 }
 
-private enum FixtureError: Swift.Error, Equatable {
+private enum FixtureError: Swift::Error, Equatable {
     case deliberate
 }
 

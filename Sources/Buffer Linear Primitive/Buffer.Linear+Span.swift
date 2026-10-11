@@ -12,7 +12,7 @@ import Ordinal
 
 extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable {
 
-    public var span: Swift.Span<S.Element> {
+    public var span: Swift::Span<S.Element> {
         @_lifetime(borrow self)
         @inlinable
         borrowing get {
@@ -27,7 +27,7 @@ extension Buffer.Linear where S: ~Copyable {
     @inlinable
     @_lifetime(&self)
     public mutating func mutableSpan<E: ~Copyable, Resource: Memory.Region & ~Copyable>()
-        -> Swift.MutableSpan<E>
+        -> Swift::MutableSpan<E>
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<E> {
         storage.mutableSpan(count: header.count)
     }

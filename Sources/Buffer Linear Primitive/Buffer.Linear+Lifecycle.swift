@@ -7,8 +7,7 @@ public import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
 public import Memory
-public import Memory_Small
-import Ordinal
+import Memory_Small
 public import Property
 public import Tagged
 public import Storage

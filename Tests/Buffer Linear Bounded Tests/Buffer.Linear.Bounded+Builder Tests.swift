@@ -50,7 +50,7 @@ extension LinearBoundedBuilderTests.Overflow {
             }
             Issue.record("expected throw")
         } catch let error {
-            #expect((error as? Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear.Bounded.Error) == .capacityExceeded)
+            #expect(error == .capacityExceeded)
         }
     }
 }

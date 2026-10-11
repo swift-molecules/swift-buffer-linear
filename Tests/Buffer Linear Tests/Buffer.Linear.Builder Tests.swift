@@ -246,7 +246,7 @@ extension LinearBuilderTests.EdgeCase {
             9
             10
         }
-        #expect(LinearBuilderTests.collected(buffer) == Swift.Array(1...10))
+        #expect(LinearBuilderTests.collected(buffer) == Swift::Array(1...10))
     }
 }
 

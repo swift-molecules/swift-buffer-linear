@@ -6,7 +6,7 @@ public import Cardinal
 public import Index
 public import Memory_Allocator
 public import Memory
-public import Memory_Small
+import Memory_Small
 public import Property
 public import Tagged
 public import Storage
@@ -144,7 +144,7 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
     public init<E: ~Copyable, Resource: Memory.Growable & ~Copyable>(
         minimumCapacity: Tagged<E, Cardinal>,
         initializingCount count: Tagged<E, Cardinal>,
-        with body: (inout Swift.OutputSpan<E>) -> Void
+        with body: (inout Swift::OutputSpan<E>) -> Void
     ) where S == Storage<Memory.Allocator<Resource>>.Contiguous<E> {
         var storage = Storage<Memory.Allocator<Resource>>.Contiguous<E>.create(
             minimumCapacity: minimumCapacity
