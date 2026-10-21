@@ -16,7 +16,7 @@ extension Buffer.Linear: Store.`Protocol` where S: Store.`Protocol`, S: ~Copyabl
             "Buffer.Linear.initialize(at:to:): the contiguous discipline only appends at the trailing slot (slot == count)"
         )
         storage.initialize(at: slot, to: element)
-        header.count = header.count + .one
+        header.count += .one
     }
 
     @inlinable

@@ -22,7 +22,7 @@ extension Buffer.Linear.Bounded: Store.`Protocol` where S: Store.`Protocol`, S: 
             "Buffer.Linear.Bounded.initialize(at:to:): the contiguous discipline only appends at the trailing slot (slot == count)"
         )
         storage.initialize(at: slot, to: element)
-        header.count = header.count + .one
+        header.count += .one
     }
 
     @inlinable
