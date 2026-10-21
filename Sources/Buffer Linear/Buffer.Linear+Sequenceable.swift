@@ -1,11 +1,11 @@
-public import Sequence
-import Index
-import Tagged
-public import Store
-public import Span
-import Ownership
-import Ordinal
 import Cardinal
+import Index
+import Ordinal
+import Ownership
+public import Sequence
+public import Span
+public import Store
+import Tagged
 
 extension Buffer.Linear: Sequenceable where S: Span.`Protocol`, S: ~Copyable, S.Element: Copyable {
 

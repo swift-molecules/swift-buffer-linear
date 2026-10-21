@@ -1,14 +1,13 @@
+import Cardinal
+import Index
 public import Memory
 public import Memory_Allocator
+import Ordinal
+import Ownership
+public import Span
 public import Storage
 public import Store
-public import Span
-import Index
 import Tagged
-import Ownership
-import Ordinal
-import Cardinal
-import Ordinal
 
 extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable {
 
@@ -20,7 +19,6 @@ extension Buffer.Linear where S: Span.`Protocol`, S: ~Copyable {
         }
     }
 }
-
 
 extension Buffer.Linear where S: ~Copyable {
 

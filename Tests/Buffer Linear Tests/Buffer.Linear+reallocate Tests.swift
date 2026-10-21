@@ -1,13 +1,13 @@
-import Store
-import Cardinal
-import Tagged
-import Ordinal
 import Buffer_Linear
 import Buffer_Linear_Test_Support
-import Memory_Allocator
+import Cardinal
 import Memory
+import Memory_Allocator
 import Memory_Small
+import Ordinal
 import Storage
+import Store
+import Tagged
 import Testing
 
 @Suite("Buffer.Linear reallocate")

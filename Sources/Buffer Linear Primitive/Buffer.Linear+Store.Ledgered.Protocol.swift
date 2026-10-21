@@ -1,11 +1,11 @@
-public import Store
-import Span
-import Index
-import Tagged
-import Ownership
-import Ordinal
 import Cardinal
+import Index
+import Ordinal
+import Ownership
+import Span
 import Storage
+public import Store
+import Tagged
 
 extension Buffer.Linear: Store.Ledgered.`Protocol`
 where S: Store.Ledgered.`Protocol`, S: ~Copyable {

@@ -1,13 +1,13 @@
-import Store
-import Span
-import Ownership
-public import Ordinal
 public import Cardinal
 public import Index
 public import Memory_Allocator
 public import Memory_Allocator_Protocol
-public import Tagged
+public import Ordinal
+import Ownership
+import Span
 public import Storage
+import Store
+public import Tagged
 
 extension Buffer.Linear where S: ~Copyable {
 

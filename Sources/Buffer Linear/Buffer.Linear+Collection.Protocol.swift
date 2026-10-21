@@ -1,6 +1,6 @@
-import Index
-import Tagged
-import Store
-import Span
-import Ordinal
 import Cardinal
+import Index
+import Ordinal
+import Span
+import Store
+import Tagged

@@ -1,14 +1,13 @@
+import Cardinal
+import Index
 public import Memory
 public import Memory_Allocator
-public import Storage
-import Index
-import Tagged
-public import Store
-public import Span
+import Ordinal
 import Ownership
-import Ordinal
-import Cardinal
-import Ordinal
+public import Span
+public import Storage
+public import Store
+import Tagged
 
 extension Buffer.Linear.Bounded where S: Span.`Protocol`, S: ~Copyable {
 

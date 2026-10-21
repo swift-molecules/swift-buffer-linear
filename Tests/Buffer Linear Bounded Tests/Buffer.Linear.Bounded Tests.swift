@@ -1,13 +1,13 @@
-import Store
-import Ordinal
-import Cardinal
-import Index
 import Buffer_Linear
 import Buffer_Linear_Test_Support
-import Memory_Allocator
+import Cardinal
+import Index
 import Memory
+import Memory_Allocator
 import Memory_Small
+import Ordinal
 import Storage
+import Store
 import Tagged
 import Testing
 
@@ -225,35 +225,35 @@ extension LinearBoundedTests.Unit {
 
 extension LinearBoundedTests.EdgeCase {
 
-#if os(macOS) || os(Linux) || os(Windows)
-    @Test
-    func `initialize at an off-discipline slot traps instead of silently desyncing header count`()
-        async
-    {
-        await #expect(processExitsWith: .failure) {
-            var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
-                .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
-            _ = buffer.append(1)
+    #if os(macOS) || os(Linux) || os(Windows)
+        @Test
+        func `initialize at an off-discipline slot traps instead of silently desyncing header count`()
+            async
+        {
+            await #expect(processExitsWith: .failure) {
+                var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
+                    .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
+                _ = buffer.append(1)
 
-            buffer.initialize(at: .init(_unchecked: Ordinal(3)), to: 99)
+                buffer.initialize(at: .init(_unchecked: Ordinal(3)), to: 99)
+            }
         }
-    }
-#endif
+    #endif
 
-#if os(macOS) || os(Linux) || os(Windows)
-    @Test
-    func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
-        await #expect(processExitsWith: .failure) {
-            var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
-                .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
-            _ = buffer.append(1)
-            _ = buffer.append(2)
-            _ = buffer.append(3)
+    #if os(macOS) || os(Linux) || os(Windows)
+        @Test
+        func `move at an off-discipline slot traps instead of silently desyncing header count`() async {
+            await #expect(processExitsWith: .failure) {
+                var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
+                    .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
+                _ = buffer.append(1)
+                _ = buffer.append(2)
+                _ = buffer.append(3)
 
-            _ = buffer.move(at: .init(_unchecked: Ordinal(0)))
+                _ = buffer.move(at: .init(_unchecked: Ordinal(0)))
+            }
         }
-    }
-#endif
+    #endif
 }
 
 extension LinearBoundedTests.Integration {

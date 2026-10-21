@@ -1,12 +1,12 @@
-import Store
-import Span
-import Index
-import Tagged
-import Ownership
-import Ordinal
-import Cardinal
 @_exported public import Buffer
+import Cardinal
+import Index
+@_exported public import Memory
 @_exported public import Memory_Allocator
 @_exported public import Memory_Small
-@_exported public import Memory
+import Ordinal
+import Ownership
+import Span
 @_exported public import Storage
+import Store
+import Tagged

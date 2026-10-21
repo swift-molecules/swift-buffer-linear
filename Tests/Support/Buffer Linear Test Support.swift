@@ -1,11 +1,11 @@
-import Store
-import Ordinal
-public import Cardinal
 public import Buffer_Linear
-public import Memory_Allocator
+public import Cardinal
 public import Memory
+public import Memory_Allocator
 public import Memory_Small
+import Ordinal
 public import Storage
+import Store
 public import Tagged
 
 extension Buffer.Linear where S: ~Copyable {

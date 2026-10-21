@@ -1,15 +1,15 @@
-import Store
-import Span
-import Index
-public import Ownership
-public import Ordinal
 public import Cardinal
-public import Tagged
-public import Property
-public import Memory_Allocator
+import Index
 public import Memory
+public import Memory_Allocator
 public import Memory_Small
+public import Ordinal
+public import Ownership
+public import Property
+import Span
 public import Storage
+import Store
+public import Tagged
 
 extension Property.Borrow.Typed
 where

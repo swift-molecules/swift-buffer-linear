@@ -1,11 +1,11 @@
-public import Store
-import Span
-import Ownership
-public import Ordinal
 public import Cardinal
 public import Index
-public import Tagged
+public import Ordinal
+import Ownership
+import Span
 import Storage
+public import Store
+public import Tagged
 
 extension __StoreProtocol where Self: ~Copyable {
 
@@ -44,7 +44,8 @@ extension __StoreProtocol where Self: ~Copyable {
         precondition(index < Index<Element>(_unchecked: Ordinal(count.underlying)), "Index out of bounds")
         let element = storage.move(at: index)
         let nextSlot = (index + .one)
-        let followingCount = count.subtract.saturating(Tagged<Element, Cardinal>(_unchecked: Cardinal(nextSlot.ordinal))
+        let followingCount = count.subtract.saturating(
+            Tagged<Element, Cardinal>(_unchecked: Cardinal(nextSlot.ordinal))
         )
         if followingCount > .zero {
             storage.moveInitialize(from: nextSlot, to: index, count: followingCount)

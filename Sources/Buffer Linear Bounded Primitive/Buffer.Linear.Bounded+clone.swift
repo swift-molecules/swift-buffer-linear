@@ -1,15 +1,15 @@
-import Index
-import Tagged
-import Store
-import Span
-import Ownership
-import Ordinal
 import Cardinal
-public import Memory_Allocator
+import Index
 public import Memory
-import Memory_Small
-public import Storage
+public import Memory_Allocator
 public import Memory_Allocator_Protocol
+import Memory_Small
+import Ordinal
+import Ownership
+import Span
+public import Storage
+import Store
+import Tagged
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 

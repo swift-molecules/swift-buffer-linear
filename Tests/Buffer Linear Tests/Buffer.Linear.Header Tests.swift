@@ -1,14 +1,14 @@
-import Store
-import Ordinal
-import Cardinal
 import Buffer_Linear
 import Buffer_Linear_Test_Support
-import Memory_Allocator
+import Cardinal
 import Memory
+import Memory_Allocator
 import Memory_Small
+import Ordinal
 import Storage
-import Testing
+import Store
 import Tagged
+import Testing
 
 @Suite("Buffer.Linear.Header")
 struct LinearHeaderTests {

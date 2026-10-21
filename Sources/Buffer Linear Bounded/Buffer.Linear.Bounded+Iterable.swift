@@ -1,11 +1,11 @@
-public import Iterator
-import Index
-import Tagged
-public import Store
-public import Span
-import Ownership
-import Ordinal
 import Cardinal
+import Index
+public import Iterator
+import Ordinal
+import Ownership
+public import Span
+public import Store
+import Tagged
 
 extension Buffer.Linear.Bounded: Iterable where S: Span.`Protocol`, S: ~Copyable {
 

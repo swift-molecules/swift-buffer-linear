@@ -1,11 +1,11 @@
-public import Store
-import Span
-import Index
-import Ownership
-import Ordinal
 public import Cardinal
-public import Tagged
+import Index
+import Ordinal
+import Ownership
+import Span
 import Storage
+public import Store
+public import Tagged
 
 extension Buffer.Linear where S: ~Copyable {
 

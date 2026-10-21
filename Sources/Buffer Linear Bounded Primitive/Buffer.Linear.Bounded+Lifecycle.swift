@@ -1,16 +1,16 @@
-public import Store
-import Span
-public import Ownership
-import Ordinal
 public import Cardinal
 public import Index
-public import Memory_Allocator
 public import Memory
-import Memory_Small
-public import Property
-public import Tagged
-public import Storage
+public import Memory_Allocator
 public import Memory_Allocator_Protocol
+import Memory_Small
+import Ordinal
+public import Ownership
+public import Property
+import Span
+public import Storage
+public import Store
+public import Tagged
 
 extension Buffer.Linear.Bounded where S: ~Copyable {
 
@@ -115,25 +115,30 @@ extension Buffer.Linear.Bounded where S: ~Copyable {
 
 extension Property.Inout.Typed where Base: ~Copyable, Element: ~Copyable {
 
-
     @inlinable
     public mutating func first<Resource: Memory.Growable & ~Copyable>() -> Element
-    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
-    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Bounded {
+    where
+        Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
+        Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Bounded
+    {
         base.value._removeFirst()
     }
 
     @inlinable
     public mutating func last<Resource: Memory.Growable & ~Copyable>() -> Element
-    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
-    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Bounded {
+    where
+        Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
+        Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Bounded
+    {
         base.value._removeLast()
     }
 
     @inlinable
     public mutating func all<Resource: Memory.Growable & ~Copyable>()
-    where Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
-    Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Bounded {
+    where
+        Tag == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Remove,
+        Base == Buffer<Storage<Memory.Allocator<Resource>>.Contiguous<Element>>.Linear.Bounded
+    {
         base.value._removeAll()
     }
 }

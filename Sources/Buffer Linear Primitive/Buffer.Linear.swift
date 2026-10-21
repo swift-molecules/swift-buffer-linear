@@ -1,11 +1,11 @@
-public import Store
-import Span
-import Tagged
-import Ownership
-import Ordinal
 import Cardinal
 import Index
+import Ordinal
+import Ownership
+import Span
 import Storage
+public import Store
+import Tagged
 
 extension Buffer where S: Store.`Protocol`, S: ~Copyable {
 

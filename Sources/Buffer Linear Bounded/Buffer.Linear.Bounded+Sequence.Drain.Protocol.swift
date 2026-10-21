@@ -1,11 +1,11 @@
-public import Sequence
-import Index
-import Tagged
-public import Store
-import Span
-import Ownership
-import Ordinal
 import Cardinal
+import Index
+import Ordinal
+import Ownership
+public import Sequence
+import Span
+public import Store
+import Tagged
 
 extension Buffer.Linear.Bounded: Sequence.Drain.`Protocol` where S: ~Copyable {
 
