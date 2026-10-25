@@ -116,10 +116,6 @@ let package = Package(
                 ),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(name: "Finite", package: "swift-finite"),
-                .product(
-                    name: "Ordinal",
-                    package: "swift-ordinal"
-                ),
                 .product(name: "Property", package: "swift-property"),
                 .product(name: "Memory Small", package: "swift-memory-allocation"),
             ]
@@ -149,10 +145,6 @@ let package = Package(
                 ),
                 .product(name: "Memory", package: "swift-memory"),
                 .product(name: "Finite", package: "swift-finite"),
-                .product(
-                    name: "Ordinal",
-                    package: "swift-ordinal"
-                ),
                 .product(name: "Property", package: "swift-property"),
                 .product(name: "Memory Small", package: "swift-memory-allocation"),
             ]
@@ -173,10 +165,6 @@ let package = Package(
                 .target(name: "Buffer Linear Primitive"),
                 .target(name: "Buffer Linear Bounded"),
                 .product(name: "Index", package: "swift-index"),
-                .product(
-                    name: "Ordinal",
-                    package: "swift-ordinal"
-                ),
             ]
         ),
         .target(
@@ -194,10 +182,6 @@ let package = Package(
                 .target(name: "Buffer Linear Bounded Primitive"),
                 .product(name: "Storage", package: "swift-storage"),
                 .product(name: "Index", package: "swift-index"),
-                .product(
-                    name: "Ordinal",
-                    package: "swift-ordinal"
-                ),
             ]
         ),
 
