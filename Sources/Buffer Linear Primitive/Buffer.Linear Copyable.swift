@@ -31,7 +31,6 @@ where
     }
 }
 
-// The canonical heap-backed view preserves the same element and ledger operations.
 extension Property.Borrow.Typed
 where
     Tag == Buffer<Storage<Memory.Allocator<Memory.Heap>>.Contiguous<Element>>.Linear.Peek,
