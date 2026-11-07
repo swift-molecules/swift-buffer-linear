@@ -13,8 +13,13 @@ import Testing
 @Suite("Buffer.Linear.Bounded + OutputSpan")
 struct LinearBoundedOutputSpanTests {
     @Suite struct Unit {}
+}
+
+extension LinearBoundedOutputSpanTests {
     @Suite struct EdgeCase {}
+
     @Suite struct NonCopyable {}
+
     @Suite struct Throwing {}
 }
 

@@ -26,6 +26,9 @@ where S: Store.Ledgered.`Protocol`, S: ~Copyable {
 
 @Suite("Buffer.Linear+Store.Protocol")
 struct LinearStoreProtocolTests {
+}
+
+extension LinearStoreProtocolTests {
     @Suite struct Regression {}
 }
 

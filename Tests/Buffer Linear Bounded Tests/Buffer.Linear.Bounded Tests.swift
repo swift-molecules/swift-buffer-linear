@@ -14,8 +14,11 @@ import Testing
 @Suite("Buffer.Linear.Bounded")
 struct LinearBoundedTests {
     @Suite struct Unit {}
-    @Suite struct EdgeCase {}
     @Suite struct Integration {}
+}
+
+extension LinearBoundedTests {
+    @Suite struct EdgeCase {}
 }
 
 extension LinearBoundedTests.Unit {

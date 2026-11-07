@@ -12,8 +12,13 @@ import Testing
 
 @Suite("Buffer.Linear.Bounded+Builder")
 struct LinearBoundedBuilderTests {
+}
+
+extension LinearBoundedBuilderTests {
     @Suite struct WithinCapacity {}
+
     @Suite struct Overflow {}
+
     @Suite struct NonCopyable {}
 }
 

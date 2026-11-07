@@ -13,6 +13,9 @@ import Testing
 @Suite("Buffer.Linear Static Operations")
 struct LinearStaticTests {
     @Suite struct Unit {}
+}
+
+extension LinearStaticTests {
     @Suite struct EdgeCase {}
 }
 

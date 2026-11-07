@@ -12,10 +12,17 @@ import Testing
 
 @Suite("Buffer.Linear + OutputSpan")
 struct LinearOutputSpanTests {
+}
+
+extension LinearOutputSpanTests {
     @Suite struct Init {}
+
     @Suite struct Append {}
+
     @Suite struct Edit {}
+
     @Suite struct NonCopyable {}
+
     @Suite struct Throwing {}
 }
 

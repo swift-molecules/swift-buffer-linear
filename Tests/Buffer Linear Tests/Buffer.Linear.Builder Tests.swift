@@ -13,9 +13,14 @@ import Testing
 @Suite("Buffer.Linear.Builder")
 struct LinearBuilderTests {
     @Suite struct Unit {}
-    @Suite struct EdgeCase {}
     @Suite struct Integration {}
+}
+
+extension LinearBuilderTests {
+    @Suite struct EdgeCase {}
+
     @Suite struct NonCopyable {}
+
     @Suite struct StaticMethods {}
 }
 

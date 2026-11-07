@@ -13,6 +13,9 @@ import Testing
 @Suite("Buffer.Linear + split")
 struct LinearSplitTests {
     @Suite struct Unit {}
+}
+
+extension LinearSplitTests {
     @Suite struct EdgeCase {}
 }
 

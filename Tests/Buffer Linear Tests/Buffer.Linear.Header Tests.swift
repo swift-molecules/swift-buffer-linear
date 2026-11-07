@@ -13,6 +13,9 @@ import Testing
 @Suite("Buffer.Linear.Header")
 struct LinearHeaderTests {
     @Suite struct Unit {}
+}
+
+extension LinearHeaderTests {
     @Suite struct EdgeCase {}
 }
 

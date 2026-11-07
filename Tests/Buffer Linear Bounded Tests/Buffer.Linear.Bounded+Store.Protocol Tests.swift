@@ -21,6 +21,9 @@ private func exerciseSeamSwap<S>(
 
 @Suite("Buffer.Linear.Bounded+Store.Protocol")
 struct LinearBoundedStoreProtocolTests {
+}
+
+extension LinearBoundedStoreProtocolTests {
     @Suite struct Regression {}
 }
 

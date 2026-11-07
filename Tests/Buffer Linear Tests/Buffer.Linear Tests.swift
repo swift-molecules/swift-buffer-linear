@@ -13,8 +13,11 @@ import Testing
 @Suite("Buffer.Linear")
 struct LinearGrowableTests {
     @Suite struct Unit {}
-    @Suite struct EdgeCase {}
     @Suite struct Integration {}
+}
+
+extension LinearGrowableTests {
+    @Suite struct EdgeCase {}
 }
 
 extension LinearGrowableTests.Unit {
