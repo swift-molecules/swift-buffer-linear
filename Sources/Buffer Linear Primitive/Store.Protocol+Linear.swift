@@ -10,7 +10,7 @@ public import Tagged
 extension __StoreProtocol where Self: ~Copyable {
 
     @inlinable
-    package static func linearAppend(
+    static func linearAppend(
         _ element: consuming Element,
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
@@ -21,7 +21,7 @@ extension __StoreProtocol where Self: ~Copyable {
     }
 
     @inlinable
-    package static func linearRemoveFirst(
+    static func linearRemoveFirst(
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
     ) -> Element {
@@ -36,7 +36,7 @@ extension __StoreProtocol where Self: ~Copyable {
     }
 
     @inlinable
-    package static func linearRemove(
+    static func linearRemove(
         at index: Index<Element>,
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
@@ -55,7 +55,7 @@ extension __StoreProtocol where Self: ~Copyable {
     }
 
     @inlinable
-    package static func linearReplace(
+    static func linearReplace(
         at index: Index<Element>,
         with newElement: consuming Element,
         storage: inout Self
@@ -66,7 +66,7 @@ extension __StoreProtocol where Self: ~Copyable {
     }
 
     @inlinable
-    package static func linearConsumeBack(
+    static func linearConsumeBack(
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
     ) -> Element {
@@ -77,7 +77,7 @@ extension __StoreProtocol where Self: ~Copyable {
     }
 
     @inlinable
-    package static func linearSwap(
+    static func linearSwap(
         at i: Index<Element>,
         with j: Index<Element>,
         storage: inout Self
@@ -86,7 +86,7 @@ extension __StoreProtocol where Self: ~Copyable {
     }
 
     @inlinable
-    package static func linearDeinitializeAll(
+    static func linearDeinitializeAll(
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
     ) {
@@ -97,7 +97,7 @@ extension __StoreProtocol where Self: ~Copyable {
     }
 
     @inlinable
-    package static func linearTruncate(
+    static func linearTruncate(
         to newCount: Tagged<Element, Cardinal>,
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
