@@ -1,17 +1,17 @@
+public import Buffer
 import Cardinal
+import Finite
 import Index
+public import Memory
+public import Memory_Allocator
+public import Memory_Allocator_Protocol
+import Memory_Small
 import Ordinal
 import Ownership
 import Span
 import Storage
 public import Store
 import Tagged
-public import Buffer
-public import Memory
-public import Memory_Allocator
-public import Memory_Allocator_Protocol
-import Memory_Small
-import Finite
 
 extension Buffer.Linear where S: ~Copyable {
 
