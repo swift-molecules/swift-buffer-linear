@@ -19,7 +19,7 @@ private func exerciseSeamSwap<S>(
     store.swapAt(i, j)
 }
 
-@Suite("Buffer.Linear.Bounded+Store.Protocol")
+@Suite
 struct LinearBoundedStoreProtocolTests {
 }
 

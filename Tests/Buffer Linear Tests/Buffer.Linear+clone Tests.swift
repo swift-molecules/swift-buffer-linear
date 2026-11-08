@@ -10,7 +10,7 @@ import Store
 import Tagged
 import Testing
 
-@Suite("Buffer.Linear clone")
+@Suite
 struct LinearCloneTests {
 
     @Test

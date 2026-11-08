@@ -11,7 +11,7 @@ import Store
 import Tagged
 import Testing
 
-@Suite("Buffer.Linear.Bounded")
+@Suite
 struct LinearBoundedTests {
     @Suite struct Unit {}
     @Suite struct Integration {}

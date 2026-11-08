@@ -10,7 +10,7 @@ import Store
 import Tagged
 import Testing
 
-@Suite("Buffer.Linear")
+@Suite
 struct LinearGrowableTests {
     @Suite struct Unit {}
     @Suite struct Integration {}

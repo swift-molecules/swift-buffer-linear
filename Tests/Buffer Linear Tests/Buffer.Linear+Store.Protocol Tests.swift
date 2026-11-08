@@ -24,7 +24,7 @@ where S: Store.Ledgered.`Protocol`, S: ~Copyable {
     store.initialization.count
 }
 
-@Suite("Buffer.Linear+Store.Protocol")
+@Suite
 struct LinearStoreProtocolTests {
 }
 

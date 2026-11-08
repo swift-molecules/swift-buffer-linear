@@ -10,7 +10,7 @@ import Store
 import Tagged
 import Testing
 
-@Suite("Buffer.Linear.Bounded + OutputSpan")
+@Suite
 struct LinearBoundedOutputSpanTests {
     @Suite struct Unit {}
 }
