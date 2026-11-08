@@ -110,7 +110,7 @@ extension LinearOutputSpanTests.Append {
         let capacityBefore = buffer.capacity
 
         buffer.append(addingCapacity: .init(_unchecked: Cardinal(10))) { span in
-            for i in 0..<10 {
+            (0..<10).forEach { i in
                 span.append(100 + i)
             }
         }
