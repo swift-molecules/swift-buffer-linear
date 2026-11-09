@@ -20,11 +20,13 @@ where
 
     @inlinable
     public var front: Element {
-        base.value.storage[.zero]
+        precondition(base.value.header.count > .zero, "Cannot peek the front of an empty buffer")
+        return base.value.storage[.zero]
     }
 
     @inlinable
     public var back: Element {
+        precondition(base.value.header.count > .zero, "Cannot peek the back of an empty buffer")
         return base.value.storage[
             base.value.header.count.subtract.saturating(.one).map { Ordinal($0.rawValue) }
         ]
@@ -40,11 +42,13 @@ where
 
     @inlinable
     public var front: Element {
-        base.value.storage[.zero]
+        precondition(base.value.header.count > .zero, "Cannot peek the front of an empty buffer")
+        return base.value.storage[.zero]
     }
 
     @inlinable
     public var back: Element {
+        precondition(base.value.header.count > .zero, "Cannot peek the back of an empty buffer")
         return base.value.storage[
             base.value.header.count.subtract.saturating(.one).map { Ordinal($0.rawValue) }
         ]

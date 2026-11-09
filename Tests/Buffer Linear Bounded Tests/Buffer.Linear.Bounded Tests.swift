@@ -257,6 +257,50 @@ extension LinearBoundedTests.EdgeCase {
             }
         }
     #endif
+
+    #if os(macOS) || os(Linux) || os(Windows)
+        @Test
+        func `remove first on an empty buffer traps instead of moving out of an uninitialized slot`() async {
+            await #expect(processExitsWith: .failure) {
+                var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
+                    .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
+                _ = buffer.remove.first()
+            }
+        }
+    #endif
+
+    #if os(macOS) || os(Linux) || os(Windows)
+        @Test
+        func `remove last on an empty buffer traps instead of moving out of an uninitialized slot`() async {
+            await #expect(processExitsWith: .failure) {
+                var buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
+                    .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
+                _ = buffer.remove.last()
+            }
+        }
+    #endif
+
+    #if os(macOS) || os(Linux) || os(Windows)
+        @Test
+        func `peek front on an empty buffer traps instead of reading an uninitialized slot`() async {
+            await #expect(processExitsWith: .failure) {
+                let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
+                    .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
+                _ = buffer.peek.front
+            }
+        }
+    #endif
+
+    #if os(macOS) || os(Linux) || os(Windows)
+        @Test
+        func `peek back on an empty buffer traps instead of reading an uninitialized slot`() async {
+            await #expect(processExitsWith: .failure) {
+                let buffer = Buffer<Storage<Memory.Allocator<Memory.Small<0>>>.Contiguous<Int>>.Linear
+                    .Bounded(minimumCapacity: .init(_unchecked: Cardinal(4)))
+                _ = buffer.peek.back
+            }
+        }
+    #endif
 }
 
 extension LinearBoundedTests.Integration {

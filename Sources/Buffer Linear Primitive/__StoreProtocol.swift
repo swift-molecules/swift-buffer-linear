@@ -25,6 +25,7 @@ extension __StoreProtocol where Self: ~Copyable {
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
     ) -> Element {
+        precondition(count > .zero, "Cannot remove the first element of an empty buffer")
         let element = storage.move(at: .zero)
         if count > .one {
             let secondSlot = Tagged<Element, Cardinal>.one.map { Ordinal($0.rawValue) }
@@ -70,6 +71,7 @@ extension __StoreProtocol where Self: ~Copyable {
         count: inout Tagged<Element, Cardinal>,
         storage: inout Self
     ) -> Element {
+        precondition(count > .zero, "Cannot remove the last element of an empty buffer")
         let newCount = count.subtract.saturating(.one)
         let element = storage.move(at: newCount.map { Ordinal($0.rawValue) })
         count = newCount
