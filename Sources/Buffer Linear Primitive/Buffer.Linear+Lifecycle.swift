@@ -101,7 +101,9 @@ extension Buffer.Linear where S: ~Copyable {
         keepingCapacity: Bool
     )
     where S == Storage<Memory.Allocator<Resource>>.Contiguous<Element> {
-        _removeAll()
+        storage.initialization = header.initialization
+        storage.deinitialize(range: Swift::Range(start: .zero, count: header.count))
+        header.count = .zero
         if !keepingCapacity {
             self = Buffer.Linear(minimumCapacity: Tagged<Element, Cardinal>.zero)
         }
@@ -126,12 +128,7 @@ extension Buffer.Linear where S: ~Copyable {
         let newCapacity = newStorage.capacity
         let oldCount = header.count
 
-        var slot: Index<Element> = .zero
-        let end = oldCount.map { Ordinal($0.rawValue) }
-        while slot < end {
-            newStorage.initialize(at: slot, to: storage.move(at: slot))
-            slot += Tagged<Element, Cardinal>.one
-        }
+        storage.move(to: &newStorage, count: oldCount)
         storage = newStorage
         header = Self.Header(capacity: newCapacity)
         header.count = oldCount
